@@ -180,12 +180,25 @@
           (str "[" q "," r "]")]))]))
 
 (defn get-edge-points
-  "Gets the two vertices of a hex edge based on direction (0-5)"
+  "Gets the two vertices of a hex edge based on direction.
+   Directions: 0=N, 1=NE, 2=SE, 3=S, 4=SW, 5=NW (clockwise from north/top)
+   For flat-top hexagons, vertices are at 60° intervals starting from 0° (east).
+   Vertex positions: V0=0°(E), V1=60°(NE), V2=120°(NW), V3=180°(W), V4=240°(SW), V5=300°(SE)
+   Edges are between consecutive vertices:
+   - N (dir 0) = edge between V1 and V2 (top edge)
+   - NE (dir 1) = edge between V0 and V1 (upper-right edge)
+   - SE (dir 2) = edge between V5 and V0 (lower-right edge)
+   - S (dir 3) = edge between V4 and V5 (bottom edge)
+   - SW (dir 4) = edge between V3 and V4 (lower-left edge)
+   - NW (dir 5) = edge between V2 and V3 (upper-left edge)"
   [center hex-size direction]
   (let [[cx cy] center
-        ;; Hex vertices are at 30° intervals starting from 0° (pointing right)
-        angle1 (* (/ Math/PI 3) direction)
-        angle2 (* (/ Math/PI 3) (inc direction))
+        ;; Map direction to vertex indices (going clockwise from north)
+        ;; Formula: first vertex = (1 - direction) mod 6, second vertex = (2 - direction) mod 6
+        vertex-index1 (mod (- 1 direction) 6)
+        vertex-index2 (mod (- 2 direction) 6)
+        angle1 (* (/ Math/PI 3) vertex-index1)
+        angle2 (* (/ Math/PI 3) vertex-index2)
         x1 (+ cx (* hex-size (Math/cos angle1)))
         y1 (+ cy (* hex-size (Math/sin angle1)))
         x2 (+ cx (* hex-size (Math/cos angle2)))

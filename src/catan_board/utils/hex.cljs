@@ -6,6 +6,23 @@
 
 (def sqrt3 (Math/sqrt 3))
 
+;; Edge directions for flat-top hexagons (clockwise from north)
+;; Used for harbor placement and edge calculations
+(def DIRECTION_N 0)   ; North edge (top)
+(def DIRECTION_NE 1)  ; Northeast edge (upper-right)
+(def DIRECTION_SE 2)  ; Southeast edge (lower-right)
+(def DIRECTION_S 3)   ; South edge (bottom)
+(def DIRECTION_SW 4)  ; Southwest edge (lower-left)
+(def DIRECTION_NW 5)  ; Northwest edge (upper-left)
+
+(def direction-names
+  {DIRECTION_N  "North"
+   DIRECTION_NE "Northeast"
+   DIRECTION_SE "Southeast"
+   DIRECTION_S  "South"
+   DIRECTION_SW "Southwest"
+   DIRECTION_NW "Northwest"})
+
 ;; Axial direction vectors for the 6 neighbors of a hex
 (def hex-directions
   [[1 0]   ; right
