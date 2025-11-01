@@ -1,1 +1,0 @@
-["^ ","~:resource-id",["~:shadow.build.modules/append","~:main"],"~:source","\ntry { catan_board.core.init(); } catch (e) { console.error(\"An error occurred when calling (catan-board.core/init)\"); console.error(e); }","~:js","\ntry { catan_board.core.init(); } catch (e) { console.error(\"An error occurred when calling (catan-board.core/init)\"); console.error(e); }"]
