@@ -1,0 +1,29 @@
+# ClojureScript / Shadow-CLJS
+.shadow-cljs/
+.cpcache/
+node_modules/
+resources/public/js/
+.nrepl-port
+.calva/
+
+# Build artifacts
+target/
+out/
+*.jar
+*.class
+
+# Editor files
+.idea/
+*.iml
+.vscode/
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Environment
+.env
+.env.local
