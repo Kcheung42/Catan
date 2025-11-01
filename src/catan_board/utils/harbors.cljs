@@ -27,33 +27,33 @@
    - :direction - which edge of the hex (0=N, 1=NE, 2=SE, 3=S, 4=SW, 5=NW)"
   [;; Top side (2 harbors)
    {:land-hex [-2 2]
-    :direction hex/DIRECTION_NW}  ; Northwest edge
+    :direction hex/DIRECTION_SW}  ; Northwest edge
    {:land-hex [-1 2]
-    :direction hex/DIRECTION_N}   ; North edge
+    :direction hex/DIRECTION_S}   ; North edge
 
    ;; Top-right side (2 harbors)
    {:land-hex [1 1]
-    :direction hex/DIRECTION_N}   ; North edge
+    :direction hex/DIRECTION_S}   ; North edge
    {:land-hex [2 0]
-    :direction hex/DIRECTION_NE}  ; Northeast edge
+    :direction hex/DIRECTION_SE}  ; Northeast edge
 
    ;; Bottom-right side (2 harbors)
    {:land-hex [2 -1]
-    :direction hex/DIRECTION_SE}  ; Southeast edge
+    :direction hex/DIRECTION_NE}  ; Southeast edge
    {:land-hex [1 -2]
-    :direction hex/DIRECTION_SE}  ; Southeast edge
+    :direction hex/DIRECTION_NE}  ; Southeast edge
 
    ;; Bottom side (1 harbor)
    {:land-hex [0 -2]
-    :direction hex/DIRECTION_S}   ; South edge
+    :direction hex/DIRECTION_N}   ; South edge
 
    ;; Bottom-left side (1 harbor)
    {:land-hex [-1 -1]
-    :direction hex/DIRECTION_SW}  ; Southwest edge
+    :direction hex/DIRECTION_NW}  ; Southwest edge
 
    ;; Top-left side (1 harbor)
    {:land-hex [-2 1]
-    :direction hex/DIRECTION_SW}]) ; Southwest edge
+    :direction hex/DIRECTION_NW}]) ; Southwest edge
 
 (defn create-harbor-deck
   "Creates a shuffled deck of harbor types based on standard distribution"

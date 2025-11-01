@@ -7,7 +7,9 @@
 
 (def default-db
   "Initial application state"
-  {:board (board-gen/generate-board false)
+  {:scenario :base-game  ; Current scenario ID (:base-game or :fog-islands-3p)
+   :board (board-gen/generate-board false)
+   :fog-state {}  ; Map of [q r] -> {:revealed? boolean :terrain keyword :number int}
    :ui {:show-info-panel true
         :loading false
         :board-scale 225

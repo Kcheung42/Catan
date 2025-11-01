@@ -82,38 +82,94 @@
     [:circle {:cx 18 :cy 8 :r 0.5 :fill "#c4b490"}]
     [:circle {:cx 7 :cy 18 :r 0.5 :fill "#c4b490"}]
     [:circle {:cx 15 :cy 15 :r 0.5 :fill "#c4b490"}]
-    [:circle {:cx 10 :cy 5 :r 0.5 :fill "#c4b490"}]]])
+    [:circle {:cx 10 :cy 5 :r 0.5 :fill "#c4b490"}]]
+
+   ;; Water pattern - ocean blue
+   [:pattern {:id "water-pattern" :width 20 :height 20 :patternUnits "userSpaceOnUse"}
+    [:rect {:width 20 :height 20 :fill "#4A90E2"}]]
+
+   ;; Gold pattern - golden yellow (for Seafarers scenarios)
+   [:pattern {:id "gold-pattern" :width 20 :height 20 :patternUnits "userSpaceOnUse"}
+    [:rect {:width 20 :height 20 :fill "#FFD700"}]
+    ;; Gold sparkles
+    [:circle {:cx 5 :cy 5 :r 1 :fill "#FFF8DC"}]
+    [:circle {:cx 15 :cy 10 :r 1 :fill "#FFF8DC"}]
+    [:circle {:cx 10 :cy 15 :r 1 :fill "#FFF8DC"}]]])
 
 (defn hex-tile
   "Renders a single hexagonal tile as an SVG polygon.
    hex-data: {:coord [q r] :resource keyword :number int}
    edit-mode?: boolean indicating if edit mode is active
    selected-token-coord: [q r] of selected token or nil
-   developer-mode?: boolean indicating if developer mode is active"
-  [hex-data edit-mode? selected-token-coord developer-mode?]
+   developer-mode?: boolean indicating if developer mode is active
+   fog-state: map of [q r] -> {:revealed? boolean :terrain keyword :number int}"
+  [hex-data edit-mode? selected-token-coord developer-mode? fog-state]
   (let [{:keys [coord resource number]} hex-data
         hex-size db/hex-size
         vertices (hex-utils/hex-vertices coord hex-size)
         points (hex-utils/vertices-to-svg-points vertices)
         [cx cy] (hex-utils/hex-center coord hex-size)
+
+        ;; Check if this is a fog hex and get its reveal state
+        fog-info (get fog-state coord)
+        is-fog? (= resource :fog)
+        is-revealed? (and is-fog? fog-info (:revealed? fog-info))
+
+        ;; Determine actual resource and number to display
+        ;; If fog and revealed, use the revealed terrain/number
+        ;; If fog and not revealed, show fog hex
+        ;; Otherwise, use the hex's own resource/number
+        display-resource (if is-revealed?
+                          (:terrain fog-info)
+                          resource)
+        display-number (if is-revealed?
+                        (:number fog-info)
+                        number)
+
         ;; Get fill - use pattern if available, otherwise solid color
-        fill (if resource
-               (str "url(#" (name resource) "-pattern)")
-               (resources/get-resource-color resource))
+        fill (if (and is-fog? (not is-revealed?))
+               "#f5f5f5" ; Light gray for unrevealed fog
+               (if display-resource
+                 (str "url(#" (name display-resource) "-pattern)")
+                 (resources/get-resource-color display-resource)))
+
         ;; Check if this token is selected
-        is-selected? (= coord selected-token-coord)]
+        is-selected? (= coord selected-token-coord)
+
+        ;; Determine if hex should be clickable for fog reveal
+        is-fog-clickable? (and is-fog? (not is-revealed?) (not edit-mode?))]
     [:g {:key (str "hex-" (first coord) "-" (second coord))}
      ;; Hex polygon with pattern
      [:polygon
       {:points points
        :fill fill
        :stroke "#ffffff"
-       :stroke-width 6}]
+       :stroke-width 6
+       :style (when is-fog-clickable?
+                {:cursor "pointer"})
+       :on-click (when is-fog-clickable?
+                   (fn [e]
+                     (.stopPropagation e)
+                     (rf/dispatch [:reveal-fog-tile coord])))}]
 
-     ;; Desert cactus emoji overlay
-     (when number
-       (let [is-red? (numbers/is-red-number? number)
-             pips (numbers/get-probability-pips number)]
+     ;; Unrevealed fog hex: show "?" symbol
+     (when (and is-fog? (not is-revealed?))
+       [:text
+        {:x cx
+         :y cy
+         :text-anchor "middle"
+         :dominant-baseline "middle"
+         :font-size 32
+         :fill "#666"
+         :font-weight "bold"
+         :font-family "Arial, sans-serif"
+         :pointer-events "none"}
+        "?"])
+
+     ;; Number token (for terrain hexes and revealed fog hexes with numbers)
+     (when display-number
+       (let [is-red? (numbers/is-red-number? display-number)
+             pips (numbers/get-probability-pips display-number)]
          [:g
           {:on-click (when edit-mode?
                        (fn [e]
@@ -142,7 +198,7 @@
             :font-weight "bold"
             :font-family "Arial, sans-serif"
             :class (when is-selected? "token-selected")}
-           (str number)]
+           (str display-number)]
 
           ;; Probability pips
           [:g
@@ -154,8 +210,8 @@
                :r 1.5
                :fill (if is-red? "#ffffff" "#333")}])]]))
 
-     ;; Number token
-     (when (= resource :desert)
+     ;; Desert cactus emoji
+     (when (= display-resource :desert)
        [:text
         {:x cx
          :y cy
@@ -181,16 +237,16 @@
 
 (defn get-edge-points
   "Gets the two vertices of a hex edge based on direction.
-   Directions: 0=N, 1=NE, 2=SE, 3=S, 4=SW, 5=NW (clockwise from north/top)
+   Directions: 0=S, 1=SE, 2=NE, 3=N, 4=NW, 5=SW (counter clockwise from south/bottom)
    For flat-top hexagons, vertices are at 60° intervals starting from 0° (east).
    Vertex positions: V0=0°(E), V1=60°(NE), V2=120°(NW), V3=180°(W), V4=240°(SW), V5=300°(SE)
    Edges are between consecutive vertices:
-   - N (dir 0) = edge between V1 and V2 (top edge)
-   - NE (dir 1) = edge between V0 and V1 (upper-right edge)
-   - SE (dir 2) = edge between V5 and V0 (lower-right edge)
-   - S (dir 3) = edge between V4 and V5 (bottom edge)
-   - SW (dir 4) = edge between V3 and V4 (lower-left edge)
-   - NW (dir 5) = edge between V2 and V3 (upper-left edge)"
+   - S (dir 0) = edge between V4 and V5 (bottom edge)
+   - SE (dir 1) = edge between V5 and V0 (lower-right edge)
+   - NE (dir 2) = edge between V0 and V1 (upper-right edge)
+   - N (dir 3) = edge between V1 and V2 (top edge)
+   - NW (dir 4) = edge between V2 and V3 (upper-left edge)
+   - SW (dir 5) = edge between V3 and V4 (lower-left edge)"
   [center hex-size direction]
   (let [[cx cy] center
         ;; Map direction to vertex indices (going clockwise from north)
@@ -329,8 +385,9 @@
    harbors: vector of harbor data maps
    edit-mode?: boolean indicating if edit mode is active
    selected-token-coord: [q r] of selected token or nil
-   developer-mode?: boolean indicating if developer mode is active"
-  [hexes harbors edit-mode? selected-token-coord developer-mode?]
+   developer-mode?: boolean indicating if developer mode is active
+   fog-state: map of [q r] -> {:revealed? boolean :terrain keyword :number int}"
+  [hexes harbors edit-mode? selected-token-coord developer-mode? fog-state]
   (let [hex-size db/hex-size
         ;; Calculate SVG viewBox to center the board
         ;; The grid spans from -2 to 2 in both q and r
@@ -362,7 +419,7 @@
      [:g
       (for [hex-data hexes]
         ^{:key (str "hex-" (-> hex-data :coord first) "-" (-> hex-data :coord second))}
-        [hex-tile hex-data edit-mode? selected-token-coord developer-mode?])]
+        [hex-tile hex-data edit-mode? selected-token-coord developer-mode? fog-state])]
      ;; Harbors
      [:g
       (for [harbor-data harbors]

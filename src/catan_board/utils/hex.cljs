@@ -6,14 +6,14 @@
 
 (def sqrt3 (Math/sqrt 3))
 
-;; Edge directions for flat-top hexagons (clockwise from north)
+;; Edge directions for flat-top hexagons (counter clockwise from south)
 ;; Used for harbor placement and edge calculations
-(def DIRECTION_N 0)   ; North edge (top)
-(def DIRECTION_NE 1)  ; Northeast edge (upper-right)
-(def DIRECTION_SE 2)  ; Southeast edge (lower-right)
-(def DIRECTION_S 3)   ; South edge (bottom)
-(def DIRECTION_SW 4)  ; Southwest edge (lower-left)
-(def DIRECTION_NW 5)  ; Northwest edge (upper-left)
+(def DIRECTION_S 0)   ; South edge (bottom)
+(def DIRECTION_SE 1)  ; Southeast edge (lower-right)
+(def DIRECTION_NE 2)  ; Northwest edge (upper-right)
+(def DIRECTION_N 3)   ; North edge (top)
+(def DIRECTION_NW 4)  ; Northwest edge (upper-left)
+(def DIRECTION_SW 5)  ; Southwest edge (lower-left)
 
 (def direction-names
   {DIRECTION_N  "North"
@@ -96,13 +96,47 @@
 ;; -- Catan Board Generation --------------------------------------------------
 
 (defn generate-catan-grid
-  "Generates the standard Catan board layout with 20 hexes in a 3-4-5-4-3 pattern.
+  "Generates the standard Catan board layout with 19 hexes in a 3-4-5-4-3 pattern.
    Returns a vector of axial coordinates."
   []
   (let [coords (for [q (range -2 3)
                      r (range -2 3)
                      :let [s (- (- q) r)]
                      :when (and (>= s -2) (<= s 2))]
+                 [q r])]
+    (vec coords)))
+
+(defn generate-grid-from-pattern
+  "Generates a hex grid from a column pattern string like '5-6-7-8-7-6-5'.
+   Returns a vector of axial coordinates [q r] centered on the origin.
+
+   The pattern string specifies the number of hexes in each column from left to right.
+   Uses cube coordinate constraints (q + r + s = 0) to create a symmetrical hexagonal grid.
+   Left columns extend toward positive r, right columns extend toward negative r.
+
+   Example: '5-6-7-8-7-6-5' generates the Fog Islands 44-hex grid.
+            '3-4-5-4-3' generates the standard Catan 19-hex grid."
+  [pattern]
+  (let [col-sizes (mapv js/parseInt (clojure.string/split pattern #"-"))
+        num-cols (count col-sizes)
+        max-size (apply max col-sizes)
+        max-radius (quot max-size 2)
+        middle-col-index (quot num-cols 2)
+
+        coords (for [[col-index col-size] (map-indexed vector col-sizes)
+                     :let [q (- col-index middle-col-index)
+                           ;; Use cube coordinates: q + r + s = 0, so r = -q - s
+                           ;; For left side (q < 0): keep top edge at r=3, extend down as needed
+                           ;; For right side (q >= 0): keep bottom edge at r=-4, extend up as needed
+                           ;; This creates the characteristic hexagon shape
+                           s-min (if (< q 0)
+                                  (+ 1 (- max-radius) max-size (- col-size))
+                                  (- 1 max-radius))
+                           s-max (if (< q 0)
+                                  max-radius
+                                  (+ max-radius (- max-size) col-size))]
+                     s (range s-min (inc s-max))
+                     :let [r (- (- q) s)]]
                  [q r])]
     (vec coords)))
 

@@ -1,0 +1,15 @@
+task_assignments:
+  - task_group: "Task Group 1: Grid Generation & Scenario Data Structures"
+    assigned_subagent: "database-engineer"
+
+  - task_group: "Task Group 2: Events, Subscriptions & Scenario Generation"
+    assigned_subagent: "database-engineer"
+
+  - task_group: "Task Group 3: Interactive Fog Reveal & Scenario Selection"
+    assigned_subagent: "api-engineer"
+
+  - task_group: "Task Group 4: Water & Fog Hex Rendering"
+    assigned_subagent: "ui-designer"
+
+  - task_group: "Task Group 5: Integration Testing & Configuration Editing"
+    assigned_subagent: "testing-engineer"

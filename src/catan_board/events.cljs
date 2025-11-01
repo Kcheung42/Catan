@@ -2,7 +2,9 @@
   (:require
    [re-frame.core :as rf]
    [catan-board.db :as db]
-   [catan-board.utils.board-generator :as board-gen]))
+   [catan-board.utils.board-generator :as board-gen]
+   [catan-board.utils.scenario-generator :as scenario-gen]
+   [catan-board.scenarios.registry :as registry]))
 
 ;; -- Initialization ----------------------------------------------------------
 
@@ -16,11 +18,22 @@
 (rf/reg-event-db
  :generate-board
  (fn [db _]
-   (let [tournament-mode? (get-in db [:ui :tournament-mode] false)
-         new-board (board-gen/generate-board tournament-mode?)]
-     (-> db
-         (assoc :board new-board)
-         (assoc-in [:ui :selected-token-coord] nil)))))
+   (let [current-scenario (:scenario db)
+         tournament-mode? (get-in db [:ui :tournament-mode] false)]
+     (if (= :base-game current-scenario)
+       ;; Use existing board generator for base game
+       (let [new-board (board-gen/generate-board tournament-mode?)]
+         (-> db
+             (assoc :board new-board)
+             (assoc-in [:ui :selected-token-coord] nil)))
+       ;; Use scenario generator for other scenarios
+       (let [scenario-config (registry/get-scenario current-scenario)
+             new-board (scenario-gen/generate-scenario-board scenario-config)
+             fog-state (scenario-gen/initialize-fog-state scenario-config)]
+         (-> db
+             (assoc :board new-board)
+             (assoc :fog-state fog-state)
+             (assoc-in [:ui :selected-token-coord] nil)))))))
 
 (rf/reg-event-db
  :generate-board-success
@@ -35,6 +48,66 @@
    (-> db
        (assoc-in [:ui :loading] false)
        (assoc-in [:ui :error] error))))
+
+;; -- Scenario Management -----------------------------------------------------
+
+(rf/reg-event-db
+ :set-scenario
+ (fn [db [_ scenario-id]]
+   (let [scenario-config (registry/get-scenario scenario-id)]
+     (if scenario-config
+       (if (= :base-game scenario-id)
+         ;; Base game: use existing generator
+         (let [tournament-mode? (get-in db [:ui :tournament-mode] false)
+               new-board (board-gen/generate-board tournament-mode?)]
+           (-> db
+               (assoc :scenario scenario-id)
+               (assoc :board new-board)
+               (assoc :fog-state {})
+               (assoc-in [:ui :selected-token-coord] nil)))
+         ;; Scenario: use scenario generator
+         (let [new-board (scenario-gen/generate-scenario-board scenario-config)
+               fog-state (scenario-gen/initialize-fog-state scenario-config)]
+           (-> db
+               (assoc :scenario scenario-id)
+               (assoc :board new-board)
+               (assoc :fog-state fog-state)
+               (assoc-in [:ui :selected-token-coord] nil))))
+       ;; Invalid scenario ID, return db unchanged
+       db))))
+
+;; -- Fog Reveal --------------------------------------------------------------
+
+(rf/reg-event-db
+ :reveal-fog-tile
+ (fn [db [_ coord]]
+   (let [fog-state (:fog-state db)
+         fog-entry (get fog-state coord)
+         current-scenario (:scenario db)
+         scenario-config (registry/get-scenario current-scenario)]
+     ;; Only reveal if coordinate exists in fog-state and not already revealed
+     (if (and fog-entry
+              (not (:revealed? fog-entry))
+              scenario-config)
+       (let [fog-distribution (get-in scenario-config [:fog-distribution])
+             ;; Create shuffled decks for random selection
+             resource-deck (shuffle (mapcat (fn [[resource count]]
+                                             (repeat count resource))
+                                           (:resources fog-distribution)))
+             ;; Handle both vector and map formats for number-tokens
+             number-tokens (:number-tokens fog-distribution)
+             number-deck (shuffle number-token)
+             terrain (first resource-deck)
+             number (if (= :desert terrain)
+                     nil
+                     (first number-deck))]
+         ;; Update fog-state with revealed terrain and number
+         (assoc-in db [:fog-state coord]
+                   {:revealed? true
+                    :terrain terrain
+                    :number number}))
+       ;; If already revealed or invalid coordinate, return db unchanged
+       db))))
 
 ;; -- UI Controls -------------------------------------------------------------
 

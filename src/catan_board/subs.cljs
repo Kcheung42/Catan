@@ -1,6 +1,7 @@
 (ns catan-board.subs
   (:require
-   [re-frame.core :as rf]))
+   [re-frame.core :as rf]
+   [catan-board.scenarios.registry :as registry]))
 
 ;; -- Board Subscriptions -----------------------------------------------------
 
@@ -18,6 +19,23 @@
  :harbors
  (fn [db _]
    (get-in db [:board :harbors])))
+
+;; -- Scenario Subscriptions --------------------------------------------------
+
+(rf/reg-sub
+ :current-scenario
+ (fn [db _]
+   (:scenario db)))
+
+(rf/reg-sub
+ :fog-state
+ (fn [db _]
+   (:fog-state db)))
+
+(rf/reg-sub
+ :available-scenarios
+ (fn [db _]
+   (registry/list-scenarios)))
 
 ;; -- UI Subscriptions --------------------------------------------------------
 

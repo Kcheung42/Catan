@@ -3,6 +3,28 @@
    [re-frame.core :as rf]
    [catan-board.views.hex :as hex-view]))
 
+(defn scenario-selector
+  "Dropdown component for selecting between available Catan scenarios.
+   Subscribes to :available-scenarios and :current-scenario.
+   Dispatches :set-scenario when selection changes."
+  []
+  (let [available-scenarios @(rf/subscribe [:available-scenarios])
+        current-scenario @(rf/subscribe [:current-scenario])]
+    [:div.control-section
+     [:h3 "Scenario"]
+     [:select.scenario-dropdown
+      {:value (name current-scenario)
+       :on-change (fn [e]
+                    (let [scenario-id (keyword (.. e -target -value))]
+                      (rf/dispatch [:set-scenario scenario-id])))}
+      (for [scenario available-scenarios]
+        ^{:key (:id scenario)}
+        [:option {:value (name (:id scenario))}
+         (:name scenario)])]
+     [:p.help-text (str "Currently playing: "
+                       (:name (first (filter #(= (:id %) current-scenario)
+                                           available-scenarios))))]]))
+
 (defn main-panel []
   (let [loading? @(rf/subscribe [:loading?])
         board-scale @(rf/subscribe [:board-scale])
@@ -12,7 +34,8 @@
         sidebar-open? @(rf/subscribe [:show-info-panel?])
         hexes @(rf/subscribe [:hexes])
         harbors @(rf/subscribe [:harbors])
-        selected-token-coord @(rf/subscribe [:selected-token-coord])]
+        selected-token-coord @(rf/subscribe [:selected-token-coord])
+        fog-state @(rf/subscribe [:fog-state])]
     [:div.app-container
      ;; Sidebar
      [:div.sidebar {:class (when sidebar-open? "open")}
@@ -23,6 +46,9 @@
         "×"]]
 
       [:div.sidebar-content
+       ;; Scenario Selection
+       [scenario-selector]
+
        ;; Board Generation
        [:div.control-section
         [:h3 "Board Generation"]
@@ -79,5 +105,5 @@
       [:div {:style {:transform (str "scale(" (/ board-scale 100) ")")
                      :transform-origin "center center"}}
        (if (seq hexes)
-         [hex-view/hex-grid hexes harbors edit-mode? selected-token-coord developer-mode?]
+         [hex-view/hex-grid hexes harbors edit-mode? selected-token-coord developer-mode? fog-state]
          [:p "Loading board... (" (count hexes) " hexes)"])]]]))
