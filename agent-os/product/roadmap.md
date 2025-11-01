@@ -1,18 +1,18 @@
 # Product Roadmap
 
-## Phase 1: Core Board Display (MVP)
+## Phase 1: Core Board Display (MVP) ✅
 
-1. [ ] **Hex Grid Layout System** - Implement hexagonal grid rendering system that displays 20 hex tiles in the classic Catan board pattern (3-4-5-4-3 row configuration) with proper positioning and spacing. `M`
+1. [x] **Hex Grid Layout System** - Implement hexagonal grid rendering system that displays 20 hex tiles in the classic Catan board pattern (3-4-5-4-3 row configuration) with proper positioning and spacing. `M`
 
-2. [ ] **Resource Tile Rendering** - Create visual representations for all five resource types (wood/forest, brick/hills, wheat/fields, sheep/pasture, ore/mountains) plus desert, with clear colors and optional icons for each resource type. `S`
+2. [x] **Resource Tile Rendering** - Create visual representations for all five resource types (wood/forest, brick/hills, wheat/fields, sheep/pasture, ore/mountains) plus desert, with clear colors and optional icons for each resource type. `S`
 
-3. [ ] **Number Token Display** - Render number tokens (2-12) on resource hexes with proper styling, including probability dots and visual hierarchy (highlighting 6 and 8 as high-probability numbers). `S`
+3. [x] **Number Token Display** - Render number tokens (2-12) on resource hexes with proper styling, including probability dots and visual hierarchy (highlighting 6 and 8 as high-probability numbers). `S`
 
-4. [ ] **Random Board Generation** - Implement algorithm to randomly distribute resources (4 wood, 4 wheat, 4 sheep, 3 brick, 3 ore, 1 desert) and number tokens (following official distribution) with validation to avoid adjacent 6-8 combinations. `M`
+4. [x] **Random Board Generation** - Implement algorithm to randomly distribute resources (4 wood, 4 wheat, 4 sheep, 3 brick, 3 ore, 1 desert) and number tokens (following official distribution) with validation to avoid adjacent 6-8 combinations. `M`
 
-5. [ ] **Harbor/Port Display** - Render the 9 harbor positions around the board edges with visual indicators for harbor type (4 general 3:1 harbors, 5 specialized 2:1 resource harbors positioned correctly). `M`
+5. [x] **Harbor/Port Display** - Render the 9 harbor positions around the board edges with visual indicators for harbor type (4 general 3:1 harbors, 5 specialized 2:1 resource harbors positioned correctly). `M`
 
-6. [ ] **Basic UI Controls** - Create simple control panel with "Generate New Board" button and display of current board configuration (resource and number distribution). `S`
+6. [x] **Basic UI Controls** - Create simple control panel with "Generate New Board" button and display of current board configuration (resource and number distribution). `S`
 
 ## Phase 2: Setup Customization
 
@@ -57,3 +57,9 @@
 - Phase 1 delivers a working product, subsequent phases add polish and convenience
 - All features focus exclusively on base Catan game - no expansion content
 - Effort estimates: XS (1 day), S (2-3 days), M (1 week), L (2 weeks), XL (3+ weeks)
+
+## Bonus Features Already Implemented
+
+Beyond Phase 1, you've also implemented:
+- **Partial Zoom Controls** (Phase 3, #14) - Board scaling with +/- buttons and keyboard shortcuts (50%-300% range). Pan controls not yet implemented.
+- **Tournament Mode Toggle** - Prevents adjacent red numbers (6 & 8), integrated into board generation validation.

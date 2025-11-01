@@ -204,9 +204,7 @@
 
         ;; Calculate rotation angle for text (along the edge, always readable)
         rotation-deg (* (/ 180 Math/PI) edge-angle)
-        readable-rotation (if (and (> rotation-deg 90) (< rotation-deg 270))
-                            (+ rotation-deg 180)  ; Flip if upside-down
-                            rotation-deg)
+        readable-rotation (+ rotation-deg 180)
 
         ;; Resource icon for specific harbors
         resource-icon (when (not= type :generic)
