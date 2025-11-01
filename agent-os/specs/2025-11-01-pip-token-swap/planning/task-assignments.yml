@@ -1,0 +1,12 @@
+task_assignments:
+  - task_group: "Task Group 1: Database Schema & Re-frame Events"
+    assigned_subagent: "database-engineer"
+
+  - task_group: "Task Group 2: Sidebar Edit Mode Toggle"
+    assigned_subagent: "ui-designer"
+
+  - task_group: "Task Group 3: Token Click Handlers & Visual Feedback"
+    assigned_subagent: "api-engineer"
+
+  - task_group: "Task Group 4: Integration Testing & Edge Cases"
+    assigned_subagent: "testing-engineer"

@@ -251,3 +251,27 @@ body {
 .board-container > div {
   transition: transform 0.3s ease-out;
 }
+
+/* Token Selection Animation */
+@keyframes token-pulse {
+  0% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.6;
+    transform: scale(1.15);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.token-selected {
+  animation: token-pulse 1.5s ease-in-out infinite;
+  filter: drop-shadow(0 0 8px #3498db);
+  transition: all 0.2s ease;
+  transform-box: fill-box;
+  transform-origin: center;
+}

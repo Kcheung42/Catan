@@ -17,9 +17,9 @@
       ;; Hex down-right (q=0, r=1)
       (let [[x y] (hex/axial-to-pixel [0 1] hex-size)]
         (is (< (Math/abs x) 0.01))  ; x should be ~0
-        (is (> y 100))              ; y should be pos
+        (is (> y 100)))             ; y should be positive
 
-
+      ;; Round trip conversions
       (is (= [1 0]
              (hex/pixel-to-axial (hex/axial-to-pixel [1 0] hex-size) hex-size)))
 

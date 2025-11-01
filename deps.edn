@@ -10,4 +10,12 @@
                      binaryage/devtools {:mvn/version "1.0.7"}}}
 
   :test {:extra-paths ["test"]
-         :extra-deps {org.clojure/test.check {:mvn/version "1.1.1"}}}}}
+         :extra-deps {org.clojure/test.check {:mvn/version "1.1.1"}}}
+  ;; nREPL server for AI to connect to
+  ;; Include all paths you want available for development
+  :nrepl {:extra-paths ["test"]
+          :extra-deps  {nrepl/nrepl {:mvn/version "1.3.1"}}
+          ;; this allows nrepl to interrupt runaway repl evals
+          :jvm-opts    ["-Djdk.attach.allowAttachSelf"]
+          :main-opts   ["-m" "nrepl.cmdline" "--port" "7888"]}
+  }}

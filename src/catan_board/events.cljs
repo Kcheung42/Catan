@@ -18,7 +18,9 @@
  (fn [db _]
    (let [tournament-mode? (get-in db [:ui :tournament-mode] false)
          new-board (board-gen/generate-board tournament-mode?)]
-     (assoc db :board new-board))))
+     (-> db
+         (assoc :board new-board)
+         (assoc-in [:ui :selected-token-coord] nil)))))
 
 (rf/reg-event-db
  :generate-board-success
@@ -76,3 +78,42 @@
  :toggle-tournament-mode
  (fn [db _]
    (update-in db [:ui :tournament-mode] not)))
+
+;; -- Edit Mode & Token Swapping ---------------------------------------------
+
+(rf/reg-event-db
+ :toggle-edit-mode
+ (fn [db _]
+   (-> db
+       (update-in [:ui :edit-mode] not)
+       (assoc-in [:ui :selected-token-coord] nil))))
+
+(rf/reg-event-db
+ :select-token
+ (fn [db [_ coord]]
+   (let [current-selection (get-in db [:ui :selected-token-coord])]
+     (if current-selection
+       ;; Second selection - perform swap
+       (let [hexes (get-in db [:board :hexes])
+             hex1-idx (first (keep-indexed #(when (= (:coord %2) current-selection) %1) hexes))
+             hex2-idx (first (keep-indexed #(when (= (:coord %2) coord) %1) hexes))]
+         (if (and hex1-idx hex2-idx)
+           (let [hex1 (nth hexes hex1-idx)
+                 hex2 (nth hexes hex2-idx)
+                 num1 (:number hex1)
+                 num2 (:number hex2)
+                 updated-hexes (-> hexes
+                                   (assoc-in [hex1-idx :number] num2)
+                                   (assoc-in [hex2-idx :number] num1))]
+             (-> db
+                 (assoc-in [:board :hexes] updated-hexes)
+                 (assoc-in [:ui :selected-token-coord] nil)))
+           ;; Invalid selection, just clear
+           (assoc-in db [:ui :selected-token-coord] nil)))
+       ;; First selection - store coordinate
+       (assoc-in db [:ui :selected-token-coord] coord)))))
+
+(rf/reg-event-db
+ :clear-token-selection
+ (fn [db _]
+   (assoc-in db [:ui :selected-token-coord] nil)))

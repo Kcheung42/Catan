@@ -7,9 +7,11 @@
   (let [loading? @(rf/subscribe [:loading?])
         board-scale @(rf/subscribe [:board-scale])
         tournament-mode? @(rf/subscribe [:tournament-mode?])
+        edit-mode? @(rf/subscribe [:edit-mode?])
         sidebar-open? @(rf/subscribe [:show-info-panel?])
         hexes @(rf/subscribe [:hexes])
-        harbors @(rf/subscribe [:harbors])]
+        harbors @(rf/subscribe [:harbors])
+        selected-token-coord @(rf/subscribe [:selected-token-coord])]
     [:div.app-container
      ;; Sidebar
      [:div.sidebar {:class (when sidebar-open? "open")}
@@ -33,7 +35,15 @@
                    :checked tournament-mode?
                    :on-change #(rf/dispatch [:toggle-tournament-mode])}]
           [:span.toggle-text "Tournament Mode"]]
-         [:p.help-text "Prevents adjacent red numbers (6 & 8)"]]]
+         [:p.help-text "Prevents adjacent red numbers (6 & 8)"]]
+
+        [:div.toggle-container
+         [:label.toggle-label
+          [:input {:type "checkbox"
+                   :checked edit-mode?
+                   :on-change #(rf/dispatch [:toggle-edit-mode])}]
+          [:span.toggle-text "Edit Mode"]]
+         [:p.help-text "Click tokens to swap their numbers"]]]
 
        ;; Board Scale
        [:div.control-section
@@ -60,5 +70,5 @@
       [:div {:style {:transform (str "scale(" (/ board-scale 100) ")")
                      :transform-origin "center center"}}
        (if (seq hexes)
-         [hex-view/hex-grid hexes harbors]
+         [hex-view/hex-grid hexes harbors edit-mode? selected-token-coord]
          [:p "Loading board... (" (count hexes) " hexes)"])]]]))

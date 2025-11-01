@@ -1,5 +1,6 @@
 (ns catan-board.views.hex
   (:require
+   [re-frame.core :as rf]
    [catan-board.utils.hex :as hex-utils]
    [catan-board.utils.resources :as resources]
    [catan-board.utils.numbers :as numbers]
@@ -85,8 +86,10 @@
 
 (defn hex-tile
   "Renders a single hexagonal tile as an SVG polygon.
-   hex-data: {:coord [q r] :resource keyword :number int}"
-  [hex-data]
+   hex-data: {:coord [q r] :resource keyword :number int}
+   edit-mode?: boolean indicating if edit mode is active
+   selected-token-coord: [q r] of selected token or nil"
+  [hex-data edit-mode? selected-token-coord]
   (let [{:keys [coord resource number]} hex-data
         hex-size db/hex-size
         vertices (hex-utils/hex-vertices coord hex-size)
@@ -95,7 +98,9 @@
         ;; Get fill - use pattern if available, otherwise solid color
         fill (if resource
                (str "url(#" (name resource) "-pattern)")
-               (resources/get-resource-color resource))]
+               (resources/get-resource-color resource))
+        ;; Check if this token is selected
+        is-selected? (= coord selected-token-coord)]
     [:g {:key (str "hex-" (first coord) "-" (second coord))}
      ;; Hex polygon with pattern
      [:polygon
@@ -105,21 +110,14 @@
        :stroke-width 6}]
 
      ;; Desert cactus emoji overlay
-     (when (= resource :desert)
-       [:text
-        {:x cx
-         :y cy
-         :text-anchor "middle"
-         :dominant-baseline "middle"
-         :font-size 28
-         :style {:filter "drop-shadow(2px 2px 3px rgba(0,0,0,0.3))"}}
-        "🌵"])
-
-     ;; Number token
      (when number
        (let [is-red? (numbers/is-red-number? number)
              pips (numbers/get-probability-pips number)]
          [:g
+          {:on-click (when edit-mode?
+                       (fn [e]
+                         (.stopPropagation e)
+                         (rf/dispatch [:select-token coord])))}
           ;; Circle background
           [:circle
            {:cx cx
@@ -127,7 +125,8 @@
             :r 18
             :fill (if is-red? "#d32f2f" "#f5f5dc")
             :stroke "#333"
-            :stroke-width 2}]
+            :stroke-width 2
+            :class (when is-selected? "token-selected")}]
 
           ;; Number text
           [:text
@@ -149,7 +148,18 @@
               {:cx (+ cx (* (- i (/ (dec pips) 2)) 3))
                :cy (+ cy 10)
                :r 1.5
-               :fill (if is-red? "#ffffff" "#333")}])]]))]))
+               :fill (if is-red? "#ffffff" "#333")}])]]))
+
+     ;; Number token
+     (when (= resource :desert)
+       [:text
+        {:x cx
+         :y cy
+         :text-anchor "middle"
+         :dominant-baseline "middle"
+         :font-size 28
+         :style {:filter "drop-shadow(2px 2px 3px rgba(0,0,0,0.3))"}}
+        "🌵"])]))
 
 (defn get-edge-points
   "Gets the two vertices of a hex edge based on direction (0-5)"
@@ -285,8 +295,10 @@
 (defn hex-grid
   "Renders the complete hex grid.
    hexes: vector of hex data maps
-   harbors: vector of harbor data maps"
-  [hexes harbors]
+   harbors: vector of harbor data maps
+   edit-mode?: boolean indicating if edit mode is active
+   selected-token-coord: [q r] of selected token or nil"
+  [hexes harbors edit-mode? selected-token-coord]
   (let [hex-size db/hex-size
         ;; Calculate SVG viewBox to center the board
         ;; The grid spans from -2 to 2 in both q and r
@@ -308,14 +320,17 @@
       :width "100%"
       :height "100%"
       :style {:max-width "1200px"
-              :max-height "800px"}}
+              :max-height "800px"}
+      :on-click (when edit-mode?
+                  (fn [e]
+                    (rf/dispatch [:clear-token-selection])))}
      ;; Pattern definitions
      [resource-pattern]
      ;; Hexes
      [:g
       (for [hex-data hexes]
         ^{:key (str "hex-" (-> hex-data :coord first) "-" (-> hex-data :coord second))}
-        [hex-tile hex-data])]
+        [hex-tile hex-data edit-mode? selected-token-coord])]
      ;; Harbors
      [:g
       (for [harbor-data harbors]

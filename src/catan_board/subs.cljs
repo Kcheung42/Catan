@@ -41,6 +41,16 @@
  (fn [db _]
    (get-in db [:ui :tournament-mode] false)))
 
+(rf/reg-sub
+ :edit-mode?
+ (fn [db _]
+   (get-in db [:ui :edit-mode] false)))
+
+(rf/reg-sub
+ :selected-token-coord
+ (fn [db _]
+   (get-in db [:ui :selected-token-coord] nil)))
+
 ;; -- Derived Subscriptions ---------------------------------------------------
 
 (rf/reg-sub
