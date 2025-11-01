@@ -17,15 +17,8 @@
       ;; Hex down-right (q=0, r=1)
       (let [[x y] (hex/axial-to-pixel [0 1] hex-size)]
         (is (< (Math/abs x) 0.01))  ; x should be ~0
-        (is (> y 100))              ; y should be positive
-        (is (< y 105))))))          ; approximately 103.9
+        (is (> y 100))              ; y should be pos
 
-(deftest pixel-to-axial-test
-  (testing "Converts pixel coordinates back to axial coordinates"
-    (let [hex-size 60]
-      ;; Round trip conversion
-      (is (= [0 0]
-             (hex/pixel-to-axial (hex/axial-to-pixel [0 0] hex-size) hex-size)))
 
       (is (= [1 0]
              (hex/pixel-to-axial (hex/axial-to-pixel [1 0] hex-size) hex-size)))

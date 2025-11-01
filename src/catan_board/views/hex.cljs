@@ -202,6 +202,12 @@
         text-x (+ mid-x (* (/ offset 2) (Math/cos perpendicular-angle)))
         text-y (+ mid-y (* (/ offset 2) (Math/sin perpendicular-angle)))
 
+        ;; Calculate rotation angle for text (along the edge, always readable)
+        rotation-deg (* (/ 180 Math/PI) edge-angle)
+        readable-rotation (if (and (> rotation-deg 90) (< rotation-deg 270))
+                            (+ rotation-deg 180)  ; Flip if upside-down
+                            rotation-deg)
+
         ;; Resource icon for specific harbors
         resource-icon (when (not= type :generic)
                         (case type
@@ -229,7 +235,8 @@
        :fill "#000000"
        :font-size 10
        :font-weight "bold"
-       :font-family "Arial, sans-serif"}
+       :font-family "Arial, sans-serif"
+       :transform (str "rotate(" readable-rotation " " text-x " " text-y ")")}
       (str ratio ":1")]
 
      ;; Resource icon for specific harbors
@@ -239,14 +246,16 @@
          :y (+ text-y 12)
          :text-anchor "middle"
          :dominant-baseline "middle"
-         :font-size 14}
+         :font-size 14
+         :transform (str "rotate(" readable-rotation " " text-x " " text-y ")")}
         resource-icon]
        [:text
         {:x                 text-x
          :y                 (+ text-y 12)
          :text-anchor       "middle"
          :dominant-baseline "middle"
-         :font-size         14}
+         :font-size         14
+         :transform (str "rotate(" readable-rotation " " text-x " " text-y ")")}
         "?"])]))
 
 (defn hex-grid
