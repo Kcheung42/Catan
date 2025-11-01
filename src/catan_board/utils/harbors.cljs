@@ -23,36 +23,36 @@
   "Standard harbor positions on a Catan board.
    Each harbor has:
    - :land-hex - the land hex coordinate it's adjacent to
-   - :direction - which edge of the hex (0=E, 1=NE, 2=NW, 3=W, 4=SW, 5=SE)"
+   - :direction - which edge of the hex (0=SE, 1=S, 2=SW, 3=NW, 4=N, 5=NE)"
   [;; Top side (2 harbors)
-   {:land-hex [0 2]
-    :direction 1}  ; NE edge
+   {:land-hex [-2 2]
+    :direction 2}  ; SE edge
    {:land-hex [-1 2]
-    :direction 2}  ; NW edge
+    :direction 1}  ; SW edge
 
    ;; Top-right side (2 harbors)
    {:land-hex [1 1]
-    :direction 0}  ; e edg e
+    :direction 1}  ; SE edge
    {:land-hex [2 0]
-    :direction 0}  ; E edge
+    :direction 0}  ; SE edge
 
    ;; Bottom-right side (2 harbors)
    {:land-hex [2 -1]
-    :direction 5}  ; SE edge
+    :direction 5}  ; NE edge
    {:land-hex [1 -2]
-    :direction 5}  ; SE edge
+    :direction 5}  ; NE edge
 
    ;; Bottom side (1 harbor)
    {:land-hex [0 -2]
-    :direction 4}  ; SW edge
+    :direction 4}  ; N edge
 
    ;; Bottom-left side (1 harbor)
-   {:land-hex [-2 0]
-    :direction 3}  ; W edge
+   {:land-hex [-1 -1]
+    :direction 3}  ; NW edge
 
    ;; Top-left side (1 harbor)
    {:land-hex [-2 1]
-    :direction 2}])
+    :direction 3}]) ; NW edge
 
 (defn create-harbor-deck
   "Creates a shuffled deck of harbor types based on standard distribution"

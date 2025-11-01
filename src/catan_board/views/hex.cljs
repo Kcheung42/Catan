@@ -183,7 +183,7 @@
         perpendicular-angle (+ edge-angle (/ Math/PI 2))
 
         ;; Distance to push trapezoid outward
-        offset (* hex-size 0.6)
+        offset (* -1 (* hex-size 0.8))
 
         ;; Outer edge points (pushed outward)
         x3 (+ x2 (* offset (Math/cos perpendicular-angle)))
@@ -226,21 +226,28 @@
        :y (if resource-icon (- text-y 8) text-y)
        :text-anchor "middle"
        :dominant-baseline "middle"
-       :fill "#ffffff"
-       :font-size 18
+       :fill "#000000"
+       :font-size 10
        :font-weight "bold"
        :font-family "Arial, sans-serif"}
       (str ratio ":1")]
 
      ;; Resource icon for specific harbors
-     (when resource-icon
+     (if resource-icon
        [:text
         {:x text-x
          :y (+ text-y 12)
          :text-anchor "middle"
          :dominant-baseline "middle"
-         :font-size 18}
-        resource-icon])]))
+         :font-size 14}
+        resource-icon]
+       [:text
+        {:x                 text-x
+         :y                 (+ text-y 12)
+         :text-anchor       "middle"
+         :dominant-baseline "middle"
+         :font-size         14}
+        "?"])]))
 
 (defn hex-grid
   "Renders the complete hex grid.

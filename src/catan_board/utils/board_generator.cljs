@@ -20,10 +20,10 @@
 (defn has-adjacent-red-numbers?
   "Checks if any two hexes with red numbers (6 or 8) are adjacent"
   [hexes]
-  (let [red-hexes (filter #(numbers/is-red-number? (:number %)) hexes)
+  (let [red-hexes  (filter #(numbers/is-red-number? (:number %)) hexes)
         red-coords (set (map :coord red-hexes))]
     (some (fn [hex]
-            (let [neighbors (hex-neighbors (:coord hex))
+            (let [neighbors       (hex-neighbors (:coord hex))
                   neighbor-coords (set neighbors)]
               (seq (clojure.set/intersection red-coords neighbor-coords))))
           red-hexes)))
@@ -35,9 +35,9 @@
   [coords]
   (let [resource-deck (resources/create-resource-deck)]
     (mapv (fn [coord resource]
-            {:coord coord
+            {:coord    coord
              :resource resource
-             :number nil})
+             :number   nil})
           coords
           resource-deck)))
 
@@ -58,30 +58,30 @@
   "Generates a complete Catan board with random resource and number placement.
    If tournament-mode? is true, ensures no adjacent red numbers (6 & 8)"
   [tournament-mode?]
-  (let [coords (hex/generate-catan-grid)
+  (let [coords               (hex/generate-catan-grid)
         hexes-with-resources (assign-resources coords)
-        harbors (harbors/assign-harbors)]
-    (loop [attempts 0
+        harbors              (harbors/assign-harbors)]
+    (loop [attempts     0
            max-attempts 100]
       (if (>= attempts max-attempts)
         ;; Fallback after max attempts - just return whatever we have
         (let [hexes (assign-numbers hexes-with-resources)]
-          {:hexes hexes
-           :harbors harbors
-           :metadata {:generated-at (.toISOString (js/Date.))
-                      :board-id (str (random-uuid))
+          {:hexes    hexes
+           :harbors  harbors
+           :metadata {:generated-at    (.toISOString (js/Date.))
+                      :board-id        (str (random-uuid))
                       :tournament-mode tournament-mode?
-                      :attempts attempts}})
+                      :attempts        attempts}})
         ;; Try generating board
         (let [hexes (assign-numbers hexes-with-resources)]
           (if (or (not tournament-mode?)
                   (not (has-adjacent-red-numbers? hexes)))
             ;; Valid board - return it
-            {:hexes hexes
-             :harbors harbors
-             :metadata {:generated-at (.toISOString (js/Date.))
-                        :board-id (str (random-uuid))
+            {:hexes    hexes
+             :harbors  harbors
+             :metadata {:generated-at    (.toISOString (js/Date.))
+                        :board-id        (str (random-uuid))
                         :tournament-mode tournament-mode?
-                        :attempts (inc attempts)}}
+                        :attempts        (inc attempts)}}
             ;; Invalid - try again
             (recur (inc attempts) max-attempts)))))))
