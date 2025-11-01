@@ -13,7 +13,7 @@
   [:defs
    ;; Wood pattern - larger trees
    [:pattern {:id "wood-pattern" :width 20 :height 20 :patternUnits "userSpaceOnUse"}
-    [:rect {:width 20 :height 20 :fill "#2d5016"}]
+    [:rect {:width 20 :height 20 :fill "#487748"}]
     ;; Tree 1
     [:polygon {:points "4,12 7,3 10,12" :fill "#1a3010"}]
     [:rect {:x 6 :y 12 :width 2 :height 4 :fill "#0d1808"}]

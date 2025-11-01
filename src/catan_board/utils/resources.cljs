@@ -10,7 +10,7 @@
 
 (def resource-colors
   "Color mapping for each resource type (optimized for projector display)"
-  {:wood   "#2d5016"   ; Dark green (forest)
+  {:wood   "#487748"   ; Green (forest)
    :brick  "#b8543c"   ; Burnt orange (clay/hills)
    :wheat  "#e8c547"   ; Golden yellow (fields)
    :sheep  "#9bcd6f"   ; Light green (pasture)

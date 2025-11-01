@@ -80,7 +80,7 @@ The MVP includes hex grid rendering, all resource types, number token display wi
 
 **Technical Approach:**
 - Define color palette for each resource type:
-  - Wood (Forest): Dark green (#1a5f1a)
+  - Wood (Forest): Green (#487748)
   - Brick (Hills): Burnt orange (#b8543c)
   - Wheat (Fields): Golden yellow (#e8c547)
   - Sheep (Pasture): Light green (#9bcd6f)
