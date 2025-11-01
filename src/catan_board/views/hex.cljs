@@ -182,17 +182,42 @@
         edge-angle (Math/atan2 (- y2 y1) (- x2 x1))
         perpendicular-angle (+ edge-angle (/ Math/PI 2))
 
-        ;; Distance to push trapezoid outward
+        ;; Distance to push hexagon outward
         offset (* -1 (* hex-size 0.8))
 
-        ;; Outer edge points (pushed outward)
-        x3 (+ x2 (* offset (Math/cos perpendicular-angle)))
-        y3 (+ y2 (* offset (Math/sin perpendicular-angle)))
-        x4 (+ x1 (* offset (Math/cos perpendicular-angle)))
-        y4 (+ y1 (* offset (Math/sin perpendicular-angle)))
+        ;; Create irregular hexagon points
+        ;; Base edge stays same (x1,y1 to x2,y2)
+        ;; Create 6 points total for hexagon
 
-        ;; Trapezoid points: inner edge (x1,y1 -> x2,y2) to outer edge (x3,y3 -> x4,y4)
-        points (str x1 "," y1 " " x2 "," y2 " " x3 "," y3 " " x4 "," y4)
+        ;; Point at right side (from x2, angled outward)
+        side-offset (* offset 0.6)
+        x-side-right (+ x2 (* side-offset (Math/cos perpendicular-angle)))
+        y-side-right (+ y2 (* side-offset (Math/sin perpendicular-angle)))
+
+        ;; Outer peak points (left, center, right along outer edge)
+        x-outer-right (+ x2 (* offset (Math/cos perpendicular-angle)))
+        y-outer-right (+ y2 (* offset (Math/sin perpendicular-angle)))
+
+        ;; Center peak (pushed out slightly further)
+        peak-offset (* offset 1.15)
+        mid-outer-x (+ mid-x (* peak-offset (Math/cos perpendicular-angle)))
+        mid-outer-y (+ mid-y (* peak-offset (Math/sin perpendicular-angle)))
+
+        x-outer-left (+ x1 (* offset (Math/cos perpendicular-angle)))
+        y-outer-left (+ y1 (* offset (Math/sin perpendicular-angle)))
+
+        ;; Point at left side (from x1, angled outward)
+        x-side-left (+ x1 (* side-offset (Math/cos perpendicular-angle)))
+        y-side-left (+ y1 (* side-offset (Math/sin perpendicular-angle)))
+
+        ;; Hexagon points: base -> right side -> right outer -> center peak -> left outer -> left side -> back to base
+        points (str x1 "," y1 " "
+                    x2 "," y2 " "
+                    x-side-right "," y-side-right " "
+                    x-outer-right "," y-outer-right " "
+                    mid-outer-x "," mid-outer-y " "
+                    x-outer-left "," y-outer-left " "
+                    x-side-left "," y-side-left)
 
         ;; Get harbor properties
         ratio (harbors/get-harbor-ratio type)
@@ -216,12 +241,13 @@
                           :ore "⛰️"
                           ""))]
     [:g {:key (str "harbor-" (first land-hex) "-" (second land-hex) "-" direction)}
-     ;; Trapezoid tile
+     ;; Hexagonal harbor tile with rounded corners
      [:polygon
       {:points points
        :fill color
        :stroke "#ffffff"
-       :stroke-width 4
+       :stroke-width 5
+       :stroke-linejoin "round"
        :opacity 0.95}]
 
      ;; Trade ratio text

@@ -79,13 +79,6 @@
     2))
 
 (defn get-harbor-color
-  "Returns the color for a harbor based on its type"
+  "Returns the color for a harbor - all harbors are ocean blue"
   [harbor-type]
-  (case harbor-type
-    :generic "#8b7355"  ; Brown
-    :wood    "#2d5016"  ; Dark green
-    :brick   "#b8543c"  ; Burnt orange
-    :wheat   "#e8c547"  ; Golden yellow
-    :sheep   "#9bcd6f"  ; Light green
-    :ore     "#7c7c7c"  ; Gray
-    "#8b7355"))         ; Default to brown
+  "#1e88e5")  ; Ocean blue - matches the sea background
