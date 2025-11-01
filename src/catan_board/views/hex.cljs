@@ -151,20 +151,57 @@
                :r 1.5
                :fill (if is-red? "#ffffff" "#333")}])]]))]))
 
-(defn harbor-icon
-  "Renders a harbor icon at the specified position"
+(defn get-edge-points
+  "Gets the two vertices of a hex edge based on direction (0-5)"
+  [center hex-size direction]
+  (let [[cx cy] center
+        ;; Hex vertices are at 30° intervals starting from 0° (pointing right)
+        angle1 (* (/ Math/PI 3) direction)
+        angle2 (* (/ Math/PI 3) (inc direction))
+        x1 (+ cx (* hex-size (Math/cos angle1)))
+        y1 (+ cy (* hex-size (Math/sin angle1)))
+        x2 (+ cx (* hex-size (Math/cos angle2)))
+        y2 (+ cy (* hex-size (Math/sin angle2)))]
+    [[x1 y1] [x2 y2]]))
+
+(defn harbor-trapezoid
+  "Renders a harbor as a trapezoid tile on the edge of the board"
   [harbor-data]
-  (let [{:keys [edge direction type land-hex]} harbor-data
+  (let [{:keys [land-hex direction type]} harbor-data
         hex-size db/hex-size
-        ;; Calculate midpoint of the edge
-        [coord1 coord2] edge
-        [x1 y1] (hex-utils/axial-to-pixel coord1 hex-size)
-        [x2 y2] (hex-utils/axial-to-pixel coord2 hex-size)
+        [cx cy] (hex-utils/axial-to-pixel land-hex hex-size)
+
+        ;; Get the two vertices of the edge
+        [[x1 y1] [x2 y2]] (get-edge-points [cx cy] hex-size direction)
+
+        ;; Calculate midpoint of edge
         mid-x (/ (+ x1 x2) 2)
         mid-y (/ (+ y1 y2) 2)
+
+        ;; Calculate outward direction (perpendicular to edge)
+        edge-angle (Math/atan2 (- y2 y1) (- x2 x1))
+        perpendicular-angle (+ edge-angle (/ Math/PI 2))
+
+        ;; Distance to push trapezoid outward
+        offset (* hex-size 0.6)
+
+        ;; Outer edge points (pushed outward)
+        x3 (+ x2 (* offset (Math/cos perpendicular-angle)))
+        y3 (+ y2 (* offset (Math/sin perpendicular-angle)))
+        x4 (+ x1 (* offset (Math/cos perpendicular-angle)))
+        y4 (+ y1 (* offset (Math/sin perpendicular-angle)))
+
+        ;; Trapezoid points: inner edge (x1,y1 -> x2,y2) to outer edge (x3,y3 -> x4,y4)
+        points (str x1 "," y1 " " x2 "," y2 " " x3 "," y3 " " x4 "," y4)
+
         ;; Get harbor properties
         ratio (harbors/get-harbor-ratio type)
         color (harbors/get-harbor-color type)
+
+        ;; Text position (center of trapezoid)
+        text-x (+ mid-x (* (/ offset 2) (Math/cos perpendicular-angle)))
+        text-y (+ mid-y (* (/ offset 2) (Math/sin perpendicular-angle)))
+
         ;; Resource icon for specific harbors
         resource-icon (when (not= type :generic)
                         (case type
@@ -174,25 +211,23 @@
                           :sheep "🐑"
                           :ore "⛰️"
                           ""))]
-    [:g {:key (str "harbor-" (first coord1) "-" (second coord1))}
-     ;; Harbor circle background
-     [:circle
-      {:cx mid-x
-       :cy mid-y
-       :r 20
+    [:g {:key (str "harbor-" (first land-hex) "-" (second land-hex) "-" direction)}
+     ;; Trapezoid tile
+     [:polygon
+      {:points points
        :fill color
        :stroke "#ffffff"
-       :stroke-width 3
-       :opacity 0.9}]
+       :stroke-width 4
+       :opacity 0.95}]
 
      ;; Trade ratio text
      [:text
-      {:x mid-x
-       :y (if resource-icon (- mid-y 5) mid-y)
+      {:x text-x
+       :y (if resource-icon (- text-y 8) text-y)
        :text-anchor "middle"
        :dominant-baseline "middle"
        :fill "#ffffff"
-       :font-size 16
+       :font-size 18
        :font-weight "bold"
        :font-family "Arial, sans-serif"}
       (str ratio ":1")]
@@ -200,11 +235,11 @@
      ;; Resource icon for specific harbors
      (when resource-icon
        [:text
-        {:x mid-x
-         :y (+ mid-y 10)
+        {:x text-x
+         :y (+ text-y 12)
          :text-anchor "middle"
          :dominant-baseline "middle"
-         :font-size 14}
+         :font-size 18}
         resource-icon])]))
 
 (defn hex-grid
@@ -244,5 +279,5 @@
      ;; Harbors
      [:g
       (for [harbor-data harbors]
-        ^{:key (str "harbor-" (-> harbor-data :edge first first) "-" (-> harbor-data :edge first second))}
-        [harbor-icon harbor-data])]]))
+        ^{:key (str "harbor-" (-> harbor-data :land-hex first) "-" (-> harbor-data :land-hex second) "-" (:direction harbor-data))}
+        [harbor-trapezoid harbor-data])]]))

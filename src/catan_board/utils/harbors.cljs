@@ -32,7 +32,7 @@
 
    ;; Top-right side (2 harbors)
    {:land-hex [1 1]
-    :direction 0}  ; E edge
+    :direction 0}  ; e edg e
    {:land-hex [2 0]
     :direction 0}  ; E edge
 
