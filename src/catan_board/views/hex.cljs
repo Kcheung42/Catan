@@ -117,7 +117,9 @@
           {:on-click (when edit-mode?
                        (fn [e]
                          (.stopPropagation e)
-                         (rf/dispatch [:select-token coord])))}
+                         (rf/dispatch [:select-token coord])))
+           :style (when edit-mode?
+                    {:cursor "pointer"})}
           ;; Circle background
           [:circle
            {:cx cx
@@ -137,7 +139,8 @@
             :fill (if is-red? "#ffffff" "#333")
             :font-size 20
             :font-weight "bold"
-            :font-family "Arial, sans-serif"}
+            :font-family "Arial, sans-serif"
+            :class (when is-selected? "token-selected")}
            (str number)]
 
           ;; Probability pips
