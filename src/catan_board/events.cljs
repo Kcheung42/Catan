@@ -79,6 +79,13 @@
  (fn [db _]
    (update-in db [:ui :tournament-mode] not)))
 
+;; -- Developer Mode ---------------------------------------------------------
+
+(rf/reg-event-db
+ :toggle-developer-mode
+ (fn [db _]
+   (update-in db [:ui :developer-mode] not)))
+
 ;; -- Edit Mode & Token Swapping ---------------------------------------------
 
 (rf/reg-event-db

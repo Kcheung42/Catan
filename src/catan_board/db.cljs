@@ -13,4 +13,5 @@
         :board-scale 225
         :tournament-mode false
         :edit-mode false
-        :selected-token-coord nil}})  ; percentage: 50-200, tournament-mode: no adjacent red numbers
+        :selected-token-coord nil
+        :developer-mode false}})  ; percentage: 50-200, tournament-mode: no adjacent red numbers

@@ -8,6 +8,7 @@
         board-scale @(rf/subscribe [:board-scale])
         tournament-mode? @(rf/subscribe [:tournament-mode?])
         edit-mode? @(rf/subscribe [:edit-mode?])
+        developer-mode? @(rf/subscribe [:developer-mode?])
         sidebar-open? @(rf/subscribe [:show-info-panel?])
         hexes @(rf/subscribe [:hexes])
         harbors @(rf/subscribe [:harbors])
@@ -43,7 +44,15 @@
                    :checked edit-mode?
                    :on-change #(rf/dispatch [:toggle-edit-mode])}]
           [:span.toggle-text "Edit Mode"]]
-         [:p.help-text "Click tokens to swap their numbers"]]]
+         [:p.help-text "Click tokens to swap their numbers"]]
+
+        [:div.toggle-container
+         [:label.toggle-label
+          [:input {:type "checkbox"
+                   :checked developer-mode?
+                   :on-change #(rf/dispatch [:toggle-developer-mode])}]
+          [:span.toggle-text "Developer Mode"]]
+         [:p.help-text "Show hex coordinates for debugging"]]]
 
        ;; Board Scale
        [:div.control-section
@@ -70,5 +79,5 @@
       [:div {:style {:transform (str "scale(" (/ board-scale 100) ")")
                      :transform-origin "center center"}}
        (if (seq hexes)
-         [hex-view/hex-grid hexes harbors edit-mode? selected-token-coord]
+         [hex-view/hex-grid hexes harbors edit-mode? selected-token-coord developer-mode?]
          [:p "Loading board... (" (count hexes) " hexes)"])]]]))

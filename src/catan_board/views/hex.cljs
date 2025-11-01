@@ -88,8 +88,9 @@
   "Renders a single hexagonal tile as an SVG polygon.
    hex-data: {:coord [q r] :resource keyword :number int}
    edit-mode?: boolean indicating if edit mode is active
-   selected-token-coord: [q r] of selected token or nil"
-  [hex-data edit-mode? selected-token-coord]
+   selected-token-coord: [q r] of selected token or nil
+   developer-mode?: boolean indicating if developer mode is active"
+  [hex-data edit-mode? selected-token-coord developer-mode?]
   (let [{:keys [coord resource number]} hex-data
         hex-size db/hex-size
         vertices (hex-utils/hex-vertices coord hex-size)
@@ -162,7 +163,21 @@
          :dominant-baseline "middle"
          :font-size 28
          :style {:filter "drop-shadow(2px 2px 3px rgba(0,0,0,0.3))"}}
-        "🌵"])]))
+        "🌵"])
+
+     ;; Developer mode: Show coordinates
+     (when developer-mode?
+       (let [[q r] coord]
+         [:text
+          {:x cx
+           :y (- cy (* hex-size 0.7))
+           :text-anchor "middle"
+           :dominant-baseline "middle"
+           :font-size 10
+           :font-weight "bold"
+           :fill "#000000"
+           :style {:filter "drop-shadow(0 0 2px rgba(255,255,255,0.8))"}}
+          (str "[" q "," r "]")]))]))
 
 (defn get-edge-points
   "Gets the two vertices of a hex edge based on direction (0-5)"
@@ -300,8 +315,9 @@
    hexes: vector of hex data maps
    harbors: vector of harbor data maps
    edit-mode?: boolean indicating if edit mode is active
-   selected-token-coord: [q r] of selected token or nil"
-  [hexes harbors edit-mode? selected-token-coord]
+   selected-token-coord: [q r] of selected token or nil
+   developer-mode?: boolean indicating if developer mode is active"
+  [hexes harbors edit-mode? selected-token-coord developer-mode?]
   (let [hex-size db/hex-size
         ;; Calculate SVG viewBox to center the board
         ;; The grid spans from -2 to 2 in both q and r
@@ -333,7 +349,7 @@
      [:g
       (for [hex-data hexes]
         ^{:key (str "hex-" (-> hex-data :coord first) "-" (-> hex-data :coord second))}
-        [hex-tile hex-data edit-mode? selected-token-coord])]
+        [hex-tile hex-data edit-mode? selected-token-coord developer-mode?])]
      ;; Harbors
      [:g
       (for [harbor-data harbors]

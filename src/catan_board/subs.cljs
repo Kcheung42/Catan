@@ -51,6 +51,11 @@
  (fn [db _]
    (get-in db [:ui :selected-token-coord] nil)))
 
+(rf/reg-sub
+ :developer-mode?
+ (fn [db _]
+   (get-in db [:ui :developer-mode] false)))
+
 ;; -- Derived Subscriptions ---------------------------------------------------
 
 (rf/reg-sub
