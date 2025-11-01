@@ -33,6 +33,11 @@
    (:fog-state db)))
 
 (rf/reg-sub
+ :fog-number-deck
+ (fn [db _]
+   (:fog-number-deck db)))
+
+(rf/reg-sub
  :available-scenarios
  (fn [db _]
    (registry/list-scenarios)))

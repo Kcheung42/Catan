@@ -87,20 +87,7 @@
                     :ore    2
                     :desert 1}
     ;; Number tokens for non-desert hexes (14 terrain, 1 desert, so 13 tokens)
-    :number-tokens [6 11 5 8 12 9 10 6 5 11 8 4 9]
-    :assignment    :random}
-
-   ;; Resource and number distribution for fog hexes
-   ;; Includes new :gold resource type unique to Seafarers scenarios
-   :fog-distribution
-   {:resources     {:wood   1
-                    :brick  2
-                    :sheep  1
-                    :wheat  2
-                    :ore    2
-                    :desert 2
-                    :gold   2}
-    ;; Number tokens for non-desert fog hexes (12 fog, 2 desert, so 10 tokens)
+    ;; :number-tokens [6 11 5 8 12 9 10 6 5 11 8 4 9]
     :number-tokens {2  0
                     3  1
                     4  1
@@ -110,6 +97,29 @@
                     9  2
                     10 1
                     11 2
+                    12 1}
+    :assignment    :random}
+
+   ;; Resource and number distribution for fog hexes
+   ;; Includes new :gold resource type unique to Seafarers scenarios
+   :fog-distribution
+   {:resources     {:wood  1
+                    :brick 2
+                    :sheep 1
+                    :wheat 2
+                    :ore   2
+                    :water 2
+                    :gold  2}
+    ;; Number tokens for non-desert fog hexes (12 fog, 2 desert, so 10 tokens)
+    :number-tokens {2  0
+                    3  2
+                    4  1
+                    5  1
+                    6  1
+                    8  1
+                    9  1
+                    10 1
+                    11 1
                     12 1}
     :assignment    :on-reveal}
 
