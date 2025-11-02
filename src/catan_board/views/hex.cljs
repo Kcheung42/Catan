@@ -351,7 +351,7 @@
                           :brick "🧱"
                           :wheat "🌾"
                           :sheep "🐑"
-                          :ore "⛰️"
+                          :ore "🪨"
                           ""))]
     [:g {:key (str "harbor-" (first land-hex) "-" (second land-hex) "-" direction)}
      ;; Hexagonal harbor tile with rounded corners
@@ -393,7 +393,7 @@
          :dominant-baseline "middle"
          :font-size 14
          :transform (str "rotate(" readable-rotation " " text-x " " text-y ")")}
-        "?"])]))
+        "🪵"])]))
 
 (defn hex-grid
   "Renders the complete hex grid.

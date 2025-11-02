@@ -33,40 +33,20 @@
    ;; q=2  (6 hexes): [2 -4] [2 -3] [2 -2] [2 -1] [2 0] [2 1]
    ;; q=3  (5 hexes): [3 -4] [3 -3] [3 -2] [3 -1] [3 0]
    :hex-types
-   {
-    ;; :water #{;; Outer border water hexes (18 total)
-    ;;          ;; Far left column (q=-3): edges
-    ;;          [-3 -1] [-3 3]
-    ;;          ;; Left column (q=-2): edges
-    ;;          [-2 -2] [-2 3]
-    ;;          ;; Center-left column (q=-1): edges
-    ;;          [-1 -3] [-1 3]
-    ;;          ;; Center column (q=0): edges
-    ;;          [0 -4] [0 3]
-    ;;          ;; Center-right column (q=1): edges
-    ;;          [1 -4] [1 2]
-    ;;          ;; Right column (q=2): edges
-    ;;          [2 -4] [2 -1] [2 1]
-    ;;          ;; Far right column (q=3): all water
-    ;;          [3 -4] [3 -3] [3 -2] [3 -1] [3 0]}
-
+   {;; Outer border water hexes (18 total)
     :water #{[-3 -1] [-2 -2] [-1 -3] [0 -4] [1 -4] [1 -3] [1 -2] [0 -1] [ -1 0] [-2 1] [-3 1]
              [0 3] [-1 3] [-1 2] [-0 1] [1 0] [2 -1] [3 -2]
              }
 
-    ;; :fog #{;; Fog hexes between and around islands (12 total)
-    ;;        ;; Left fog
-    ;;        [-3 0]
-    ;;        ;; Center-left fog
-    ;;        [-2 -1] [-2 2]
-    ;;        ;; Center fog strip
-    ;;        [-1 -2] [-1 2]
-    ;;        [0 -3] [0 2]
-    ;;        [1 -3] [1 1]
-    ;;        ;; Right fog
-    ;;        [2 -3] [2 -2] [2 0]}
+    ;; Fog hexes between and around islands (12 total)
+    :fog #{;; cluster on the left
+           [-2 3] [-3 3] [-3 2]
 
-    :fog #{[-2 3] [-3 3] [-3 2] [-2 2] [-1 1] [0 0] [1 -1] [2 -2] [3 -3] [3 -4] [2 -3] [2 -4]}
+           ;; water through the middle
+           [-2 2] [-1 1] [0 0] [1 -1] [2 -2]
+
+           ;; cluster on the right
+           [3 -3] [3 -4] [2 -3] [2 -4]}
 
     :terrain #{;; Face-up terrain hexes on two islands (14 total)
                ;; Northwest island cluster (7 hexes) - left side
@@ -87,7 +67,6 @@
                     :ore    2
                     :desert 1}
     ;; Number tokens for non-desert hexes (14 terrain, 1 desert, so 13 tokens)
-    ;; :number-tokens [6 11 5 8 12 9 10 6 5 11 8 4 9]
     :number-tokens {2  0
                     3  1
                     4  1
@@ -130,36 +109,36 @@
    ;; Positioned around the perimeter of the two island clusters
    :harbors
    [;; Northwest island harbors
-    {:land-hex  [0 -3]
-     :direction hex/DIRECTION_NW
+
+    {:land-hex  [-3 0]
+     :direction hex/DIRECTION_N
      :type      :generic}
 
     {:land-hex  [-1 -2]
      :direction hex/DIRECTION_NW
-     :type      :wheat}
+     :type      :wood}
 
-    {:land-hex  [-3 0]
-     :direction hex/DIRECTION_N
+    {:land-hex  [0 -3]
+     :direction hex/DIRECTION_NW
      :type      :ore}
 
     {:land-hex  [-2 0]
      :direction hex/DIRECTION_SW
-     :type      :generic}
+     :type      :brick}
 
     ;; Southeast island harbors
     {:land-hex  [0 2]
      :direction hex/DIRECTION_S
-     :type      :brick}
+     :type      :generic}
 
     {:land-hex  [1 2]
      :direction hex/DIRECTION_SE
-     :type
-     :sheep}
+     :type      :wheat}
 
     {:land-hex  [3 0]
      :direction hex/DIRECTION_S
-     :type      :generic}
+     :type      :sheep}
 
     {:land-hex  [3 -1]
      :direction hex/DIRECTION_SE
-     :type      :wood}]})
+     :type      :generic}]})
