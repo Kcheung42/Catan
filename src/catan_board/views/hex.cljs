@@ -427,33 +427,32 @@
    developer-mode?: boolean indicating if developer mode is active
    fog-state: map of [q r] -> {:revealed? boolean :terrain keyword :number int}"
   [hexes harbors swap-number-mode? selected-token-coord developer-mode? fog-state current-scenario]
-  (let [hex-size    db/hex-size
+  (let [hex-size        db/hex-size
         ;; Calculate SVG viewBox to center the board
         ;; The grid spans from -2 to 2 in both q and r
         ;; Calculate pixel bounds
-        all-coords  (map :coord hexes)
-        all-pixels  (map #(hex-utils/axial-to-pixel % hex-size) all-coords)
+        all-coords      (map :coord hexes)
+        all-pixels      (map #(hex-utils/axial-to-pixel % hex-size) all-coords)
         landscape-mode? @(rf/subscribe [:landscape-mode?])
-        padding     (* hex-size 2)
+        padding         (* hex-size 2)
         [center-x
-         center-y]  (compute-original-center current-scenario all-pixels padding)
-        min-x       (apply min (map (if landscape-mode? second first) all-pixels))
-        max-x       (apply max (map (if landscape-mode? second first) all-pixels))
-        min-y       (apply min (map (if landscape-mode? first second) all-pixels))
-        max-y       (apply max (map (if landscape-mode? first second) all-pixels))
+         center-y]      (compute-original-center current-scenario all-pixels padding)
+        min-x           (apply min (map (if landscape-mode? second first) all-pixels))
+        max-x           (apply max (map (if landscape-mode? second first) all-pixels))
+        min-y           (apply min (map (if landscape-mode? first second) all-pixels))
+        max-y           (apply max (map (if landscape-mode? first second) all-pixels))
         ;; Add padding
-        view-x      (- min-x padding)
-        view-y      (- min-y padding)
-        view-width  (+ (- max-x min-x) (* padding 2))
-        view-height (+ (- max-y min-y) (* padding 2))
-
-        ]
+        view-x          (- min-x padding)
+        view-y          (- min-y padding)
+        view-width      (+ (- max-x min-x) (* padding 2))
+        view-height     (+ (- max-y min-y) (* padding 2))]
     [:svg
      {:viewBox  (str view-x " " view-y " " view-width " " view-height)
       :width    "100%"
       :height   "100%"
-      :style    {:max-width  "1200px"
-                 :max-height "800px"}
+      :style    {:max-width        "1200px"
+                 :max-height       "800px"
+                 :background-color "#1e88e5"}
       :on-click (when swap-number-mode?
                   (fn [e]
                     (rf/dispatch [:clear-token-selection])))}
