@@ -43,11 +43,11 @@
    [:pattern {:id "sheep-pattern" :width 20 :height 20 :patternUnits "userSpaceOnUse"}
     [:rect {:width 20 :height 20 :fill "#9bcd6f"}]
     ;; Sheep 1 (simplified side view)
-    [:ellipse {:cx 5 :cy 7 :rx 2.5 :ry 2 :fill "#ffffff"}]  ; body
-    [:circle {:cx 3.5 :cy 6.5 :r 1.2 :fill "#ffffff"}]      ; head
-    [:circle {:cx 3 :cy 6.2 :r 0.3 :fill "#333"}]           ; eye
-    [:rect {:x 4.5 :y 8.5 :width 0.4 :height 1.2 :fill "#333"}]  ; leg front
-    [:rect {:x 6 :y 8.5 :width 0.4 :height 1.2 :fill "#333"}]    ; leg back
+    [:ellipse {:cx 5 :cy 7 :rx 2.5 :ry 2 :fill "#ffffff"}] ; body
+    [:circle {:cx 3.5 :cy 6.5 :r 1.2 :fill "#ffffff"}] ; head
+    [:circle {:cx 3 :cy 6.2 :r 0.3 :fill "#333"}] ; eye
+    [:rect {:x 4.5 :y 8.5 :width 0.4 :height 1.2 :fill "#333"}] ; leg front
+    [:rect {:x 6 :y 8.5 :width 0.4 :height 1.2 :fill "#333"}] ; leg back
     ;; Sheep 2
     [:ellipse {:cx 15 :cy 5 :rx 2.5 :ry 2 :fill "#ffffff"}]
     [:circle {:cx 13.5 :cy 4.5 :r 1.2 :fill "#ffffff"}]
@@ -88,13 +88,29 @@
    [:pattern {:id "water-pattern" :width 20 :height 20 :patternUnits "userSpaceOnUse"}
     [:rect {:width 20 :height 20 :fill "#4A90E2"}]]
 
-   ;; Gold pattern - golden yellow (for Seafarers scenarios)
+   ;; Gold pattern - gold bars stacked (for Seafarers scenarios)
    [:pattern {:id "gold-pattern" :width 20 :height 20 :patternUnits "userSpaceOnUse"}
-    [:rect {:width 20 :height 20 :fill "#FFD700"}]
-    ;; Gold sparkles
-    [:circle {:cx 5 :cy 5 :r 1 :fill "#FFF8DC"}]
-    [:circle {:cx 15 :cy 10 :r 1 :fill "#FFF8DC"}]
-    [:circle {:cx 10 :cy 15 :r 1 :fill "#FFF8DC"}]]])
+    [:rect {:width 20 :height 20 :fill "#DAA520"}]
+    ;; Gold bar 1 - top left
+    [:rect {:x 1 :y 2 :width 8 :height 3 :fill "#FFD700" :stroke "#B8860B" :stroke-width 0.5}]
+    [:line {:x1 1 :y1 2 :x2 9 :y2 2 :stroke "#FFF8DC" :stroke-width 0.3}] ; highlight
+    [:line {:x1 1 :y1 5 :x2 9 :y2 5 :stroke "#8B7500" :stroke-width 0.3}] ; shadow
+    ;; Gold bar 2 - top right
+    [:rect {:x 11 :y 1 :width 8 :height 3 :fill "#FFD700" :stroke "#B8860B" :stroke-width 0.5}]
+    [:line {:x1 11 :y1 1 :x2 19 :y2 1 :stroke "#FFF8DC" :stroke-width 0.3}]
+    [:line {:x1 11 :y1 4 :x2 19 :y2 4 :stroke "#8B7500" :stroke-width 0.3}]
+    ;; Gold bar 3 - middle
+    [:rect {:x 5 :y 7 :width 8 :height 3 :fill "#FFD700" :stroke "#B8860B" :stroke-width 0.5}]
+    [:line {:x1 5 :y1 7 :x2 13 :y2 7 :stroke "#FFF8DC" :stroke-width 0.3}]
+    [:line {:x1 5 :y1 10 :x2 13 :y2 10 :stroke "#8B7500" :stroke-width 0.3}]
+    ;; Gold bar 4 - bottom left
+    [:rect {:x 2 :y 13 :width 8 :height 3 :fill "#FFD700" :stroke "#B8860B" :stroke-width 0.5}]
+    [:line {:x1 2 :y1 13 :x2 10 :y2 13 :stroke "#FFF8DC" :stroke-width 0.3}]
+    [:line {:x1 2 :y1 16 :x2 10 :y2 16 :stroke "#8B7500" :stroke-width 0.3}]
+    ;; Gold bar 5 - bottom right  
+    [:rect {:x 12 :y 14 :width 8 :height 3 :fill "#FFD700" :stroke "#B8860B" :stroke-width 0.5}]
+    [:line {:x1 12 :y1 14 :x2 20 :y2 14 :stroke "#FFF8DC" :stroke-width 0.3}]
+    [:line {:x1 12 :y1 17 :x2 20 :y2 17 :stroke "#8B7500" :stroke-width 0.3}]]])
 
 (defn hex-tile
   "Renders a single hexagonal tile as an SVG polygon.
@@ -120,11 +136,11 @@
         ;; If fog and not revealed, show fog hex
         ;; Otherwise, use the hex's own resource/number
         display-resource (if is-revealed?
-                          (:terrain fog-info)
-                          resource)
+                           (:terrain fog-info)
+                           resource)
         display-number (if is-revealed?
-                        (:number fog-info)
-                        number)
+                         (:number fog-info)
+                         number)
 
         ;; Get fill - use pattern if available, otherwise solid color
         fill (if (and is-fog? (not is-revealed?))
@@ -371,11 +387,11 @@
          :transform (str "rotate(" readable-rotation " " text-x " " text-y ")")}
         resource-icon]
        [:text
-        {:x                 text-x
-         :y                 (+ text-y 12)
-         :text-anchor       "middle"
+        {:x text-x
+         :y (+ text-y 12)
+         :text-anchor "middle"
          :dominant-baseline "middle"
-         :font-size         14
+         :font-size 14
          :transform (str "rotate(" readable-rotation " " text-x " " text-y ")")}
         "?"])]))
 
