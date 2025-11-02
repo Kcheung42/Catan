@@ -7,16 +7,16 @@
 ;; Base game configuration (uses existing board generator)
 (def base-game-scenario
   "Standard Catan 4-player base game configuration."
-  {:id :base-game
-   :name "Base Game (4-player)"
+  {:id           :base-game
+   :name         "Base Game (4-player)"
    :player-count 4
    :grid-pattern "3-4-5-4-3"
-   :type :base-game})
+   :type         :base-game})
 
 ;; Central scenario registry
 (def scenarios
   "Map of scenario IDs to their configuration data."
-  {:base-game base-game-scenario
+  {:base-game      base-game-scenario
    :fog-islands-3p fog-islands-3p/fog-islands-3p-scenario})
 
 ;; -- Public API --------------------------------------------------------------
@@ -42,7 +42,7 @@
       {:id :fog-islands-3p :name 'Fog Islands (3-player)' :player-count 3}]"
   []
   (mapv (fn [[id config]]
-          {:id id
-           :name (:name config)
+          {:id           id
+           :name         (:name config)
            :player-count (:player-count config)})
         scenarios))
