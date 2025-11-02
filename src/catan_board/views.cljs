@@ -10,11 +10,11 @@
    Dispatches :set-scenario when selection changes."
   []
   (let [available-scenarios @(rf/subscribe [:available-scenarios])
-        current-scenario @(rf/subscribe [:current-scenario])]
+        current-scenario    @(rf/subscribe [:current-scenario])]
     [:div.control-section
      [:h3 "Scenario"]
      [:select.scenario-dropdown
-      {:value (name current-scenario)
+      {:value     (name current-scenario)
        :on-change (fn [e]
                     (let [scenario-id (keyword (.. e -target -value))]
                       (rf/dispatch [:set-scenario scenario-id])))}
@@ -27,19 +27,19 @@
                                               available-scenarios))))]]))
 
 (defn main-panel []
-  (let [loading? @(rf/subscribe [:loading?])
-        board-scale @(rf/subscribe [:board-scale])
-        tournament-mode? @(rf/subscribe [:tournament-mode?])
-        swap-number-mode? @(rf/subscribe [:swap-number-mode?])
-        developer-mode? @(rf/subscribe [:developer-mode?])
-        landscape-mode? @(rf/subscribe [:landscape-mode?])
-        sidebar-open? @(rf/subscribe [:show-info-panel?])
-        hexes @(rf/subscribe [:hexes])
-        harbors @(rf/subscribe [:harbors])
+  (let [loading?             @(rf/subscribe [:loading?])
+        board-scale          @(rf/subscribe [:board-scale])
+        tournament-mode?     @(rf/subscribe [:tournament-mode?])
+        swap-number-mode?    @(rf/subscribe [:swap-number-mode?])
+        developer-mode?      @(rf/subscribe [:developer-mode?])
+        landscape-mode?      @(rf/subscribe [:landscape-mode?])
+        sidebar-open?        @(rf/subscribe [:show-info-panel?])
+        hexes                @(rf/subscribe [:hexes])
+        harbors              @(rf/subscribe [:harbors])
         selected-token-coord @(rf/subscribe [:selected-token-coord])
-        fog-state @(rf/subscribe [:fog-state])
-        current-scenario @(rf/subscribe [:current-scenario])
-        scenario-config (registry/get-scenario current-scenario)]
+        fog-state            @(rf/subscribe [:fog-state])
+        current-scenario     @(rf/subscribe [:current-scenario])
+        scenario-config      (registry/get-scenario current-scenario)]
     [:div.app-container
      ;; Sidebar
      [:div.sidebar {:class (when sidebar-open? "open")}
@@ -59,27 +59,26 @@
         [:button.btn-primary
          {:on-click #(rf/dispatch [:generate-board])}
          (if loading? "Generating..." "Generate New Board")]
-
         [:div.toggle-container
          [:label.toggle-label
-          [:input {:type "checkbox"
-                   :checked tournament-mode?
+          [:input {:type      "checkbox"
+                   :checked   tournament-mode?
                    :on-change #(rf/dispatch [:toggle-tournament-mode])}]
           [:span.toggle-text "Tournament Mode"]]
          [:p.help-text "Prevents adjacent red numbers (6 & 8)"]]
 
         [:div.toggle-container
          [:label.toggle-label
-          [:input {:type "checkbox"
-                   :checked swap-number-mode?
+          [:input {:type      "checkbox"
+                   :checked   swap-number-mode?
                    :on-change #(rf/dispatch [:toggle-swap-number-mode])}]
           [:span.toggle-text "Swap Number Mode"]]
          [:p.help-text "Click tokens to swap their numbers"]]
 
         [:div.toggle-container
          [:label.toggle-label
-          [:input {:type "checkbox"
-                   :checked developer-mode?
+          [:input {:type      "checkbox"
+                   :checked   developer-mode?
                    :on-change #(rf/dispatch [:toggle-developer-mode])}]
           [:span.toggle-text "Developer Mode"]]
          [:p.help-text "Show hex coordinates for debugging"]]
@@ -109,12 +108,12 @@
      ;; Toggle button (when sidebar is closed)
      [:button.sidebar-toggle
       {:on-click #(rf/dispatch [:toggle-info-panel])
-       :class (when sidebar-open? "hidden")}
+       :class    (when sidebar-open? "hidden")}
       "☰"]
 
      ;; Board container
      [:div.board-container
-      [:div {:style {:transform (str "scale(" (/ board-scale 100) ")")
+      [:div {:style {:transform        (str "scale(" (/ board-scale 100) ")")
                      :transform-origin "center center"}}
        (if (seq hexes)
          [hex-view/hex-grid hexes harbors swap-number-mode? selected-token-coord developer-mode? fog-state scenario-config]
