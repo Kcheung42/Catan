@@ -19,23 +19,17 @@
  :generate-board
  (fn [db _]
    (let [current-scenario (:scenario db)
-         tournament-mode? (get-in db [:ui :tournament-mode] false)]
-     (if (= :base-game current-scenario)
-       ;; Use existing board generator for base game
-       (let [new-board (board-gen/generate-board tournament-mode?)]
-         (-> db
-             (assoc :board new-board)
-             (assoc-in [:ui :selected-token-coord] nil)))
-       ;; Use scenario generator for other scenarios
-       (let [scenario-config (registry/get-scenario current-scenario)
-             new-board (scenario-gen/generate-scenario-board scenario-config)
-             fog-state (scenario-gen/initialize-fog-state scenario-config)
-             fog-number-deck (scenario-gen/initialize-fog-number-deck scenario-config)]
-         (-> db
-             (assoc :board new-board)
-             (assoc :fog-state fog-state)
-             (assoc :fog-number-deck fog-number-deck)
-             (assoc-in [:ui :selected-token-coord] nil)))))))
+         tournament-mode? (get-in db [:ui :tournament-mode] false)
+         scenario-config (registry/get-scenario current-scenario)
+         new-board       (board-gen/generate-board scenario-config tournament-mode?)
+         fog-state       (scenario-gen/initialize-fog-state scenario-config)
+         fog-number-deck (scenario-gen/initialize-fog-number-deck scenario-config)]
+
+     (-> db
+         (assoc :board new-board)
+         (assoc :fog-state fog-state)
+         (assoc :fog-number-deck fog-number-deck)
+         (assoc-in [:ui :selected-token-coord] nil)))))
 
 (rf/reg-event-db
  :generate-board-success
@@ -58,25 +52,17 @@
  (fn [db [_ scenario-id]]
    (let [scenario-config (registry/get-scenario scenario-id)]
      (if scenario-config
-       (if (= :base-game scenario-id)
-         ;; Base game: use existing generator
-         (let [tournament-mode? (get-in db [:ui :tournament-mode] false)
-               new-board (board-gen/generate-board tournament-mode?)]
-           (-> db
-               (assoc :scenario scenario-id)
-               (assoc :board new-board)
-               (assoc :fog-state {})
-               (assoc-in [:ui :selected-token-coord] nil)))
-         ;; Scenario: use scenario generator
-         (let [new-board (scenario-gen/generate-scenario-board scenario-config)
-               fog-state (scenario-gen/initialize-fog-state scenario-config)
-               fog-number-deck (scenario-gen/initialize-fog-number-deck scenario-config)]
-           (-> db
-               (assoc :scenario scenario-id)
-               (assoc :board new-board)
-               (assoc :fog-state fog-state)
-               (assoc :fog-number-deck fog-number-deck)
-               (assoc-in [:ui :selected-token-coord] nil))))
+       ;; Scenario: use scenario generator
+       (let [tournament-mode? (get-in db [:ui :tournament-mode] false)
+             new-board        (board-gen/generate-board scenario-config tournament-mode?)
+             fog-state        (scenario-gen/initialize-fog-state scenario-config)
+             fog-number-deck  (scenario-gen/initialize-fog-number-deck scenario-config)]
+         (-> db
+             (assoc :scenario scenario-id)
+             (assoc :board new-board)
+             (assoc :fog-state fog-state)
+             (assoc :fog-number-deck fog-number-deck)
+             (assoc-in [:ui :selected-token-coord] nil)))
        ;; Invalid scenario ID, return db unchanged
        db))))
 

@@ -84,7 +84,7 @@
         classified-coords (group-by #(classify-hex-by-type % scenario-config) all-coords)
         water-coords      (get classified-coords :water [])
         fog-coords        (get classified-coords :fog [])
-        terrain-coords    (get classified-coords :terrain [])
+        terrain-coords    (get classified-coords :terrain all-coords)
 
         ;; Step 3: Prepare shuffled resource and number decks
         resource-deck (shuffle-resources (:resources face-up-distribution))
@@ -139,11 +139,7 @@
   (let [fog-coords    (:fog hex-types #{})
         resource-deck (shuffle (mapcat (fn [[resource count]]
                                             (repeat count resource))
-                                          (:resources fog-distribution)))
-        ;; Handle both vector and map formats for number-tokens
-        number-tokens (:number-tokens fog-distribution)
-        number-deck   (into (shuffle-numbers number-tokens) (repeat 100 -1))
-        ]
+                                          (:resources fog-distribution)))]
     (into {}
           (map (fn [coord terrain]
                  [coord {:revealed? false

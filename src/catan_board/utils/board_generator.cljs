@@ -1,9 +1,8 @@
 (ns catan-board.utils.board-generator
   (:require
-   [catan-board.utils.hex :as hex]
    [catan-board.utils.resources :as resources]
    [catan-board.utils.numbers :as numbers]
-   [catan-board.utils.harbors :as harbors]))
+   [catan-board.utils.scenario-generator :as scenario-generator]))
 
 ;; -- Board Validation --------------------------------------------------------
 
@@ -57,31 +56,21 @@
 (defn generate-board
   "Generates a complete Catan board with random resource and number placement.
    If tournament-mode? is true, ensures no adjacent red numbers (6 & 8)"
-  [tournament-mode?]
-  (let [coords               (hex/generate-catan-grid)
-        hexes-with-resources (assign-resources coords)
-        harbors              (harbors/assign-harbors)]
-    (loop [attempts     0
-           max-attempts 100]
-      (if (>= attempts max-attempts)
-        ;; Fallback after max attempts - just return whatever we have
-        (let [hexes (assign-numbers hexes-with-resources)]
-          {:hexes    hexes
-           :harbors  harbors
-           :metadata {:generated-at    (.toISOString (js/Date.))
-                      :board-id        (str (random-uuid))
-                      :tournament-mode tournament-mode?
-                      :attempts        attempts}})
-        ;; Try generating board
-        (let [hexes (assign-numbers hexes-with-resources)]
-          (if (or (not tournament-mode?)
-                  (not (has-adjacent-red-numbers? hexes)))
-            ;; Valid board - return it
-            {:hexes    hexes
-             :harbors  harbors
-             :metadata {:generated-at    (.toISOString (js/Date.))
-                        :board-id        (str (random-uuid))
-                        :tournament-mode tournament-mode?
-                        :attempts        (inc attempts)}}
-            ;; Invalid - try again
-            (recur (inc attempts) max-attempts)))))))
+  [scenario-config tournament-mode?]
+  (loop [attempts     0
+         max-attempts 100]
+    (if (>= attempts max-attempts)
+      ;; Fallback after max attempts - just return whatever we have
+      (scenario-generator/generate-scenario-board scenario-config)
+      ;; Try generating board
+      (let [new-board (scenario-generator/generate-scenario-board scenario-config)
+            hexes     (:hexes new-board)]
+        (if (or (not tournament-mode?)
+                (not (has-adjacent-red-numbers? hexes)))
+          ;; Valid board - return it
+          (update new-board
+                  :meta-data
+                  #(merge % {:tournament-mode tournament-mode?
+                             :attempts        (inc attempts)}))
+          ;; Invalid - try again
+          (recur (inc attempts) max-attempts))))))

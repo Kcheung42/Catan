@@ -5,7 +5,8 @@
    [catan-board.utils.resources :as resources]
    [catan-board.utils.numbers :as numbers]
    [catan-board.utils.harbors :as harbors]
-   [catan-board.db :as db]))
+   [catan-board.db :as db]
+   [clojure.string :as str]))
 
 (defn resource-pattern
   "Creates SVG pattern definitions for resource textures"
@@ -144,7 +145,7 @@
 
         ;; Get fill - use pattern if available, otherwise solid color
         fill (if (and is-fog? (not is-revealed?))
-               "#f5f5f5" ; Light gray for unrevealed fog
+               "#d4d4d4" ; Light gray for unrevealed fog
                (if display-resource
                  (str "url(#" (name display-resource) "-pattern)")
                  (resources/get-resource-color display-resource)))
@@ -156,8 +157,10 @@
         is-fog-clickable? (and is-fog? (not is-revealed?) (not swap-number-mode?))
 
         landscape-mode? @(rf/subscribe [:landscape-mode?])]
+
     [:g {:key (str "hex-" (first coord) "-" (second coord))}
      ;; Hex polygon with pattern
+
      [:polygon
       {:points       points
        :fill         fill
@@ -178,7 +181,7 @@
          :text-anchor       "middle"
          :dominant-baseline "middle"
          :font-size         32
-         :fill              "#666"
+         :fill              "#ffffff"
          :font-weight       "bold"
          :font-family       "Arial, sans-serif"
          :pointer-events    "none"}
@@ -299,7 +302,7 @@
         perpendicular-angle (+ edge-angle (/ Math/PI 2))
 
         ;; Distance to push hexagon outward
-        offset (* -1 (* hex-size 0.8))
+        offset (* -1 (* hex-size 0.7))
 
         ;; Create irregular hexagon points
         ;; Base edge stays same (x1,y1 to x2,y2)
@@ -362,30 +365,33 @@
       {:points          points
        :fill            color
        :stroke          "#ffffff"
-       :stroke-width    5
+       :stroke-width    6
        :stroke-linejoin "round"
        :opacity         0.95}]
 
      ;; Trade ratio text
-     [:text
-      {:x                 text-x
-       :y                 (if resource-icon (- text-y 8) text-y)
-       :text-anchor       "middle"
-       :dominant-baseline "middle"
-       :fill              "#000000"
-       :font-size         10
-       :font-weight       "bold"
-       :font-family       "Arial, sans-serif"
-       :transform         (str "rotate(" readable-rotation " " text-x " " text-y ")")}
-      (str ratio ":1")]
+     (when (= type :generic)
+       [:text
+        {:x                 text-x
+         :y                 (if resource-icon (- text-y 8) text-y)
+         :text-anchor       "middle"
+         :dominant-baseline "middle"
+         :fill              "#000000"
+         :font-size         10
+         :font-weight       "bold"
+         :font-family       "Arial, sans-serif"
+         :transform         (str "rotate(" readable-rotation " " text-x " " text-y ")")}
+        (str ratio ":1")])
 
      ;; Resource icon for specific harbors
      [:text
       {:x                 text-x
-       :y                 (+ text-y 12)
+       :y                 (if (= type :generic)
+                            (+ text-y 10)
+                            (+ text-y 3))
        :text-anchor       "middle"
        :dominant-baseline "middle"
-       :font-size         14
+       :font-size         21
        :transform         (str "rotate(" readable-rotation " " text-x " " text-y ")")}
       resource-icon]]))
 
@@ -437,7 +443,9 @@
         view-x      (- min-x padding)
         view-y      (- min-y padding)
         view-width  (+ (- max-x min-x) (* padding 2))
-        view-height (+ (- max-y min-y) (* padding 2))]
+        view-height (+ (- max-y min-y) (* padding 2))
+
+        ]
     [:svg
      {:viewBox  (str view-x " " view-y " " view-width " " view-height)
       :width    "100%"
@@ -449,13 +457,28 @@
                     (rf/dispatch [:clear-token-selection])))}
      ;; Pattern definitions
      [resource-pattern]
+
      ;; Hexes
      [:g (when landscape-mode? {:transform (str "rotate (90 " center-x " " center-y " )")})
-      (for [hex-data hexes]
-        ^{:key (str "hex-" (-> hex-data :coord first) "-" (-> hex-data :coord second))}
-        [hex-tile hex-data swap-number-mode? selected-token-coord developer-mode? fog-state])]
-     ;; Harbors
-     [:g (when landscape-mode? {:transform (str "rotate (90 " center-x " " center-y " )")})
-      (for [harbor-data harbors]
-        ^{:key (str "harbor-" (-> harbor-data :land-hex first) "-" (-> harbor-data :land-hex second) "-" (:direction harbor-data))}
-        [harbor-trapezoid harbor-data])]]))
+      [:g
+       (for [hex-data hexes]
+         ^{:key (str "hex-" (-> hex-data :coord first) "-" (-> hex-data :coord second))}
+         [hex-tile hex-data swap-number-mode? selected-token-coord developer-mode? fog-state ])]
+
+      ;; Harbors
+      [:g
+       (for [harbor-data harbors]
+         ^{:key (str "harbor-" (-> harbor-data :land-hex first) "-" (-> harbor-data :land-hex second) "-" (:direction harbor-data))}
+         [harbor-trapezoid harbor-data])]
+
+      ;; White Dot at Vertices
+      [:g
+       (for [{:keys [coord]} hexes]
+         ^{:key (str "hex-dots-" (-> hex-data :coord first) "-" (-> hex-data :coord second))}
+         (let [hex-size db/hex-size
+               vertices (hex-utils/hex-vertices coord hex-size)]
+           (for [[x y] vertices]
+             [:circle {:cx   x
+                       :cy   y
+                       :r    10
+                       :fill "white"}])))]]]))

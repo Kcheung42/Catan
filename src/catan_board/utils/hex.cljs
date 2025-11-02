@@ -95,6 +95,7 @@
 
 ;; -- Catan Board Generation --------------------------------------------------
 
+;; deprecated, use generate-grid-from-pattern
 (defn generate-catan-grid
   "Generates the standard Catan board layout with 19 hexes in a 3-4-5-4-3 pattern.
    Returns a vector of axial coordinates."
@@ -122,7 +123,7 @@
         max-size (apply max col-sizes)
         max-radius (quot max-size 2)
         middle-col-index (quot num-cols 2)
-
+        middle-col-value (get col-sizes middle-col-index)
         coords (for [[col-index col-size] (map-indexed vector col-sizes)
                      :let [q (- col-index middle-col-index)
                            ;; Use cube coordinates: q + r + s = 0, so r = -q - s
@@ -130,12 +131,15 @@
                            ;; For right side (q >= 0): keep bottom edge at r=-4, extend up as needed
                            ;; This creates the characteristic hexagon shape
                            s-min (if (< q 0)
-                                  (+ 1 (- max-radius) max-size (- col-size))
-                                  (- 1 max-radius))
+                                   (+ 1 (- max-radius) max-size (- col-size))
+                                   (- 1 max-radius))
                            s-max (if (< q 0)
                                   max-radius
                                   (+ max-radius (- max-size) col-size))]
-                     s (range s-min (inc s-max))
+                     s (range (if (odd? middle-col-value)
+                                (dec s-min)
+                                s-min)
+                              (inc s-max))
                      :let [r (- (- q) s)]]
                  [q r])]
     (vec coords)))

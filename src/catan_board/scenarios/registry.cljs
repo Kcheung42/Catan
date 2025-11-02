@@ -3,21 +3,15 @@
    Provides lookup and listing functions for available scenarios."
   (:require
    [catan-board.scenarios.fog-islands-3p :as fog-islands-3p]
-   [catan-board.scenarios.fog-islands-4p :as fog-islands-4p]))
-
-;; Base game configuration (uses existing board generator)
-(def base-game-scenario
-  "Standard Catan 4-player base game configuration."
-  {:id           :base-game
-   :name         "Base Game (4-player)"
-   :player-count 4
-   :grid-pattern "3-4-5-4-3"
-   :type         :base-game})
+   [catan-board.scenarios.fog-islands-4p :as fog-islands-4p]
+   [catan-board.scenarios.base-game-6p :as base-game-6p]
+   [catan-board.scenarios.base-game-4p :as base-game-4p]))
 
 ;; Central scenario registry
 (def scenarios
   "Map of scenario IDs to their configuration data."
-  {:base-game       base-game-scenario
+  {:base-game       base-game-4p/base-game-4p
+   :base-game-6p    base-game-6p/base-game-6p
    :fog-islands-3p  fog-islands-3p/fog-islands-3p-scenario
    :fog--islands-4p fog-islands-4p/fog-islands-4p-scenario})
 

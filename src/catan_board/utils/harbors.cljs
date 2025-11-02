@@ -82,4 +82,6 @@
 (defn get-harbor-color
   "Returns the color for a harbor - all harbors are ocean blue"
   [harbor-type]
-  "#1e88e5")  ; Ocean blue - matches the sea background
+  ;; "#1e88e5"
+  "#1e88e5"
+  )  ; Ocean blue - matches the sea background
