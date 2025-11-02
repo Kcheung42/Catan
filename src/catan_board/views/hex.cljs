@@ -345,14 +345,14 @@
         readable-rotation (+ rotation-deg 180)
 
         ;; Resource icon for specific harbors
-        resource-icon (when (not= type :generic)
-                        (case type
-                          :wood "🌲"
-                          :brick "🧱"
-                          :wheat "🌾"
-                          :sheep "🐑"
-                          :ore "🪨"
-                          ""))]
+        resource-icon (case type
+                        :wood  "🪵"
+                        :brick "🧱"
+                        :wheat "🌾"
+                        :sheep "🐑"
+                        :ore   "🪨"
+                        :generic "?"
+                        "")]
     [:g {:key (str "harbor-" (first land-hex) "-" (second land-hex) "-" direction)}
      ;; Hexagonal harbor tile with rounded corners
      [:polygon
@@ -377,23 +377,14 @@
       (str ratio ":1")]
 
      ;; Resource icon for specific harbors
-     (if resource-icon
-       [:text
-        {:x text-x
-         :y (+ text-y 12)
-         :text-anchor "middle"
-         :dominant-baseline "middle"
-         :font-size 14
-         :transform (str "rotate(" readable-rotation " " text-x " " text-y ")")}
-        resource-icon]
-       [:text
-        {:x text-x
-         :y (+ text-y 12)
-         :text-anchor "middle"
-         :dominant-baseline "middle"
-         :font-size 14
-         :transform (str "rotate(" readable-rotation " " text-x " " text-y ")")}
-        "🪵"])]))
+     [:text
+      {:x                 text-x
+       :y                 (+ text-y 12)
+       :text-anchor       "middle"
+       :dominant-baseline "middle"
+       :font-size         14
+       :transform         (str "rotate(" readable-rotation " " text-x " " text-y ")")}
+      resource-icon]]))
 
 (defn hex-grid
   "Renders the complete hex grid.
