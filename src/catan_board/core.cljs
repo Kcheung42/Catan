@@ -2,6 +2,8 @@
   (:require
    [reagent.dom :as rdom]
    [re-frame.core :as rf]
+   [catan-board.events :as events]
+   [catan-board.subs :as subs]
    [catan-board.views :as views]))
 
 (defn mount-root []
