@@ -28,8 +28,8 @@
                        {:scenario :fog-islands-3p
                         :fog-state {[1 0] {:revealed? false :terrain nil :number nil}}
                         :board {:hexes [{:coord [1 0] :resource :fog :number nil}]
-                               :harbors []}
-                        :ui {:edit-mode false}}])
+                                :harbors []}
+                        :ui {:swap-number-mode false}}])
 
     ;; Trigger fog reveal
     (rf/dispatch-sync [:reveal-fog-tile [1 0]])
@@ -54,8 +54,8 @@
                        {:scenario :fog-islands-3p
                         :fog-state {[1 0] {:revealed? true :terrain :wood :number 6}}
                         :board {:hexes [{:coord [1 0] :resource :fog :number nil}]
-                               :harbors []}
-                        :ui {:edit-mode false}}])
+                                :harbors []}
+                        :ui {:swap-number-mode false}}])
 
     (let [initial-fog-state @(rf/subscribe [:fog-state])]
       ;; Try to reveal again
@@ -73,9 +73,9 @@
                        {:scenario :fog-islands-3p
                         :fog-state {[1 0] {:revealed? false :terrain nil :number nil}}
                         :board {:hexes [{:coord [0 0] :resource :wood :number 6}
-                                       {:coord [2 0] :resource :water :number nil}]
-                               :harbors []}
-                        :ui {:edit-mode false}}])
+                                        {:coord [2 0] :resource :water :number nil}]
+                                :harbors []}
+                        :ui {:swap-number-mode false}}])
 
     (let [initial-fog-state @(rf/subscribe [:fog-state])]
       ;; Try to reveal a terrain hex (doesn't exist in fog-state)

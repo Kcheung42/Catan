@@ -8,11 +8,11 @@
 ;; the UI components until those components are implemented
 
 (deftest token-click-handler-logic-test
-  (testing "Edit mode flag controls whether click handlers should be active"
-    (let [edit-mode? true]
-      (is (true? edit-mode?) "Edit mode should be true when enabled"))
-    (let [edit-mode? false]
-      (is (false? edit-mode?) "Edit mode should be false when disabled"))))
+  (testing "Swap number mode flag controls whether click handlers should be active"
+    (let [swap-number-mode? true]
+      (is (true? swap-number-mode?) "Swap number mode should be true when enabled"))
+    (let [swap-number-mode? false]
+      (is (false? swap-number-mode?) "Swap number mode should be false when disabled"))))
 
 (deftest token-click-dispatch-pattern-test
   (testing "Select-token event dispatches with correct coordinate"
@@ -42,11 +42,11 @@
         (is (= [[:clear-token-selection]] @dispatched-events)
             "Dispatch should send clear-token-selection event")))))
 
-(deftest edit-mode-conditional-logic-test
-  (testing "Edit mode flag determines whether interactions are enabled"
-    (let [edit-mode? false]
-      (is (false? edit-mode?)
-          "When edit mode is false, interactions should be disabled"))
-    (let [edit-mode? true]
-      (is (true? edit-mode?)
-          "When edit mode is true, interactions should be enabled"))))
+(deftest swap-number-mode-conditional-logic-test
+  (testing "Swap number mode flag determines whether interactions are enabled"
+    (let [swap-number-mode? false]
+      (is (false? swap-number-mode?)
+          "When swap number mode is false, interactions should be disabled"))
+    (let [swap-number-mode? true]
+      (is (true? swap-number-mode?)
+          "When swap number mode is true, interactions should be enabled"))))

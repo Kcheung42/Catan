@@ -115,11 +115,11 @@
 (defn hex-tile
   "Renders a single hexagonal tile as an SVG polygon.
    hex-data: {:coord [q r] :resource keyword :number int}
-   edit-mode?: boolean indicating if edit mode is active
+   swap-number-mode?: boolean indicating if swap number mode is active
    selected-token-coord: [q r] of selected token or nil
    developer-mode?: boolean indicating if developer mode is active
    fog-state: map of [q r] -> {:revealed? boolean :terrain keyword :number int}"
-  [hex-data edit-mode? selected-token-coord developer-mode? fog-state]
+  [hex-data swap-number-mode? selected-token-coord developer-mode? fog-state]
   (let [{:keys [coord resource number]} hex-data
         hex-size db/hex-size
         vertices (hex-utils/hex-vertices coord hex-size)
@@ -153,7 +153,7 @@
         is-selected? (= coord selected-token-coord)
 
         ;; Determine if hex should be clickable for fog reveal
-        is-fog-clickable? (and is-fog? (not is-revealed?) (not edit-mode?))]
+        is-fog-clickable? (and is-fog? (not is-revealed?) (not swap-number-mode?))]
     [:g {:key (str "hex-" (first coord) "-" (second coord))}
      ;; Hex polygon with pattern
      [:polygon
@@ -187,11 +187,11 @@
        (let [is-red? (numbers/is-red-number? display-number)
              pips (numbers/get-probability-pips display-number)]
          [:g
-          {:on-click (when edit-mode?
+          {:on-click (when swap-number-mode?
                        (fn [e]
                          (.stopPropagation e)
                          (rf/dispatch [:select-token coord])))
-           :style (when edit-mode?
+           :style (when swap-number-mode?
                     {:cursor "pointer"})}
           ;; Circle background
           [:circle
@@ -399,11 +399,11 @@
   "Renders the complete hex grid.
    hexes: vector of hex data maps
    harbors: vector of harbor data maps
-   edit-mode?: boolean indicating if edit mode is active
+   swap-number-mode?: boolean indicating if swap number mode is active
    selected-token-coord: [q r] of selected token or nil
    developer-mode?: boolean indicating if developer mode is active
    fog-state: map of [q r] -> {:revealed? boolean :terrain keyword :number int}"
-  [hexes harbors edit-mode? selected-token-coord developer-mode? fog-state]
+  [hexes harbors swap-number-mode? selected-token-coord developer-mode? fog-state]
   (let [hex-size db/hex-size
         ;; Calculate SVG viewBox to center the board
         ;; The grid spans from -2 to 2 in both q and r
@@ -426,7 +426,7 @@
       :height "100%"
       :style {:max-width "1200px"
               :max-height "800px"}
-      :on-click (when edit-mode?
+      :on-click (when swap-number-mode?
                   (fn [e]
                     (rf/dispatch [:clear-token-selection])))}
      ;; Pattern definitions
@@ -435,7 +435,7 @@
      [:g
       (for [hex-data hexes]
         ^{:key (str "hex-" (-> hex-data :coord first) "-" (-> hex-data :coord second))}
-        [hex-tile hex-data edit-mode? selected-token-coord developer-mode? fog-state])]
+        [hex-tile hex-data swap-number-mode? selected-token-coord developer-mode? fog-state])]
      ;; Harbors
      [:g
       (for [harbor-data harbors]

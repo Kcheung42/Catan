@@ -65,9 +65,9 @@
    (get-in db [:ui :tournament-mode] false)))
 
 (rf/reg-sub
- :edit-mode?
+ :swap-number-mode?
  (fn [db _]
-   (get-in db [:ui :edit-mode] false)))
+   (get-in db [:ui :swap-number-mode] false)))
 
 (rf/reg-sub
  :selected-token-coord

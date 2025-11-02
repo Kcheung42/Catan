@@ -9,22 +9,22 @@
 ;; Helper to set up test database
 (rf/reg-event-db :test/set-db (fn [_ [_ new-db]] new-db))
 
-(deftest toggle-edit-mode-test
-  (testing "Toggle edit mode on and off"
-    (rf/dispatch-sync [:test/set-db {:ui {:edit-mode false :selected-token-coord nil}}])
+(deftest toggle-swap-number-mode-test
+  (testing "Toggle swap number mode on and off"
+    (rf/dispatch-sync [:test/set-db {:ui {:swap-number-mode false :selected-token-coord nil}}])
 
-    (rf/dispatch-sync [:toggle-edit-mode])
-    (is (true? @(rf/subscribe [:edit-mode?])))
+    (rf/dispatch-sync [:toggle-swap-number-mode])
+    (is (true? @(rf/subscribe [:swap-number-mode?])))
 
-    (rf/dispatch-sync [:toggle-edit-mode])
-    (is (false? @(rf/subscribe [:edit-mode?])))))
+    (rf/dispatch-sync [:toggle-swap-number-mode])
+    (is (false? @(rf/subscribe [:swap-number-mode?])))))
 
-(deftest toggle-edit-mode-clears-selection-test
-  (testing "Toggling edit mode off clears selected token"
-    (rf/dispatch-sync [:test/set-db {:ui {:edit-mode true :selected-token-coord [0 0]}}])
+(deftest toggle-swap-number-mode-clears-selection-test
+  (testing "Toggling swap number mode off clears selected token"
+    (rf/dispatch-sync [:test/set-db {:ui {:swap-number-mode true :selected-token-coord [0 0]}}])
 
-    (rf/dispatch-sync [:toggle-edit-mode])
-    (is (false? @(rf/subscribe [:edit-mode?])))
+    (rf/dispatch-sync [:toggle-swap-number-mode])
+    (is (false? @(rf/subscribe [:swap-number-mode?])))
     (is (nil? @(rf/subscribe [:selected-token-coord])))))
 
 (deftest select-token-first-selection-test
@@ -65,16 +65,16 @@
     (rf/dispatch-sync [:generate-board])
     (is (nil? @(rf/subscribe [:selected-token-coord])))))
 
-(deftest edit-mode-subscription-test
-  (testing "Edit mode subscription returns correct value"
-    (rf/dispatch-sync [:test/set-db {:ui {:edit-mode true}}])
-    (is (true? @(rf/subscribe [:edit-mode?])))
+(deftest swap-number-mode-subscription-test
+  (testing "Swap number mode subscription returns correct value"
+    (rf/dispatch-sync [:test/set-db {:ui {:swap-number-mode true}}])
+    (is (true? @(rf/subscribe [:swap-number-mode?])))
 
-    (rf/dispatch-sync [:test/set-db {:ui {:edit-mode false}}])
-    (is (false? @(rf/subscribe [:edit-mode?])))
+    (rf/dispatch-sync [:test/set-db {:ui {:swap-number-mode false}}])
+    (is (false? @(rf/subscribe [:swap-number-mode?])))
 
     (rf/dispatch-sync [:test/set-db {:ui {}}])
-    (is (false? @(rf/subscribe [:edit-mode?])))))
+    (is (false? @(rf/subscribe [:swap-number-mode?])))))
 
 (deftest selected-token-coord-subscription-test
   (testing "Selected token coord subscription returns correct value"

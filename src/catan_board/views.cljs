@@ -22,14 +22,14 @@
         [:option {:value (name (:id scenario))}
          (:name scenario)])]
      [:p.help-text (str "Currently playing: "
-                       (:name (first (filter #(= (:id %) current-scenario)
-                                           available-scenarios))))]]))
+                        (:name (first (filter #(= (:id %) current-scenario)
+                                              available-scenarios))))]]))
 
 (defn main-panel []
   (let [loading? @(rf/subscribe [:loading?])
         board-scale @(rf/subscribe [:board-scale])
         tournament-mode? @(rf/subscribe [:tournament-mode?])
-        edit-mode? @(rf/subscribe [:edit-mode?])
+        swap-number-mode? @(rf/subscribe [:swap-number-mode?])
         developer-mode? @(rf/subscribe [:developer-mode?])
         sidebar-open? @(rf/subscribe [:show-info-panel?])
         hexes @(rf/subscribe [:hexes])
@@ -67,9 +67,9 @@
         [:div.toggle-container
          [:label.toggle-label
           [:input {:type "checkbox"
-                   :checked edit-mode?
-                   :on-change #(rf/dispatch [:toggle-edit-mode])}]
-          [:span.toggle-text "Edit Mode"]]
+                   :checked swap-number-mode?
+                   :on-change #(rf/dispatch [:toggle-swap-number-mode])}]
+          [:span.toggle-text "Swap Number Mode"]]
          [:p.help-text "Click tokens to swap their numbers"]]
 
         [:div.toggle-container
@@ -105,5 +105,5 @@
       [:div {:style {:transform (str "scale(" (/ board-scale 100) ")")
                      :transform-origin "center center"}}
        (if (seq hexes)
-         [hex-view/hex-grid hexes harbors edit-mode? selected-token-coord developer-mode? fog-state]
+         [hex-view/hex-grid hexes harbors swap-number-mode? selected-token-coord developer-mode? fog-state]
          [:p "Loading board... (" (count hexes) " hexes)"])]]]))

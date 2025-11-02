@@ -12,14 +12,14 @@
 (deftest complete-swap-workflow-test
   (testing "Complete swap workflow from start to finish"
     ;; Initialize with edit mode off and a board with two hexes
-    (rf/dispatch-sync [:test/set-db {:ui {:edit-mode false
-                                           :selected-token-coord nil}
+    (rf/dispatch-sync [:test/set-db {:ui {:swap-number-mode false
+                                          :selected-token-coord nil}
                                      :board {:hexes [{:coord [0 0] :resource :wood :number 5}
                                                      {:coord [1 0] :resource :brick :number 8}]}}])
 
     ;; Step 1: Enable edit mode
-    (rf/dispatch-sync [:toggle-edit-mode])
-    (is (true? @(rf/subscribe [:edit-mode?]))
+    (rf/dispatch-sync [:toggle-swap-number-mode])
+    (is (true? @(rf/subscribe [:swap-number-mode?]))
         "Edit mode should be enabled")
 
     ;; Step 2: Select first token
@@ -44,8 +44,8 @@
 (deftest cancel-selection-workflow-test
   (testing "Cancel selection by clearing token selection"
     ;; Initialize with edit mode on and a selected token
-    (rf/dispatch-sync [:test/set-db {:ui {:edit-mode true
-                                           :selected-token-coord [0 0]}
+    (rf/dispatch-sync [:test/set-db {:ui {:swap-number-mode true
+                                          :selected-token-coord [0 0]}
                                      :board {:hexes [{:coord [0 0] :resource :wood :number 5}
                                                      {:coord [1 0] :resource :brick :number 8}]}}])
 
@@ -63,22 +63,22 @@
 (deftest disable-edit-mode-clears-selection-workflow-test
   (testing "Disabling edit mode while token is selected clears selection"
     ;; Initialize with edit mode on and a selected token
-    (rf/dispatch-sync [:test/set-db {:ui {:edit-mode true
-                                           :selected-token-coord [1 1]}
+    (rf/dispatch-sync [:test/set-db {:ui {:swap-number-mode true
+                                          :selected-token-coord [1 1]}
                                      :board {:hexes [{:coord [0 0] :resource :wood :number 5}
                                                      {:coord [1 1] :resource :brick :number 8}]}}])
 
     ;; Verify initial state
-    (is (true? @(rf/subscribe [:edit-mode?]))
+    (is (true? @(rf/subscribe [:swap-number-mode?]))
         "Edit mode should be enabled")
     (is (= [1 1] @(rf/subscribe [:selected-token-coord]))
         "Token should be selected")
 
     ;; Toggle edit mode off
-    (rf/dispatch-sync [:toggle-edit-mode])
+    (rf/dispatch-sync [:toggle-swap-number-mode])
 
     ;; Verify edit mode is off and selection is cleared
-    (is (false? @(rf/subscribe [:edit-mode?]))
+    (is (false? @(rf/subscribe [:swap-number-mode?]))
         "Edit mode should be disabled")
     (is (nil? @(rf/subscribe [:selected-token-coord]))
         "Selection should be cleared when edit mode disabled")))
@@ -86,9 +86,9 @@
 (deftest generate-board-clears-selection-workflow-test
   (testing "Generating new board clears active token selection"
     ;; Initialize with edit mode on and a selected token
-    (rf/dispatch-sync [:test/set-db {:ui {:edit-mode true
-                                           :selected-token-coord [0 0]
-                                           :tournament-mode false}
+    (rf/dispatch-sync [:test/set-db {:ui {:swap-number-mode true
+                                          :selected-token-coord [0 0]
+                                          :tournament-mode false}
                                      :board {:hexes [{:coord [0 0] :resource :wood :number 5}]}}])
 
     ;; Verify initial state
@@ -110,8 +110,8 @@
 (deftest rapid-clicking-scenario-test
   (testing "Rapid clicking multiple tokens performs swaps correctly"
     ;; Initialize with edit mode on and three hexes
-    (rf/dispatch-sync [:test/set-db {:ui {:edit-mode true
-                                           :selected-token-coord nil}
+    (rf/dispatch-sync [:test/set-db {:ui {:swap-number-mode true
+                                          :selected-token-coord nil}
                                      :board {:hexes [{:coord [0 0] :resource :wood :number 5}
                                                      {:coord [1 0] :resource :brick :number 8}
                                                      {:coord [0 1] :resource :wheat :number 10}]}}])
@@ -155,9 +155,9 @@
 (deftest swap-red-numbers-test
   (testing "Swap red numbers (6 and 8) without tournament validation"
     ;; Initialize with two hexes having red numbers
-    (rf/dispatch-sync [:test/set-db {:ui {:edit-mode true
-                                           :selected-token-coord nil
-                                           :tournament-mode false}
+    (rf/dispatch-sync [:test/set-db {:ui {:swap-number-mode true
+                                          :selected-token-coord nil
+                                          :tournament-mode false}
                                      :board {:hexes [{:coord [0 0] :resource :wood :number 6}
                                                      {:coord [1 0] :resource :brick :number 8}]}}])
 
@@ -181,9 +181,9 @@
 (deftest create-adjacent-red-numbers-test
   (testing "Swap creates adjacent red numbers without warnings or validation"
     ;; Initialize with adjacent hexes where swap will create adjacent red numbers
-    (rf/dispatch-sync [:test/set-db {:ui {:edit-mode true
-                                           :selected-token-coord nil
-                                           :tournament-mode false}
+    (rf/dispatch-sync [:test/set-db {:ui {:swap-number-mode true
+                                          :selected-token-coord nil
+                                          :tournament-mode false}
                                      :board {:hexes [{:coord [0 0] :resource :wood :number 6}
                                                      {:coord [1 0] :resource :brick :number 3}
                                                      {:coord [2 0] :resource :wheat :number 8}]}}])
@@ -204,7 +204,7 @@
       (is (= 3 (:number hex3))
           "Third hex should now have 3")
       ;; Verify no error state or validation occurred
-      (is (true? @(rf/subscribe [:edit-mode?]))
+      (is (true? @(rf/subscribe [:swap-number-mode?]))
           "Edit mode should still be active")
       (is (nil? @(rf/subscribe [:selected-token-coord]))
           "Selection should be cleared normally"))))
@@ -212,8 +212,8 @@
 (deftest swap-non-adjacent-hexes-test
   (testing "Swap tokens on non-adjacent hexes successfully"
     ;; Initialize with hexes that are far apart
-    (rf/dispatch-sync [:test/set-db {:ui {:edit-mode true
-                                           :selected-token-coord nil}
+    (rf/dispatch-sync [:test/set-db {:ui {:swap-number-mode true
+                                          :selected-token-coord nil}
                                      :board {:hexes [{:coord [0 0] :resource :wood :number 5}
                                                      {:coord [2 0] :resource :brick :number 11}
                                                      {:coord [-2 0] :resource :wheat :number 9}]}}])
