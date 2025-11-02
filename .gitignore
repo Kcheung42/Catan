@@ -12,6 +12,7 @@ target/
 out/
 *.jar
 *.class
+main.js
 
 # Editor files
 .idea/
