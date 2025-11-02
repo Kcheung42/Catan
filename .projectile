@@ -1,0 +1,8 @@
+-/.shadow-cljs
+-/resources/
+-/resources-backup/
+-/main.js
+-/node_modules/
+-/*.png
+-package.json
+-/.cpcache/
