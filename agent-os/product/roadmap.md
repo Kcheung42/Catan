@@ -61,5 +61,5 @@
 ## Bonus Features Already Implemented
 
 Beyond Phase 1, you've also implemented:
-- **Partial Zoom Controls** (Phase 3, #14) - Board scaling with +/- buttons and keyboard shortcuts (50%-300% range). Pan controls not yet implemented.
+- **Partial Zoom Controls** (Phase 3, #14) - Board scaling with +/- buttons and keyboard shortcuts (50%-500% range). Pan controls not yet implemented.
 - **Tournament Mode Toggle** - Prevents adjacent red numbers (6 & 8), integrated into board generation validation.

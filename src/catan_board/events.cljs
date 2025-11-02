@@ -121,14 +121,14 @@
  (fn [db [_ scale]]
    (let [clamped-scale (-> scale
                            (max 50)
-                           (min 300))]
+                           (min 500))]
      (assoc-in db [:ui :board-scale] clamped-scale))))
 
 (rf/reg-event-db
  :increase-scale
  (fn [db _]
    (let [current-scale (get-in db [:ui :board-scale] 100)
-         new-scale (min 300 (+ current-scale 25))]
+         new-scale (min 500 (+ current-scale 25))]
      (assoc-in db [:ui :board-scale] new-scale))))
 
 (rf/reg-event-db
@@ -210,3 +210,11 @@
  :clear-token-selection
  (fn [db _]
    (assoc-in db [:ui :selected-token-coord] nil)))
+
+;; -- Landscape Mode ---------------------------------------------------------
+
+(rf/reg-event-db
+ :toggle-landscape-mode
+ (fn [db _]
+   (-> db
+       (update-in [:ui :landscape-mode] not))))

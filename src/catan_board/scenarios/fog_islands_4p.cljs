@@ -5,23 +5,13 @@
   (:require [catan-board.utils.hex :as hex]))
 
 (def fog-islands-4p-scenario
-  "Complete configuration for the Fog Islands 3-Player scenario.
-
-   Layout:
-   - Northwest island: 7 face-up terrain hexes (left side of board)
-   - Southeast island: 7 face-up terrain hexes (right side of board)
-   - 12 fog hexes: positioned between islands and around edges
-   - 18 water hexes: outer border surrounding all hexes"
+  "Complete configuration for the Fog Islands 4-Player scenario"
   {:id           :fog-islands-4p
    :name         "Fog Islands (4-player)"
    :player-count 3
-
-   ;; Grid pattern: 5-6-7-8-7-6-5 columns = 44 total hexes
    :grid-pattern "5-6-7-8-7-6-5"
 
    ;; Hex coordinate sets by type
-   ;; Coordinates are assigned to match the column-based grid generation
-   ;;
    :hex-types
    {;; Outer border water hexes (18 total)
     :water #{[-3 1] [-2 0] [0 -2] [1 -3] [1 -4] [0 -4] [0 3] [-1 -1]
@@ -80,11 +70,7 @@
                     12 1}
     :assignment    :on-reveal}
 
-   ;; Harbor positions (8 total)
-   ;; Each harbor: {:land-hex [q r] :direction int :type keyword}
-   ;; Direction: 0=N, 1=NE, 2=SE, 3=S, 4=SW, 5=NW
-   ;; Type: :generic (3:1) or resource-specific (2:1)
-   ;; Positioned around the perimeter of the two island clusters
+   ;; Harbor positions (9 total)
    :harbors
    [{:land-hex  [-3 -1]
      :direction hex/DIRECTION_SW

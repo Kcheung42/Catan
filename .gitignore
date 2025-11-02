@@ -13,6 +13,7 @@ out/
 *.jar
 *.class
 main.js
+*.map
 
 # Editor files
 .idea/

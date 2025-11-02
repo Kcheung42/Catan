@@ -1,6 +1,5 @@
 (ns catan-board.db
   (:require
-   [catan-board.utils.hex :as hex]
    [catan-board.utils.board-generator :as board-gen]))
 
 (def hex-size 50)

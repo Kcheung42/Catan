@@ -79,6 +79,11 @@
  (fn [db _]
    (get-in db [:ui :developer-mode] false)))
 
+(rf/reg-sub
+ :landscape-mode?
+ (fn [db _]
+   (get-in db [:ui :landscape-mode] false)))
+
 ;; -- Derived Subscriptions ---------------------------------------------------
 
 (rf/reg-sub

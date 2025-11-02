@@ -1,7 +1,8 @@
 (ns catan-board.views
   (:require
    [re-frame.core :as rf]
-   [catan-board.views.hex :as hex-view]))
+   [catan-board.views.hex :as hex-view]
+   [catan-board.scenarios.registry :as registry]))
 
 (defn scenario-selector
   "Dropdown component for selecting between available Catan scenarios.
@@ -31,11 +32,14 @@
         tournament-mode? @(rf/subscribe [:tournament-mode?])
         swap-number-mode? @(rf/subscribe [:swap-number-mode?])
         developer-mode? @(rf/subscribe [:developer-mode?])
+        landscape-mode? @(rf/subscribe [:landscape-mode?])
         sidebar-open? @(rf/subscribe [:show-info-panel?])
         hexes @(rf/subscribe [:hexes])
         harbors @(rf/subscribe [:harbors])
         selected-token-coord @(rf/subscribe [:selected-token-coord])
-        fog-state @(rf/subscribe [:fog-state])]
+        fog-state @(rf/subscribe [:fog-state])
+        current-scenario @(rf/subscribe [:current-scenario])
+        scenario-config (registry/get-scenario current-scenario)]
     [:div.app-container
      ;; Sidebar
      [:div.sidebar {:class (when sidebar-open? "open")}
@@ -78,7 +82,15 @@
                    :checked developer-mode?
                    :on-change #(rf/dispatch [:toggle-developer-mode])}]
           [:span.toggle-text "Developer Mode"]]
-         [:p.help-text "Show hex coordinates for debugging"]]]
+         [:p.help-text "Show hex coordinates for debugging"]]
+
+        [:div.toggle-container
+         [:label.toggle-label
+          [:input {:type      "checkbox"
+                   :checked   landscape-mode?
+                   :on-change #(rf/dispatch [:toggle-landscape-mode])}]
+          [:span.toggle-text "Landscape Mode"]]
+         [:p.help-text "Flip orientation to landscape"]]]
 
        ;; Board Scale
        [:div.control-section
@@ -105,5 +117,5 @@
       [:div {:style {:transform (str "scale(" (/ board-scale 100) ")")
                      :transform-origin "center center"}}
        (if (seq hexes)
-         [hex-view/hex-grid hexes harbors swap-number-mode? selected-token-coord developer-mode? fog-state]
+         [hex-view/hex-grid hexes harbors swap-number-mode? selected-token-coord developer-mode? fog-state scenario-config]
          [:p "Loading board... (" (count hexes) " hexes)"])]]]))
