@@ -146,7 +146,7 @@
 
         ;; Get fill - use pattern if available, otherwise solid color
         fill (if (and is-fog? (not is-revealed?))
-               "#d4d4d4" ; Light gray for unrevealed fog
+               "#9a9a9a" ; Light gray for unrevealed fog
                (if display-resource
                  (str "url(#" (name display-resource) "-pattern)")
                  (resources/get-resource-color display-resource)))
