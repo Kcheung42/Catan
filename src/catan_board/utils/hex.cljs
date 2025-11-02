@@ -4,6 +4,8 @@
 
 ;; -- Constants ---------------------------------------------------------------
 
+(def path-color "#d4d4d4")
+
 (def sqrt3 (Math/sqrt 3))
 
 ;; Edge directions for flat-top hexagons (counter clockwise from south)

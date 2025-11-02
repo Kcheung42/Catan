@@ -6,7 +6,8 @@
    [catan-board.utils.numbers :as numbers]
    [catan-board.utils.harbors :as harbors]
    [catan-board.db :as db]
-   [clojure.string :as str]))
+   [clojure.string :as str]
+   [catan-board.utils.hex :as hex]))
 
 (defn resource-pattern
   "Creates SVG pattern definitions for resource textures"
@@ -164,7 +165,7 @@
      [:polygon
       {:points       points
        :fill         fill
-       :stroke       "#ffffff"
+       :stroke       hex-utils/path-color
        :stroke-width 6
        :style        (when is-fog-clickable?
                        {:cursor "pointer"})
@@ -359,12 +360,13 @@
                         :ore     "🪨"
                         :generic "?"
                         "")]
+
     [:g {:key (str "harbor-" (first land-hex) "-" (second land-hex) "-" direction)}
      ;; Hexagonal harbor tile with rounded corners
      [:polygon
       {:points          points
        :fill            color
-       :stroke          "#ffffff"
+       :stroke          hex-utils/path-color
        :stroke-width    6
        :stroke-linejoin "round"
        :opacity         0.95}]
@@ -481,4 +483,4 @@
              [:circle {:cx   x
                        :cy   y
                        :r    10
-                       :fill "white"}])))]]]))
+                       :fill hex-utils/path-color}])))]]]))
