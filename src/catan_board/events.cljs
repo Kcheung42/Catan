@@ -20,8 +20,12 @@
  :undo-one-step
  (fn [_ ]
    (local-storage/pop-first-from-local-storage-array! "app-db")
-   (js/location.reload)
-   {}))
+   {:fx [[:dispatch [:reload-board]]]}))
+
+(rf/reg-event-db
+ :reload-board
+ (fn [_]
+   (local-storage/load-from-local-storage "app-db")))
 
 ;; -- Board Generation --------------------------------------------------------
 
@@ -118,15 +122,15 @@
  :shuffle-hidden-fog-tiles
  [(local-storage/persist-db "app-db")]
  (fn [db]
-   (let [fog-state-hexes        (get-in db [:board :fog-state :hexes])
-         hidden-fog-state-hexes (remove (fn [[_k v]] (:revealed? v)) fog-state-hexes)
-         new-fog-terrain-deck   (shuffle (map :terrain (vals hidden-fog-state-hexes)))
+   (let [fog-state-hexes            (get-in db [:board :fog-state :hexes])
+         hidden-fog-state-hexes     (remove (fn [[_k v]] (:revealed? v)) fog-state-hexes)
+         new-fog-terrain-deck       (shuffle (map :terrain (vals hidden-fog-state-hexes)))
          new-hidden-fog-state-hexes (into {} (map
                                               (fn [[coord info] new-resource]
                                                 [coord (assoc info :terrain new-resource)])
                                               hidden-fog-state-hexes
                                               new-fog-terrain-deck))
-         fog-state-numbers        (get-in db [:board :fog-state :numbers])]
+         fog-state-numbers          (get-in db [:board :fog-state :numbers])]
      (-> db
          (assoc-in [:board :fog-state :hexes]
                    (merge fog-state-hexes new-hidden-fog-state-hexes))
