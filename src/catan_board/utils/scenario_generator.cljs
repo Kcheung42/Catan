@@ -154,6 +154,7 @@
     (into {}
           (map (fn [coord terrain]
                  [coord {:revealed? false
-                         :terrain   terrain}])
+                         :terrain   terrain
+                         :number    nil}])
                fog-coords
                resource-deck))))

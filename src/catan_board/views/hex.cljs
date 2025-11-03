@@ -7,8 +7,7 @@
    [catan-board.utils.harbors :as harbors]
    [catan-board.db :as db]
    [clojure.string :as str]
-   [catan-board.scenarios.registry :as registry]
-   [catan-board.utils.hex :as hex]))
+   [catan-board.scenarios.registry :as registry]))
 
 (defn resource-pattern
   "Creates SVG pattern definitions for resource textures"
