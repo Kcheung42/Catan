@@ -53,16 +53,6 @@
        ;; Scenario Selection
        [scenario-selector]
 
-       ;; Undo
-       [:button.btn-primary
-        {:on-click #(rf/dispatch [:undo-one-step])}
-        "Undo"]
-
-       ;; Shuffle Hidden Fog Tiles
-       [:button.btn-primary
-        {:on-click #(rf/dispatch [:shuffle-hidden-fog-tiles])}
-        "Shuffle Hidden Fog Tiles"]
-
        ;; Board Generation
        [:div.control-section
         [:h3 "Board Generation"]
@@ -88,14 +78,6 @@
         [:div.toggle-container
          [:label.toggle-label
           [:input {:type      "checkbox"
-                   :checked   swap-number-mode?
-                   :on-change #(rf/dispatch [:toggle-swap-number-mode])}]
-          [:span.toggle-text "Swap Number Mode"]]
-         [:p.help-text "Click tokens to swap their numbers"]]
-
-        [:div.toggle-container
-         [:label.toggle-label
-          [:input {:type      "checkbox"
                    :checked   developer-mode?
                    :on-change #(rf/dispatch [:toggle-developer-mode])}]
           [:span.toggle-text "Developer Mode"]]
@@ -108,6 +90,25 @@
                    :on-change #(rf/dispatch [:toggle-landscape-mode])}]
           [:span.toggle-text "Landscape Mode"]]
          [:p.help-text "Flip orientation to landscape"]]]
+
+       ;; Board Edits
+       [:div.control-section
+        [:h3 "Board Edit"]
+        [:button.btn-primary
+         {:on-click #(rf/dispatch [:undo-one-step])}
+         "Undo"]
+
+        [:button.btn-primary
+         {:on-click #(rf/dispatch [:shuffle-hidden-fog-tiles])}
+         "Shuffle Hidden Fog Tiles"]
+
+        [:div.toggle-container
+         [:label.toggle-label
+          [:input {:type      "checkbox"
+                   :checked   swap-number-mode?
+                   :on-change #(rf/dispatch [:toggle-swap-number-mode])}]
+          [:span.toggle-text "Swap Number Mode"]]
+         [:p.help-text "Click tokens to swap their numbers"]]]
 
        ;; Board Scale
        [:div.control-section
