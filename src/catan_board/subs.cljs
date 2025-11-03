@@ -25,22 +25,22 @@
  (fn [db _]
    (get-in db [:board :harbors])))
 
+(rf/reg-sub
+ :fog-state
+ (fn [db _]
+   (get-in db [:board :fog-state] db)))
+
+(rf/reg-sub
+ :fog-number-deck
+ (fn [db _]
+   (get-in db [:board :fog-number-deck] db)))
+
 ;; -- Scenario Subscriptions --------------------------------------------------
 
 (rf/reg-sub
  :current-scenario
  (fn [db _]
    (:scenario db)))
-
-(rf/reg-sub
- :fog-state
- (fn [db _]
-   (:fog-state db)))
-
-(rf/reg-sub
- :fog-number-deck
- (fn [db _]
-   (:fog-number-deck db)))
 
 (rf/reg-sub
  :available-scenarios

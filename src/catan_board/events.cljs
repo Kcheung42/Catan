@@ -30,8 +30,8 @@
 
      (-> db
          (assoc :board new-board)
-         (assoc :fog-state fog-state)
-         (assoc :fog-number-deck fog-number-deck)
+         (assoc-in [:board :fog-state] fog-state)
+         (assoc-in [:board :fog-number-deck] fog-number-deck)
          (assoc-in [:ui :selected-token-coord] nil)))))
 
 (rf/reg-event-db
@@ -66,8 +66,8 @@
          (-> db
              (assoc :scenario scenario-id)
              (assoc :board new-board)
-             (assoc :fog-state fog-state)
-             (assoc :fog-number-deck fog-number-deck)
+             (assoc-in [:board :fog-state] fog-state)
+             (assoc-in [:board :fog-number-deck] fog-number-deck)
              (assoc-in [:ui :selected-token-coord] nil)))
        ;; Invalid scenario ID, return db unchanged
        db))))
@@ -77,7 +77,7 @@
 (rf/reg-event-db
  :reveal-fog-tile
  (fn [db [_ coord]]
-   (let [fog-state (:fog-state db)
+   (let [fog-state (get-in db [:board :fog-state])
          fog-entry (get fog-state coord)
          current-scenario (:scenario db)
          scenario-config (registry/get-scenario current-scenario)]
@@ -85,17 +85,17 @@
      (if (and fog-entry
               (not (:revealed? fog-entry))
               scenario-config)
-       (let [terrain (get-in db [:fog-state coord :terrain])
+       (let [terrain (get-in db [:board :fog-state coord :terrain])
              is-water? (= :water terrain)
-             number-deck (:fog-number-deck db)
+             number-deck (get-in db [:board :fog-number-deck])
              number (if is-water?
                       nil
                       (first number-deck))]
          ;; Update fog state and number and remove number from fog-number-deck
          (cond-> db
-           :always (assoc-in [:fog-state coord :revealed?] true)
-           :always (assoc-in [:fog-state coord :number] number)
-           (not is-water?) (assoc :fog-number-deck (rest number-deck))))
+           :always (assoc-in [:board :fog-state coord :revealed?] true)
+           :always (assoc-in [:board :fog-state coord :number] number)
+           (not is-water?) (assoc-in [:board :fog-number-deck] (rest number-deck))))
        ;; If already revealed or invalid coordinate, return db unchanged
        db))))
 
@@ -165,7 +165,7 @@
      (if current-selection
        ;; Second selection - perform swap
        (let [hexes (get-in db [:board :hexes])
-             fog-state (get-in db [:fog-state])
+             fog-state (get-in db [:board :fog-state])
              hex1-idx (first (keep-indexed #(when (= (:coord %2) current-selection) %1) hexes))
              hex2-idx (first (keep-indexed #(when (= (:coord %2) coord) %1) hexes))]
          (if (and hex1-idx hex2-idx)
@@ -188,9 +188,9 @@
                true (assoc-in [:board :hexes hex1-idx :number] num2)
                true (assoc-in [:board :hexes hex2-idx :number] num1)
                ;; Update fog-state if hex1 is revealed fog
-               is-fog1-revealed? (assoc-in [:fog-state (:coord hex1) :number] num2)
+               is-fog1-revealed? (assoc-in [:board :fog-state (:coord hex1) :number] num2)
                ;; Update fog-state if hex2 is revealed fog
-               is-fog2-revealed? (assoc-in [:fog-state (:coord hex2) :number] num1)
+               is-fog2-revealed? (assoc-in [:board :fog-state (:coord hex2) :number] num1)
                ;; Clear selection
                true (assoc-in [:ui :selected-token-coord] nil)))
            ;; Invalid selection, just clear
