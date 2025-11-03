@@ -64,49 +64,63 @@
 ;; -- UI Subscriptions --------------------------------------------------------
 
 (rf/reg-sub
- :show-info-panel?
+ :ui
  (fn [db _]
-   (get-in db [:ui :show-info-panel] true)))
+   (:ui db)))
+
+(rf/reg-sub
+ :show-info-panel?
+ :<- [:ui]
+ (fn [db _]
+   (:show-info-panel db)))
 
 (rf/reg-sub
  :loading?
+ :<- [:ui]
  (fn [db _]
-   (get-in db [:ui :loading] false)))
+   (:loading db false)))
 
 (rf/reg-sub
  :board-scale
+ :<- [:ui]
  (fn [db _]
-   (get-in db [:ui :board-scale] 100)))
+   (:board-scale db 100)))
 
 (rf/reg-sub
  :tournament-mode?
+ :<- [:ui]
  (fn [db _]
-   (get-in db [:ui :tournament-mode] false)))
+   (:tournament-mode db false)))
 
 (rf/reg-sub
  :swap-number-mode?
+ :<- [:ui]
  (fn [db _]
-   (get-in db [:ui :swap-number-mode] false)))
+   (:swap-number-mode db false)))
 
 (rf/reg-sub
  :selected-token-coord
+ :<- [:ui]
  (fn [db _]
-   (get-in db [:ui :selected-token-coord] nil)))
+   (:selected-token-coord db)))
 
 (rf/reg-sub
  :developer-mode?
+ :<- [:ui]
  (fn [db _]
-   (get-in db [:ui :developer-mode] false)))
+   (:developer-mode db false)))
 
 (rf/reg-sub
  :landscape-mode?
+ :<- [:ui]
  (fn [db _]
-   (get-in db [:ui :landscape-mode] false)))
+   (:landscape-mode db false)))
 
 (rf/reg-sub
  :random-harbor-mode?
+ :<- [:ui]
  (fn [db _]
-   (get-in db [:ui :random-harbor-mode] false)))
+   (:random-harbor-mode db false)))
 
 ;; -- Derived Subscriptions ---------------------------------------------------
 
