@@ -29,6 +29,8 @@
  (fn [db _]
    (:harbors db)))
 
+;; -- Fog State Subscriptions -----------------------------------------------------
+
 (rf/reg-sub
  :fog-state
  :<- [:board]
@@ -36,10 +38,16 @@
    (:fog-state db)))
 
 (rf/reg-sub
- :fog-number-deck
- :<- [:board]
+ :fog-state-hexes
+ :<- [:fog-state]
  (fn [db _]
-   (:fog-number-deck db)))
+   (:hexes db)))
+
+(rf/reg-sub
+ :fog-number-deck
+ :<- [:fog-state]
+ (fn [db _]
+   (:number-deck db)))
 
 ;; -- Scenario Subscriptions --------------------------------------------------
 

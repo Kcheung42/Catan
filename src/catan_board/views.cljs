@@ -38,7 +38,7 @@
         hexes                @(rf/subscribe [:hexes])
         harbors              @(rf/subscribe [:harbors])
         selected-token-coord @(rf/subscribe [:selected-token-coord])
-        fog-state            @(rf/subscribe [:fog-state])
+        fog-state            @(rf/subscribe [:fog-state-hexes])
         current-scenario     @(rf/subscribe [:current-scenario])]
     [:div.app-container
      ;; Sidebar
@@ -52,6 +52,11 @@
       [:div.sidebar-content
        ;; Scenario Selection
        [scenario-selector]
+
+       ;; Undo
+       [:button.btn-primary
+        {:on-click #(rf/dispatch [:undo-one-step])}
+        "Undo"]
 
        ;; Board Generation
        [:div.control-section
