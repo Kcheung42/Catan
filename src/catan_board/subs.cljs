@@ -3,6 +3,8 @@
    [re-frame.core :as rf]
    [catan-board.scenarios.registry :as registry]))
 
+;; -- App DB -----------------------------------------------------
+
 (rf/reg-sub
  :db
  (fn [db _]
@@ -17,23 +19,27 @@
 
 (rf/reg-sub
  :hexes
+ :<- [:board]
  (fn [db _]
-   (get-in db [:board :hexes])))
+   (:hexes db)))
 
 (rf/reg-sub
  :harbors
+ :<- [:board]
  (fn [db _]
-   (get-in db [:board :harbors])))
+   (:harbors db)))
 
 (rf/reg-sub
  :fog-state
+ :<- [:board]
  (fn [db _]
-   (get-in db [:board :fog-state] db)))
+   (:fog-state db)))
 
 (rf/reg-sub
  :fog-number-deck
+ :<- [:board]
  (fn [db _]
-   (get-in db [:board :fog-number-deck] db)))
+   (:fog-number-deck db)))
 
 ;; -- Scenario Subscriptions --------------------------------------------------
 

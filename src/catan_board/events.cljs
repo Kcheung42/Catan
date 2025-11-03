@@ -4,7 +4,8 @@
    [catan-board.db :as db]
    [catan-board.utils.board-generator :as board-gen]
    [catan-board.utils.scenario-generator :as scenario-gen]
-   [catan-board.scenarios.registry :as registry]))
+   [catan-board.scenarios.registry :as registry]
+   [catan-board.middleware.local-storage :as local-storage]))
 
 ;; -- Initialization ----------------------------------------------------------
 
@@ -17,6 +18,8 @@
 
 (rf/reg-event-db
  :generate-board
+ [(local-storage/persist-db "board" :board)
+  (local-storage/persist-db "scenario" :scenario)]
  (fn [db _]
    (let [current-scenario    (:scenario db)
          tournament-mode?    (get-in db [:ui :tournament-mode] false)
@@ -52,6 +55,8 @@
 
 (rf/reg-event-db
  :set-scenario
+ [(local-storage/persist-db "board" :board)
+  (local-storage/persist-db "scenario" :scenario)]
  (fn [db [_ scenario-id]]
    (let [scenario-config (registry/get-scenario scenario-id)]
      (if scenario-config
@@ -76,6 +81,8 @@
 
 (rf/reg-event-db
  :reveal-fog-tile
+ [(local-storage/persist-db "board" :board)
+  (local-storage/persist-db "scenario" :scenario)]
  (fn [db [_ coord]]
    (let [fog-state (get-in db [:board :fog-state])
          fog-entry (get fog-state coord)
