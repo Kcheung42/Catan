@@ -33,13 +33,13 @@
         swap-number-mode?    @(rf/subscribe [:swap-number-mode?])
         developer-mode?      @(rf/subscribe [:developer-mode?])
         landscape-mode?      @(rf/subscribe [:landscape-mode?])
+        random-harbor-mode?  @(rf/subscribe [:random-harbor-mode?])
         sidebar-open?        @(rf/subscribe [:show-info-panel?])
         hexes                @(rf/subscribe [:hexes])
         harbors              @(rf/subscribe [:harbors])
         selected-token-coord @(rf/subscribe [:selected-token-coord])
         fog-state            @(rf/subscribe [:fog-state])
-        current-scenario     @(rf/subscribe [:current-scenario])
-        scenario-config      (registry/get-scenario current-scenario)]
+        current-scenario     @(rf/subscribe [:current-scenario])]
     [:div.app-container
      ;; Sidebar
      [:div.sidebar {:class (when sidebar-open? "open")}
@@ -66,6 +66,14 @@
                    :on-change #(rf/dispatch [:toggle-tournament-mode])}]
           [:span.toggle-text "Tournament Mode"]]
          [:p.help-text "Prevents adjacent red numbers (6 & 8)"]]
+
+        [:div.toggle-container
+         [:label.toggle-label
+          [:input {:type      "checkbox"
+                   :checked   random-harbor-mode?
+                   :on-change #(rf/dispatch [:toggle-random-harbor-mode])}]
+          [:span.toggle-text "Random Harbor Mode"]]
+         [:p.help-text "Randomize harbor types"]]
 
         [:div.toggle-container
          [:label.toggle-label
@@ -101,9 +109,7 @@
          [:span.scale-display (str board-scale "%")]
          [:button.btn-scale
           {:on-click #(rf/dispatch [:increase-scale])}
-          "+"]]
-        [:div.scale-shortcuts
-         [:p.help-text "Keyboard: + / - keys"]]]]]
+          "+"]]]]]
 
      ;; Toggle button (when sidebar is closed)
      [:button.sidebar-toggle
@@ -116,5 +122,12 @@
       [:div {:style {:transform        (str "scale(" (/ board-scale 100) ")")
                      :transform-origin "center center"}}
        (if (seq hexes)
-         [hex-view/hex-grid hexes harbors swap-number-mode? selected-token-coord developer-mode? fog-state scenario-config]
+         [hex-view/hex-grid
+          {:scenario             current-scenario
+           :hexes                hexes
+           :harbors              harbors
+           :swap-number-mode?    swap-number-mode?
+           :selected-token-coord selected-token-coord
+           :developer-mode?      developer-mode?
+           :fog-state            fog-state}]
          [:p "Loading board... (" (count hexes) " hexes)"])]]]))

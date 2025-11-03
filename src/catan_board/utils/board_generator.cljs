@@ -56,20 +56,22 @@
 (defn generate-board
   "Generates a complete Catan board with random resource and number placement.
    If tournament-mode? is true, ensures no adjacent red numbers (6 & 8)"
-  [scenario-config tournament-mode?]
+  [scenario-config tournament-mode? random-harbor-mode?]
   (loop [attempts     0
          max-attempts 100]
     (if (>= attempts max-attempts)
       ;; Fallback after max attempts - just return whatever we have
-      (scenario-generator/generate-scenario-board scenario-config)
+      (scenario-generator/generate-scenario-board scenario-config random-harbor-mode?)
       ;; Try generating board
-      (let [new-board (scenario-generator/generate-scenario-board scenario-config)
+      (let [new-board (scenario-generator/generate-scenario-board
+                       scenario-config
+                       random-harbor-mode?)
             hexes     (:hexes new-board)]
         (if (or (not tournament-mode?)
                 (not (has-adjacent-red-numbers? hexes)))
           ;; Valid board - return it
           (update new-board
-                  :meta-data
+                  :metadata
                   #(merge % {:tournament-mode tournament-mode?
                              :attempts        (inc attempts)}))
           ;; Invalid - try again

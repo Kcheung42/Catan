@@ -18,12 +18,15 @@
 (rf/reg-event-db
  :generate-board
  (fn [db _]
-   (let [current-scenario (:scenario db)
-         tournament-mode? (get-in db [:ui :tournament-mode] false)
-         scenario-config (registry/get-scenario current-scenario)
-         new-board       (board-gen/generate-board scenario-config tournament-mode?)
-         fog-state       (scenario-gen/initialize-fog-state scenario-config)
-         fog-number-deck (scenario-gen/initialize-fog-number-deck scenario-config)]
+   (let [current-scenario    (:scenario db)
+         tournament-mode?    (get-in db [:ui :tournament-mode] false)
+         random-harbor-mode? (get-in db [:ui :random-harbor-mode] false)
+         scenario-config     (registry/get-scenario current-scenario)
+         new-board           (board-gen/generate-board scenario-config
+                                                       tournament-mode?
+                                                       random-harbor-mode?)
+         fog-state           (scenario-gen/initialize-fog-state scenario-config)
+         fog-number-deck     (scenario-gen/initialize-fog-number-deck scenario-config)]
 
      (-> db
          (assoc :board new-board)
@@ -53,10 +56,13 @@
    (let [scenario-config (registry/get-scenario scenario-id)]
      (if scenario-config
        ;; Scenario: use scenario generator
-       (let [tournament-mode? (get-in db [:ui :tournament-mode] false)
-             new-board        (board-gen/generate-board scenario-config tournament-mode?)
-             fog-state        (scenario-gen/initialize-fog-state scenario-config)
-             fog-number-deck  (scenario-gen/initialize-fog-number-deck scenario-config)]
+       (let [tournament-mode?    (get-in db [:ui :tournament-mode] false)
+             random-harbor-mode? (get-in db [:ui :random-harbor-mode] false)
+             new-board           (board-gen/generate-board scenario-config
+                                                           tournament-mode?
+                                                           random-harbor-mode?)
+             fog-state           (scenario-gen/initialize-fog-state scenario-config)
+             fog-number-deck     (scenario-gen/initialize-fog-number-deck scenario-config)]
          (-> db
              (assoc :scenario scenario-id)
              (assoc :board new-board)
@@ -204,3 +210,10 @@
  (fn [db _]
    (-> db
        (update-in [:ui :landscape-mode] not))))
+
+;; -- Landscape Mode ---------------------------------------------------------
+
+(rf/reg-event-db
+ :toggle-random-harbor-mode
+ (fn [db _]
+   (update-in db [:ui :random-harbor-mode] not)))

@@ -3,6 +3,11 @@
    [re-frame.core :as rf]
    [catan-board.scenarios.registry :as registry]))
 
+(rf/reg-sub
+ :db
+ (fn [db _]
+   db))
+
 ;; -- Board Subscriptions -----------------------------------------------------
 
 (rf/reg-sub
@@ -83,6 +88,11 @@
  :landscape-mode?
  (fn [db _]
    (get-in db [:ui :landscape-mode] false)))
+
+(rf/reg-sub
+ :random-harbor-mode?
+ (fn [db _]
+   (get-in db [:ui :random-harbor-mode] false)))
 
 ;; -- Derived Subscriptions ---------------------------------------------------
 

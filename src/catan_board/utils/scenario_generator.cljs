@@ -2,7 +2,8 @@
   "Generates Catan board state from scenario configuration data.
    Handles resource assignment, number token distribution, and fog state initialization."
   (:require
-   [catan-board.utils.hex :as hex]))
+   [catan-board.utils.hex :as hex]
+   [re-frame.core :as rf]))
 
 ;; -- Resource & Number Assignment --------------------------------------------
 
@@ -76,7 +77,8 @@
      4. Assign number tokens to non-desert terrain hexes (shuffled)
      5. Water and fog hexes get their type as resource
      6. Return complete board structure"
-  [{:keys [grid-pattern hex-types face-up-distribution harbors] :as scenario-config}]
+  [{:keys [grid-pattern face-up-distribution harbors] :as scenario-config}
+   random-harbor-mode?]
   (let [;; Step 1: Generate all coordinates from pattern
         all-coords (hex/generate-grid-from-pattern grid-pattern)
 
@@ -105,19 +107,21 @@
                                          terrain-hexes-with-resources)
 
         ;; Step 7: Combine all hexes
-        all-hexes       (vec (concat water-hexes fog-hexes terrain-hexes-with-numbers))
+        all-hexes (vec (concat water-hexes fog-hexes terrain-hexes-with-numbers))
 
         ;; Step 8: Fully randomize harbor types
-        harbor-deck     (shuffle (map :type harbors))
-        updated-harbors (map (fn [harbor new-type]
-                               (assoc harbor :type new-type)) harbors
-                             harbor-deck)]
+        harbor-deck (if random-harbor-mode?
+                      (->> (map :type harbors)
+                           (shuffle)
+                           (map (fn [harbor new-type]
+                                  (assoc harbor :type new-type)) harbors))
+                      harbors)]
 
     ;; Return complete board structure
     {:hexes    all-hexes
      ;; :harbors  (vec harbors) ; Use harbors from config directly (no shuffling)
-     :harbors  updated-harbors
-     :metadata {:generated-at (.toISOString (js/Date.))
+     :harbors  harbor-deck
+     :metadata {:generated-at (.toLocaleString (js/Date.))
                 :board-id     (str (random-uuid))
                 :scenario-id  (:id scenario-config)
                 :hex-counts   {:water   (count water-hexes)

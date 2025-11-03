@@ -9,7 +9,7 @@
   "Initial application state"
   (let [scenario-config (registry/get-scenario :base-game)]
     {:scenario  :base-game ; Current scenario ID (:base-game or :fog-islands-3p)
-     :board     (board-gen/generate-board scenario-config false)
+     :board     (board-gen/generate-board scenario-config false false)
      :fog-state {} ; Map of [q r] -> {:revealed? boolean :terrain keyword :number int}
      :ui        {:show-info-panel      true
                  :loading              false
