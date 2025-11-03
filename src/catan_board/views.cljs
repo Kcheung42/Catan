@@ -58,6 +58,11 @@
         {:on-click #(rf/dispatch [:undo-one-step])}
         "Undo"]
 
+       ;; Shuffle Hidden Fog Tiles
+       [:button.btn-primary
+        {:on-click #(rf/dispatch [:shuffle-hidden-fog-tiles])}
+        "Shuffle Hidden Fog Tiles"]
+
        ;; Board Generation
        [:div.control-section
         [:h3 "Board Generation"]

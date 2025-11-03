@@ -112,6 +112,26 @@
        ;; If already revealed or invalid coordinate, return db unchanged
        db))))
 
+;; -- Fog Reshuffle --------------------------------------------------------------
+
+(rf/reg-event-db
+ :shuffle-hidden-fog-tiles
+ [(local-storage/persist-db "app-db")]
+ (fn [db]
+   (let [fog-state-hexes        (get-in db [:board :fog-state :hexes])
+         hidden-fog-state-hexes (remove (fn [[_k v]] (:revealed? v)) fog-state-hexes)
+         new-fog-terrain-deck   (shuffle (map :terrain (vals hidden-fog-state-hexes)))
+         new-hidden-fog-state-hexes (into {} (map
+                                              (fn [[coord info] new-resource]
+                                                [coord (assoc info :terrain new-resource)])
+                                              hidden-fog-state-hexes
+                                              new-fog-terrain-deck))
+         fog-state-numbers        (get-in db [:board :fog-state :numbers])]
+     (-> db
+         (assoc-in [:board :fog-state :hexes]
+                   (merge fog-state-hexes new-hidden-fog-state-hexes))
+         (assoc-in [:board :fog-state :numbers] (shuffle fog-state-numbers))))))
+
 ;; -- UI Controls -------------------------------------------------------------
 
 (rf/reg-event-db
