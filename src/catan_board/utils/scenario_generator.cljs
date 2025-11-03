@@ -106,6 +106,8 @@
 
         ;; Step 7: Combine all hexes
         all-hexes       (vec (concat water-hexes fog-hexes terrain-hexes-with-numbers))
+
+        ;; Step 8: Fully randomize harbor types
         harbor-deck     (shuffle (map :type harbors))
         updated-harbors (map (fn [harbor new-type]
                                (assoc harbor :type new-type)) harbors
