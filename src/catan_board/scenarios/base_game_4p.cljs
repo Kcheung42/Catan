@@ -33,10 +33,11 @@
    :harbors
    [{:land-hex  [-2 2]
      :direction hex/DIRECTION_SW
-     :type      :wood}
+     :type      :generic}
 
     {:land-hex  [-1 2]
-     :direction hex/DIRECTION_S}
+     :direction hex/DIRECTION_S
+     :type :wood}
 
     {:land-hex  [1 1]
      :direction hex/DIRECTION_S

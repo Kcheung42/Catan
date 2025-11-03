@@ -105,11 +105,16 @@
                                          terrain-hexes-with-resources)
 
         ;; Step 7: Combine all hexes
-        all-hexes (vec (concat water-hexes fog-hexes terrain-hexes-with-numbers))]
+        all-hexes       (vec (concat water-hexes fog-hexes terrain-hexes-with-numbers))
+        harbor-deck     (shuffle (map :type harbors))
+        updated-harbors (map (fn [harbor new-type]
+                               (assoc harbor :type new-type)) harbors
+                             harbor-deck)]
 
     ;; Return complete board structure
     {:hexes    all-hexes
-     :harbors  (vec harbors) ; Use harbors from config directly (no shuffling)
+     ;; :harbors  (vec harbors) ; Use harbors from config directly (no shuffling)
+     :harbors  updated-harbors
      :metadata {:generated-at (.toISOString (js/Date.))
                 :board-id     (str (random-uuid))
                 :scenario-id  (:id scenario-config)
@@ -138,8 +143,8 @@
   [{:keys [hex-types fog-distribution]}]
   (let [fog-coords    (:fog hex-types #{})
         resource-deck (shuffle (mapcat (fn [[resource count]]
-                                            (repeat count resource))
-                                          (:resources fog-distribution)))]
+                                         (repeat count resource))
+                                       (:resources fog-distribution)))]
     (into {}
           (map (fn [coord terrain]
                  [coord {:revealed? false
