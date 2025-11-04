@@ -12,7 +12,6 @@ target/
 out/
 *.jar
 *.class
-main.js
 *.map
 
 # Editor files
