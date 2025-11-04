@@ -73,23 +73,7 @@
                    :checked   random-harbor-mode?
                    :on-change #(rf/dispatch [:toggle-random-harbor-mode])}]
           [:span.toggle-text "Random Harbor Mode"]]
-         [:p.help-text "Randomize harbor types"]]
-
-        [:div.toggle-container
-         [:label.toggle-label
-          [:input {:type      "checkbox"
-                   :checked   developer-mode?
-                   :on-change #(rf/dispatch [:toggle-developer-mode])}]
-          [:span.toggle-text "Developer Mode"]]
-         [:p.help-text "Show hex coordinates for debugging"]]
-
-        [:div.toggle-container
-         [:label.toggle-label
-          [:input {:type      "checkbox"
-                   :checked   landscape-mode?
-                   :on-change #(rf/dispatch [:toggle-landscape-mode])}]
-          [:span.toggle-text "Landscape Mode"]]
-         [:p.help-text "Flip orientation to landscape"]]]
+         [:p.help-text "Randomize harbor types"]]]
 
        ;; Board Edits
        [:div.control-section
@@ -101,6 +85,14 @@
         [:button.btn-primary
          {:on-click #(rf/dispatch [:shuffle-hidden-fog-tiles])}
          "Shuffle Hidden Fog Tiles"]
+
+        [:div.toggle-container
+         [:label.toggle-label
+          [:input {:type      "checkbox"
+                   :checked   landscape-mode?
+                   :on-change #(rf/dispatch [:toggle-landscape-mode])}]
+          [:span.toggle-text "Landscape Mode"]]
+         [:p.help-text "Flip orientation to landscape"]]
 
         [:div.toggle-container
          [:label.toggle-label
@@ -120,7 +112,15 @@
          [:span.scale-display (str board-scale "%")]
          [:button.btn-scale
           {:on-click #(rf/dispatch [:increase-scale])}
-          "+"]]]]]
+          "+"]]]
+
+       [:div.toggle-container
+        [:label.toggle-label
+         [:input {:type      "checkbox"
+                  :checked   developer-mode?
+                  :on-change #(rf/dispatch [:toggle-developer-mode])}]
+         [:span.toggle-text "Developer Mode"]]
+        [:p.help-text "Show hex coordinates for debugging"]]]]
 
      ;; Toggle button (when sidebar is closed)
      [:button.sidebar-toggle

@@ -18,7 +18,7 @@
         current  (if (vector? existing)
                    existing
                    (if (seq existing) existing '()))
-        new-data (conj (take 14 current) entry)]
+        new-data (conj (take 20 current) entry)] ;; keeps only the last 20 edits
     (.setItem js/localStorage key (pr-str new-data))
     new-data))
 
