@@ -130,11 +130,11 @@
                                                 [coord (assoc info :terrain new-resource)])
                                               hidden-fog-state-hexes
                                               new-fog-terrain-deck))
-         fog-state-numbers          (get-in db [:board :fog-state :numbers])]
+         fog-state-numbers          (get-in db [:board :fog-state :number-deck])]
      (-> db
          (assoc-in [:board :fog-state :hexes]
                    (merge fog-state-hexes new-hidden-fog-state-hexes))
-         (assoc-in [:board :fog-state :numbers] (shuffle fog-state-numbers))))))
+         (assoc-in [:board :fog-state :number-deck] (shuffle fog-state-numbers))))))
 
 ;; -- UI Controls -------------------------------------------------------------
 
