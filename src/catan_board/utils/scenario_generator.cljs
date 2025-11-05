@@ -113,8 +113,8 @@
         harbor-deck (if random-harbor-mode?
                       (->> (map :type harbors)
                            (shuffle)
-                           (map (fn [harbor new-type]
-                                  (assoc harbor :type new-type)) harbors))
+                           (mapv (fn [harbor new-type]
+                                   (assoc harbor :type new-type)) harbors))
                       harbors)]
 
     ;; Return complete board structure
