@@ -5,7 +5,8 @@
    [catan-board.scenarios.fog-islands-3p :as fog-islands-3p]
    [catan-board.scenarios.fog-islands-4p :as fog-islands-4p]
    [catan-board.scenarios.base-game-6p :as base-game-6p]
-   [catan-board.scenarios.base-game-4p :as base-game-4p]))
+   [catan-board.scenarios.base-game-4p :as base-game-4p]
+   [catan-board.middleware.local-storage :as local-storage]))
 
 ;; Central scenario registry
 (def scenarios
@@ -25,7 +26,8 @@
      (get-scenario :base-game)        ; Returns base game config
      (get-scenario :unknown)          ; Returns nil"
   [scenario-id]
-  (get scenarios scenario-id))
+  (or (get scenarios scenario-id)
+      (get (local-storage/load-from-local-storage :custom-scenarios) scenario-id)))
 
 (defn list-scenarios
   "Returns a list of available scenarios with their ID and name.
@@ -41,4 +43,4 @@
           {:id           id
            :name         (:name config)
            :player-count (:player-count config)})
-        scenarios))
+        (concat scenarios (local-storage/load-from-local-storage :custom-scenarios))))

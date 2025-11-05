@@ -25,13 +25,13 @@
 (rf/reg-event-db
  :reload-board
  (fn [_]
-   (local-storage/load-from-local-storage "app-db")))
+   (local-storage/load-from-last-app-state-local-storage)))
 
 ;; -- Board Generation --------------------------------------------------------
 
 (rf/reg-event-db
  :generate-board
- [(local-storage/persist-db "app-db")]
+ [(local-storage/persist-db-after "app-db")]
  (fn [db _]
    (let [current-scenario    (:scenario db)
          tournament-mode?    (get-in db [:ui :tournament-mode] false)
@@ -67,9 +67,10 @@
 
 (rf/reg-event-db
  :set-scenario
- [(local-storage/persist-db "app-db")]
+ [(local-storage/persist-db-after "app-db")]
  (fn [db [_ scenario-id]]
    (let [scenario-config (registry/get-scenario scenario-id)]
+     (prn "scenario-config:" scenario-config)
      (if scenario-config
        ;; Scenario: use scenario generator
        (let [tournament-mode?    (get-in db [:ui :tournament-mode] false)
@@ -92,7 +93,7 @@
 
 (rf/reg-event-db
  :reveal-fog-tile
- [(local-storage/persist-db "app-db")]
+ [(local-storage/persist-db-after "app-db")]
  (fn [db [_ coord]]
    (let [fog-state        (get-in db [:board :fog-state :hexes])
          fog-entry        (get fog-state coord)
@@ -120,7 +121,7 @@
 
 (rf/reg-event-db
  :shuffle-hidden-fog-tiles
- [(local-storage/persist-db "app-db")]
+ [(local-storage/persist-db-after "app-db")]
  (fn [db]
    (let [fog-state-hexes            (get-in db [:board :fog-state :hexes])
          hidden-fog-state-hexes     (remove (fn [[_k v]] (:revealed? v)) fog-state-hexes)
@@ -140,7 +141,7 @@
 
 (rf/reg-event-db
  :toggle-info-panel
- [(local-storage/persist-db "app-db")]
+ [(local-storage/persist-db-after "app-db")]
  (fn [db _]
    (update-in db [:ui :show-info-panel] not)))
 
@@ -148,7 +149,7 @@
 
 (rf/reg-event-db
  :set-board-scale
- [(local-storage/persist-db "app-db")]
+ [(local-storage/persist-db-after "app-db")]
  (fn [db [_ scale]]
    (let [clamped-scale (-> scale
                            (max 50)
@@ -157,7 +158,7 @@
 
 (rf/reg-event-db
  :increase-scale
- [(local-storage/persist-db "app-db")]
+ [(local-storage/persist-db-after "app-db")]
  (fn [db _]
    (let [current-scale (get-in db [:ui :board-scale] 100)
          new-scale     (min 500 (+ current-scale 25))]
@@ -165,7 +166,7 @@
 
 (rf/reg-event-db
  :decrease-scale
- [(local-storage/persist-db "app-db")]
+ [(local-storage/persist-db-after "app-db")]
  (fn [db _]
    (let [current-scale (get-in db [:ui :board-scale] 100)
          new-scale     (max 50 (- current-scale 25))]
@@ -173,7 +174,7 @@
 
 (rf/reg-event-db
  :reset-scale
- [(local-storage/persist-db "app-db")]
+ [(local-storage/persist-db-after "app-db")]
  (fn [db _]
    (assoc-in db [:ui :board-scale] 100)))
 
@@ -181,7 +182,7 @@
 
 (rf/reg-event-db
  :toggle-tournament-mode
- [(local-storage/persist-db "app-db")]
+ [(local-storage/persist-db-after "app-db")]
  (fn [db _]
    (update-in db [:ui :tournament-mode] not)))
 
@@ -189,7 +190,7 @@
 
 (rf/reg-event-db
  :toggle-developer-mode
- [(local-storage/persist-db "app-db")]
+ [(local-storage/persist-db-after "app-db")]
  (fn [db _]
    (update-in db [:ui :developer-mode] not)))
 
@@ -204,7 +205,7 @@
 
 (rf/reg-event-db
  :select-token
- [(local-storage/persist-db "app-db")]
+ [(local-storage/persist-db-after "app-db")]
  (fn [db [_ coord]]
    (let [current-selection (get-in db [:ui :selected-token-coord])]
      (if current-selection
@@ -252,7 +253,7 @@
 
 (rf/reg-event-db
  :toggle-landscape-mode
- [(local-storage/persist-db "app-db")]
+ [(local-storage/persist-db-after "app-db")]
  (fn [db _]
    (-> db
        (update-in [:ui :landscape-mode] not))))
@@ -261,6 +262,6 @@
 
 (rf/reg-event-db
  :toggle-random-harbor-mode
- [(local-storage/persist-db "app-db")]
+ [(local-storage/persist-db-after "app-db")]
  (fn [db _]
    (update-in db [:ui :random-harbor-mode] not)))
