@@ -8,16 +8,14 @@
   (.setItem js/localStorage key (pr-str data)))
 
 (defn assoc-to-local-storage-array!
-  "Appends `entry` to a vector stored under `key` in localStorage.
-   If the key does not exist or is not a vector, creates a new vector.
+  "Assoc `entry` to a value stored under `key` in localStorage.
+   If the key does not exist or is not a map, creates a new map.
    Example:
      (append-to-local-storage-array! \"app-state\" {:id 1 :data \"foo\"})"
   [key entry]
   (let [existing (some-> (.getItem js/localStorage key)
                          (reader/read-string))
-        current  (if (map? existing)
-                   existing
-                   (if (map? existing) existing {}))
+        current  (if (map? existing) existing {})
         new-data (merge current entry)]
     (save-to-local-storage! key new-data)
     new-data))
