@@ -36,7 +36,6 @@
   (cond
     (contains? (:water hex-types) coord)   :water
     (contains? (:fog hex-types) coord)     :fog
-    (contains? (:terrain hex-types) coord) :terrain
     :else                                  :terrain)) ; default to terrain if not specified
 
 (defn- assign-resource-to-hex
