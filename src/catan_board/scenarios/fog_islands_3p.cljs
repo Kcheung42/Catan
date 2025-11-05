@@ -33,8 +33,7 @@
    :hex-types
    {;; Outer border water hexes (18 total)
     :water #{[-3 -1] [-2 -2] [-1 -3] [0 -4] [1 -4] [1 -3] [1 -2] [0 -1] [ -1 0] [-2 1] [-3 1]
-             [0 3] [-1 3] [-1 2] [-0 1] [1 0] [2 -1] [3 -2]
-             }
+             [0 3] [-1 3] [-1 2] [-0 1] [1 0] [2 -1] [3 -2]}
 
     ;; Fog hexes between and around islands (12 total)
     :fog #{;; cluster on the left
@@ -44,15 +43,7 @@
            [-2 2] [-1 1] [0 0] [1 -1] [2 -2]
 
            ;; cluster on the right
-           [3 -3] [3 -4] [2 -3] [2 -4]}
-
-    :terrain #{;; Face-up terrain hexes on two islands (14 total)
-               ;; Northwest island cluster (7 hexes) - left side
-               [-3 0] [-2 0] [-2 1] [-1 1] [ -1 -2] [0 -2] [0 -3]
-
-               ;; Southeast island cluster (7 hexes) - right side
-               [0 2] [1 1] [1 2] [2 0] [2 1] [3 -1] [3 0]
-               }}
+           [3 -3] [3 -4] [2 -3] [2 -4]}}
 
    ;; Resource and number distribution for face-up terrain hexes
    :face-up-distribution
