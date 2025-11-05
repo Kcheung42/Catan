@@ -18,8 +18,8 @@
         current  (if (map? existing)
                    existing
                    (if (map? existing) existing {}))
-        new-data (merge current entry)] ;; keeps only the last 20 edits
-    (.setItem js/localStorage key (pr-str new-data))
+        new-data (merge current entry)]
+    (save-to-local-storage! key new-data)
     new-data))
 
 (defn append-to-local-storage-array!
@@ -34,7 +34,7 @@
                    existing
                    (if (seq existing) existing '()))
         new-data (conj (take 20 current) entry)] ;; keeps only the last 20 edits
-    (.setItem js/localStorage key (pr-str new-data))
+    (save-to-local-storage! key new-data)
     new-data))
 
 (defn pop-first-from-local-storage-array!
@@ -49,7 +49,7 @@
     (if (seq existing)
       (let [removed   (first existing)
             remaining (rest existing)]
-        (.setItem js/localStorage key (pr-str remaining))
+        (save-to-local-storage! key remaining)
         {:removed   removed
          :remaining remaining})
       ;; nothing to pop
