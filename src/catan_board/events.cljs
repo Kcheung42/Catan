@@ -141,7 +141,6 @@
 
 (rf/reg-event-db
  :toggle-info-panel
- [(local-storage/persist-db-after "app-db")]
  (fn [db _]
    (update-in db [:ui :show-info-panel] not)))
 

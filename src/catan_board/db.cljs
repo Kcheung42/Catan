@@ -13,7 +13,7 @@
    (let [base-game-scenario-config (registry/get-scenario :base-game)]
      {:scenario :base-game
       :board    (board-gen/generate-board base-game-scenario-config false false)
-      :ui       {:show-info-panel      false
+      :ui       {:show-info-panel      true
                  :loading              false
                  :board-scale          225 ; percentage: 50-500, tournament-mode: no adjacent red numbers
                  :tournament-mode      false
