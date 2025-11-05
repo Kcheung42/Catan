@@ -79,7 +79,7 @@
        [:div.control-section
         [:h3 "Board Edit"]
         [:button.btn-primary
-         {:on-click #(rf/dispatch [:undo-one-step])}
+         {:on-click #(rf/dispatch [:undo])}
          "Undo"]
 
         [:button.btn-primary

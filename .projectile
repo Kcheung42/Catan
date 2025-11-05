@@ -6,3 +6,5 @@
 -/*.png
 -package.json
 -/.cpcache/
+-node-test.js
+-/out

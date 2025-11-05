@@ -16,16 +16,21 @@
 
 ;; -- History Management ---------------------------------------------------------
 
-(rf/reg-event-fx
- :undo-one-step
- (fn [_ ]
-   (local-storage/pop-first-from-local-storage-array! "app-db")
-   {:fx [[:dispatch [:reload-board]]]}))
+(rf/reg-event-db
+ :pop-history
+ (fn [_]
+   (local-storage/pop-first-from-local-storage-array! "app-db")))
 
 (rf/reg-event-db
  :reload-board
  (fn [_]
-   (local-storage/load-from-last-app-state-local-storage)))
+   (local-storage/load-latest-app-db-from-local-storage)))
+
+(rf/reg-event-fx
+ :undo
+ (fn [_ ]
+   {:fx [[:dispatch [:pop-history]]
+         [:dispatch [:reload-board]]]}))
 
 ;; -- Board Generation --------------------------------------------------------
 

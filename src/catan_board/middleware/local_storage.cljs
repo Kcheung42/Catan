@@ -56,11 +56,11 @@
       {:removed   nil
        :remaining (if (seq existing) existing '())})))
 
-(defn load-from-last-app-state-local-storage
+(defn load-latest-app-db-from-local-storage
   "Loads data from localStorage (if any) and optionally extracts a value at the given path.
    Example:
-     (load-from-last-app-state-local-storage)                ;=> entire map
-     (load-from-last-app-state-local-storage [:settings])    ;=> just (:settings saved-db)"
+     (load-latest-app-db-from-local-storage)                ;=> entire map
+     (load-latest-app-db-from-local-storage [:settings])    ;=> just (:settings saved-db)"
   ([]
    (some-> (.getItem js/localStorage "app-db")
            (reader/read-string)
@@ -74,8 +74,8 @@
 (defn load-from-local-storage
   "Loads data from localStorage (if any) and optionally extracts a value at the given path.
    Example:
-     (load-from-local-storage \"app-state\")                ;=> entire map
-     (load-from-local-storage \"app-state\" [:settings])    ;=> just (:settings saved-db)"
+     (load-from-local-storage \"app-db\")                ;=> entire map
+     (load-from-local-storage \"app-db\" [:settings])    ;=> just (:settings saved-db)"
   ([key]
    (some-> (.getItem js/localStorage key)
            (reader/read-string)))
@@ -99,6 +99,7 @@
 
 
 (comment
+  ;; ADding a cusom map to the list of scenarios
   (assoc-to-local-storage-array!
    :custom-scenarios
    {:test-game {:id           :test-game,

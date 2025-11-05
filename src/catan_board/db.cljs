@@ -9,7 +9,7 @@
 (def default-db
   "Initial application (state)"
   (or
-   (local-storage/load-from-last-app-state-local-storage)
+   (local-storage/load-latest-app-db-from-local-storage)
    (let [base-game-scenario-config (registry/get-scenario :base-game)]
      {:scenario :base-game
       :board    (board-gen/generate-board base-game-scenario-config false false)
