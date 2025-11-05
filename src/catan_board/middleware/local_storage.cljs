@@ -30,9 +30,7 @@
   [key entry]
   (let [existing (some-> (.getItem js/localStorage key)
                          (reader/read-string))
-        current  (if (vector? existing)
-                   existing
-                   (if (seq existing) existing '()))
+        current  (if (seq existing) existing '())
         new-data (conj (take 20 current) entry)] ;; keeps only the last 20 edits
     (save-to-local-storage! key new-data)
     new-data))
@@ -54,7 +52,7 @@
          :remaining remaining})
       ;; nothing to pop
       {:removed   nil
-       :remaining (if (seq existing) existing '())})))
+       :remaining '()})))
 
 (defn load-latest-app-db-from-local-storage
   "Loads data from localStorage (if any) and optionally extracts a value at the given path.
