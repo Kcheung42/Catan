@@ -123,14 +123,14 @@
    fog-state: map of [q r] -> {:revealed? boolean :terrain keyword :number int}"
   [hex-data swap-number-mode? selected-token-coord developer-mode? fog-state]
   (let [{:keys [coord resource number]} hex-data
-        hex-size                        db/hex-size
-        vertices                        (hex-utils/hex-vertices coord hex-size)
-        points                          (hex-utils/vertices-to-svg-points vertices)
-        [cx cy]                         (hex-utils/hex-center coord hex-size)
+        hex-size db/hex-size
+        vertices (hex-utils/hex-vertices coord hex-size)
+        points (hex-utils/vertices-to-svg-points vertices)
+        [cx cy] (hex-utils/hex-center coord hex-size)
 
         ;; Check if this is a fog hex and get its reveal state
-        fog-info     (get fog-state coord)
-        is-fog?      (= resource :fog)
+        fog-info (get fog-state coord)
+        is-fog? (= resource :fog)
         is-revealed? (and is-fog? fog-info (:revealed? fog-info))
 
         ;; Determine actual resource and number to display
@@ -140,13 +140,13 @@
         display-resource (if is-revealed?
                            (:terrain fog-info)
                            resource)
-        display-number   (if is-revealed?
-                           (:number fog-info)
-                           number)
+        display-number (if is-revealed?
+                         (:number fog-info)
+                         number)
 
         ;; Get fill - use pattern if available, otherwise solid color
         fill (if (and is-fog? (not is-revealed?))
-               "#9a9a9a" ; Light gray for unrevealed fog
+               "#f5f5f5" ; Light gray for unrevealed fog
                (if display-resource
                  (str "url(#" (name display-resource) "-pattern)")
                  (resources/get-resource-color display-resource)))
@@ -163,63 +163,63 @@
      ;; Hex polygon with pattern
 
      [:polygon
-      {:points       points
-       :fill         fill
-       :stroke       hex-utils/path-color
+      {:points points
+       :fill fill
+       :stroke hex-utils/path-color
        :stroke-width 6
-       :style        (when is-fog-clickable?
-                       {:cursor "pointer"})
-       :on-click     (when is-fog-clickable?
-                       (fn [e]
-                         (.stopPropagation e)
-                         (rf/dispatch [:reveal-fog-tile coord])))}]
+       :style (when is-fog-clickable?
+                {:cursor "pointer"})
+       :on-click (when is-fog-clickable?
+                   (fn [e]
+                     (.stopPropagation e)
+                     (rf/dispatch [:reveal-fog-tile coord])))}]
 
      ;; Unrevealed fog hex: show "?" symbol
      (when (and is-fog? (not is-revealed?))
        [:text
-        {:x                 cx
-         :y                 cy
-         :text-anchor       "middle"
+        {:x cx
+         :y cy
+         :text-anchor "middle"
          :dominant-baseline "middle"
-         :font-size         32
-         :fill              "#ffffff"
-         :font-weight       "bold"
-         :font-family       "Arial, sans-serif"
-         :pointer-events    "none"}
+         :font-size 32
+         :fill "#ffffff"
+         :font-weight "bold"
+         :font-family "Arial, sans-serif"
+         :pointer-events "none"}
         "?"])
 
      ;; Number token (for terrain hexes and revealed fog hexes with numbers)
      (when display-number
        (let [is-red? (numbers/is-red-number? display-number)
-             pips    (numbers/get-probability-pips display-number)]
+             pips (numbers/get-probability-pips display-number)]
          [:g
           {:on-click (when swap-number-mode?
                        (fn [e]
                          (.stopPropagation e)
                          (rf/dispatch [:select-token coord])))
-           :style    (when swap-number-mode?
-                       {:cursor "pointer"})}
+           :style (when swap-number-mode?
+                    {:cursor "pointer"})}
           ;; Circle background
           [:circle
-           {:cx           cx
-            :cy           cy
-            :r            18
-            :fill         (if is-red? "#d32f2f" "#f5f5dc")
-            :stroke       "#333"
+           {:cx cx
+            :cy cy
+            :r 18
+            :fill (if is-red? "#d32f2f" "#f5f5dc")
+            :stroke "#333"
             :stroke-width 2
-            :class        (when is-selected? "token-selected")}]
+            :class (when is-selected? "token-selected")}]
 
           ;; Number text
           [:text
-           {:x                 cx
-            :y                 (- cy 3)
-            :text-anchor       "middle"
+           {:x cx
+            :y (- cy 3)
+            :text-anchor "middle"
             :dominant-baseline "middle"
-            :fill              (if is-red? "#ffffff" "#333")
-            :font-size         20
-            :font-weight       "bold"
-            :font-family       "Arial, sans-serif"
-            :class             (when is-selected? "token-selected")}
+            :fill (if is-red? "#ffffff" "#333")
+            :font-size 20
+            :font-weight "bold"
+            :font-family "Arial, sans-serif"
+            :class (when is-selected? "token-selected")}
            (str display-number)]
 
           ;; Probability pips
@@ -227,35 +227,35 @@
            (for [i (range pips)]
              ^{:key i}
              [:circle
-              {:cx   (+ cx (* (- i (/ (dec pips) 2)) 3))
-               :cy   (+ cy 10)
-               :r    1.5
+              {:cx (+ cx (* (- i (/ (dec pips) 2)) 3))
+               :cy (+ cy 10)
+               :r 1.5
                :fill (if is-red? "#ffffff" "#333")}])]]))
 
      ;; Desert cactus emoji
      (when (= display-resource :desert)
        [:text
-        {:x                 cx
-         :y                 cy
-         :text-anchor       "middle"
+        {:x cx
+         :y cy
+         :text-anchor "middle"
          :dominant-baseline "middle"
-         :font-size         28
-         :style             {:filter "drop-shadow(2px 2px 3px rgba(0,0,0,0.3))"}}
+         :font-size 28
+         :style {:filter "drop-shadow(2px 2px 3px rgba(0,0,0,0.3))"}}
         "🌵"])
 
      ;; Developer mode: Show coordinates
      (when developer-mode?
        (let [[q r] coord]
          [:text
-          {:x                 cx
-           :y                 (- cy (* hex-size 0.7))
-           :text-anchor       "middle"
+          {:x cx
+           :y (- cy (* hex-size 0.7))
+           :text-anchor "middle"
            :dominant-baseline "middle"
-           :transform         (when landscape-mode? (str "rotate(" -90 " " cx " " cy ")"))
-           :font-size         10
-           :font-weight       "bold"
-           :fill              "#000000"
-           :style             {:filter "drop-shadow(0 0 2px rgba(255,255,255,0.8))"}}
+           :transform (when landscape-mode? (str "rotate(" -90 " " cx " " cy ")"))
+           :font-size 10
+           :font-weight "bold"
+           :fill "#000000"
+           :style {:filter "drop-shadow(0 0 2px rgba(255,255,255,0.8))"}}
           (str "[" q "," r "]")]))]))
 
 (defn get-edge-points
@@ -271,25 +271,25 @@
    - NW (dir 4) = edge between V2 and V3 (upper-left edge)
    - SW (dir 5) = edge between V3 and V4 (lower-left edge)"
   [center hex-size direction]
-  (let [[cx cy]       center
+  (let [[cx cy] center
         ;; Map direction to vertex indices (going clockwise from north)
         ;; Formula: first vertex = (1 - direction) mod 6, second vertex = (2 - direction) mod 6
         vertex-index1 (mod (- 1 direction) 6)
         vertex-index2 (mod (- 2 direction) 6)
-        angle1        (* (/ Math/PI 3) vertex-index1)
-        angle2        (* (/ Math/PI 3) vertex-index2)
-        x1            (+ cx (* hex-size (Math/cos angle1)))
-        y1            (+ cy (* hex-size (Math/sin angle1)))
-        x2            (+ cx (* hex-size (Math/cos angle2)))
-        y2            (+ cy (* hex-size (Math/sin angle2)))]
+        angle1 (* (/ Math/PI 3) vertex-index1)
+        angle2 (* (/ Math/PI 3) vertex-index2)
+        x1 (+ cx (* hex-size (Math/cos angle1)))
+        y1 (+ cy (* hex-size (Math/sin angle1)))
+        x2 (+ cx (* hex-size (Math/cos angle2)))
+        y2 (+ cy (* hex-size (Math/sin angle2)))]
     [[x1 y1] [x2 y2]]))
 
 (defn harbor-trapezoid
   "Renders a harbor as a trapezoid tile on the edge of the board"
   [harbor-data]
   (let [{:keys [land-hex direction type]} harbor-data
-        hex-size                          db/hex-size
-        [cx cy]                           (hex-utils/axial-to-pixel land-hex hex-size)
+        hex-size db/hex-size
+        [cx cy] (hex-utils/axial-to-pixel land-hex hex-size)
 
         ;; Get the two vertices of the edge
         [[x1 y1] [x2 y2]] (get-edge-points [cx cy] hex-size direction)
@@ -299,7 +299,7 @@
         mid-y (/ (+ y1 y2) 2)
 
         ;; Calculate outward direction (perpendicular to edge)
-        edge-angle          (Math/atan2 (- y2 y1) (- x2 x1))
+        edge-angle (Math/atan2 (- y2 y1) (- x2 x1))
         perpendicular-angle (+ edge-angle (/ Math/PI 2))
 
         ;; Distance to push hexagon outward
@@ -310,7 +310,7 @@
         ;; Create 6 points total for hexagon
 
         ;; Point at right side (from x2, angled outward)
-        side-offset  (* offset 0.6)
+        side-offset (* offset 0.6)
         x-side-right (+ x2 (* side-offset (Math/cos perpendicular-angle)))
         y-side-right (+ y2 (* side-offset (Math/sin perpendicular-angle)))
 
@@ -348,70 +348,70 @@
         text-y (+ mid-y (* (/ offset 2) (Math/sin perpendicular-angle)))
 
         ;; Calculate rotation angle for text (along the edge, always readable)
-        rotation-deg      (* (/ 180 Math/PI) edge-angle)
+        rotation-deg (* (/ 180 Math/PI) edge-angle)
         readable-rotation (+ rotation-deg 180)
 
         ;; Resource icon for specific harbors
         resource-icon (case type
-                        :wood    "🪵"
-                        :brick   "🧱"
-                        :wheat   "🌾"
-                        :sheep   "🐑"
-                        :ore     "🪨"
+                        :wood "🪵"
+                        :brick "🧱"
+                        :wheat "🌾"
+                        :sheep "🐑"
+                        :ore "🪨"
                         :generic "?"
                         "")]
 
     [:g {:key (str "harbor-" (first land-hex) "-" (second land-hex) "-" direction)}
      ;; Hexagonal harbor tile with rounded corners
      [:polygon
-      {:points          points
-       :fill            color
-       :stroke          hex-utils/path-color
-       :stroke-width    6
+      {:points points
+       :fill color
+       :stroke hex-utils/path-color
+       :stroke-width 6
        :stroke-linejoin "round"
-       :opacity         0.95}]
+       :opacity 0.95}]
 
      ;; Trade ratio text
      (when (= type :generic)
        [:text
-        {:x                 text-x
-         :y                 (if resource-icon (- text-y 8) text-y)
-         :text-anchor       "middle"
+        {:x text-x
+         :y (if resource-icon (- text-y 8) text-y)
+         :text-anchor "middle"
          :dominant-baseline "middle"
-         :fill              "#000000"
-         :font-size         10
-         :font-weight       "bold"
-         :font-family       "Arial, sans-serif"
-         :transform         (str "rotate(" readable-rotation " " text-x " " text-y ")")}
+         :fill "#000000"
+         :font-size 10
+         :font-weight "bold"
+         :font-family "Arial, sans-serif"
+         :transform (str "rotate(" readable-rotation " " text-x " " text-y ")")}
         (str ratio ":1")])
 
      ;; Resource icon for specific harbors
      [:text
-      {:x                 text-x
-       :y                 (if (= type :generic)
-                            (+ text-y 10)
-                            (+ text-y 3))
-       :text-anchor       "middle"
+      {:x text-x
+       :y (if (= type :generic)
+            (+ text-y 10)
+            (+ text-y 3))
+       :text-anchor "middle"
        :dominant-baseline "middle"
-       :font-size         21
-       :transform         (str "rotate(" readable-rotation " " text-x " " text-y ")")}
+       :font-size 21
+       :transform (str "rotate(" readable-rotation " " text-x " " text-y ")")}
       resource-icon]]))
 
 (defn- compute-original-center
   "Returns the center [x y] among all pixels"
   [grid-pattern all-pixels padding]
-  (let [col-sizes        (mapv js/parseInt (clojure.string/split grid-pattern #"-"))
-        num-cols         (count col-sizes)
+  (let [col-sizes (mapv js/parseInt (clojure.string/split grid-pattern #"-"))
+        num-cols (count col-sizes)
         middle-col-index (quot num-cols 2)
         middle-col-value (nth col-sizes middle-col-index)
-        min-x            (apply min (map first all-pixels))
-        max-x            (apply max (map first all-pixels))
-        min-y            (apply min (map second all-pixels))
-        max-y            (apply max (map second all-pixels))
-        view-x           (- min-x padding)
-        view-y           (- min-y padding)
-        view-width       (+ (- max-x min-x) (* padding 2))
-        view-height      (+ (- max-y min-y) (* padding 2))]
+        min-x (apply min (map first all-pixels))
+        max-x (apply max (map first all-pixels))
+        min-y (apply min (map second all-pixels))
+        max-y (apply max (map second all-pixels))
+        view-x (- min-x padding)
+        view-y (- min-y padding)
+        view-width (+ (- max-x min-x) (* padding 2))
+        view-height (+ (- max-y min-y) (* padding 2))]
     [(if (even? middle-col-value)
        (- (+ view-x (/ view-width 2)) (/ padding 2))
        (+ view-x (/ view-width 2))) ;center-x
@@ -429,32 +429,32 @@
            fog-state]}]
   (let [scenario-config (registry/get-scenario scenario)
         grid-pattern (:grid-pattern scenario-config)
-        hex-size        db/hex-size
+        hex-size db/hex-size
         ;; Calculate SVG viewBox to center the board
         ;; The grid spans from -2 to 2 in both q and r
         ;; Calculate pixel bounds
-        all-coords      (map :coord hexes)
-        all-pixels      (map #(hex-utils/axial-to-pixel % hex-size) all-coords)
+        all-coords (map :coord hexes)
+        all-pixels (map #(hex-utils/axial-to-pixel % hex-size) all-coords)
         landscape-mode? @(rf/subscribe [:landscape-mode?])
-        padding         (* hex-size 2)
+        padding (* hex-size 2)
         [center-x
-         center-y]  (compute-original-center grid-pattern all-pixels padding)
-        min-x       (apply min (map (if landscape-mode? second first) all-pixels))
-        max-x       (apply max (map (if landscape-mode? second first) all-pixels))
-        min-y       (apply min (map (if landscape-mode? first second) all-pixels))
-        max-y       (apply max (map (if landscape-mode? first second) all-pixels))
+         center-y] (compute-original-center grid-pattern all-pixels padding)
+        min-x (apply min (map (if landscape-mode? second first) all-pixels))
+        max-x (apply max (map (if landscape-mode? second first) all-pixels))
+        min-y (apply min (map (if landscape-mode? first second) all-pixels))
+        max-y (apply max (map (if landscape-mode? first second) all-pixels))
         ;; Add padding
-        view-x      (- min-x padding)
-        view-y      (- min-y padding)
-        view-width  (+ (- max-x min-x) (* padding 2))
+        view-x (- min-x padding)
+        view-y (- min-y padding)
+        view-width (+ (- max-x min-x) (* padding 2))
         view-height (+ (- max-y min-y) (* padding 2))]
     [:svg
-     {:viewBox  (str view-x " " view-y " " view-width " " view-height)
-      :width    "100%"
-      :height   "100%"
-      :style    {:max-width        "1200px"
-                 :max-height       "800px"
-                 :background-color "#1e88e5"}
+     {:viewBox (str view-x " " view-y " " view-width " " view-height)
+      :width "100%"
+      :height "100%"
+      :style {:max-width "1200px"
+              :max-height "800px"
+              :background-color "#1e88e5"}
       :on-click (when swap-number-mode?
                   (fn [e]
                     (rf/dispatch [:clear-token-selection])))}
@@ -466,7 +466,7 @@
       [:g
        (for [hex-data hexes]
          ^{:key (str "hex-" (-> hex-data :coord first) "-" (-> hex-data :coord second))}
-         [hex-tile hex-data swap-number-mode? selected-token-coord developer-mode? fog-state ])]
+         [hex-tile hex-data swap-number-mode? selected-token-coord developer-mode? fog-state])]
 
       ;; Harbors
       [:g
@@ -481,7 +481,7 @@
          (let [hex-size db/hex-size
                vertices (hex-utils/hex-vertices coord hex-size)]
            (for [[x y] vertices]
-             [:circle {:cx   x
-                       :cy   y
-                       :r    10
+             [:circle {:cx x
+                       :cy y
+                       :r 10
                        :fill hex-utils/path-color}])))]]]))

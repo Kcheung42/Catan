@@ -15,10 +15,10 @@
 
 (def scale-config
   "Configuration for board scale settings"
-  {:min     100
-   :max     500
+  {:min 100
+   :max 500
    :default 100
-   :step    25})
+   :step 25})
 
 ;; -- Helper Functions --------------------------------------------------------
 
@@ -40,7 +40,7 @@
 (defn- get-generation-modes
   "Extract generation mode settings from the database."
   [db]
-  {:tournament-mode?    (get-in db [:ui :tournament-mode] false)
+  {:tournament-mode? (get-in db [:ui :tournament-mode] false)
    :random-harbor-mode? (get-in db [:ui :random-harbor-mode] false)})
 
 (defn- generate-board-with-fog
@@ -54,23 +54,25 @@
   Returns: Updated db with new board and fog state"
   [db scenario-config & {:keys [scenario-id]}]
   (let [{:keys [tournament-mode? random-harbor-mode?]} (get-generation-modes db)
-        new-board                                      (board-gen/generate-board scenario-config
+        new-board (board-gen/generate-board scenario-config
                                             tournament-mode?
                                             random-harbor-mode?)
-        fog-state-hexes                                (scenario-gen/initialize-fog-state scenario-config)
-        fog-number-deck                                (scenario-gen/initialize-fog-number-deck scenario-config)]
+        fog-state-hexes (scenario-gen/initialize-fog-state scenario-config)
+        fog-number-deck (scenario-gen/initialize-fog-number-deck scenario-config)
+        fog-terrain-deck (scenario-gen/initialize-fog-terrain-deck scenario-config)]
     (cond-> db
-      scenario-id           (assoc :scenario scenario-id)
-      :always               (assoc :board new-board)
-      :always               (assoc-in [:ui :selected-token-coord] nil)
+      scenario-id (assoc :scenario scenario-id)
+      :always (assoc :board new-board)
+      :always (assoc-in [:ui :selected-token-coord] nil)
       (seq fog-state-hexes) (assoc-in [:board :fog-state :hexes] fog-state-hexes)
-      (seq fog-number-deck) (assoc-in [:board :fog-state :number-deck] fog-number-deck))))
+      (seq fog-number-deck) (assoc-in [:board :fog-state :number-deck] fog-number-deck)
+      (seq fog-terrain-deck) (assoc-in [:board :fog-state :terrain-deck] fog-terrain-deck))))
 
 (defn- update-scale
   "Update the board scale by applying a delta, clamped to min/max bounds."
   [db delta]
   (let [current-scale (get-in db [:ui :board-scale] (:default scale-config))
-        new-scale     (-> (+ current-scale delta)
+        new-scale (-> (+ current-scale delta)
                       (max (:min scale-config))
                       (min (:max scale-config)))]
     (assoc-in db [:ui :board-scale] new-scale)))
@@ -107,8 +109,11 @@
  [persist-db]
  (fn [db _]
    (let [current-scenario (:scenario db)
-         scenario-config  (registry/get-scenario current-scenario)]
-     (generate-board-with-fog db scenario-config))))
+         scenario-config (registry/get-scenario current-scenario)]
+     (if scenario-config
+       (generate-board-with-fog db scenario-config)
+       ;; Even without a scenario, clear the selection
+       (assoc-in db [:ui :selected-token-coord] nil)))))
 
 (rf/reg-event-db
  :generate-board-success
@@ -143,24 +148,27 @@
  :reveal-fog-tile
  [persist-db]
  (fn [db [_ coord]]
-   (let [fog-state        (get-in db [:board :fog-state :hexes])
-         fog-entry        (get fog-state coord)
+   (let [fog-state (get-in db [:board :fog-state :hexes])
+         fog-entry (get fog-state coord)
          current-scenario (:scenario db)
-         scenario-config  (registry/get-scenario current-scenario)]
+         scenario-config (registry/get-scenario current-scenario)]
      ;; Only reveal if coordinate exists in fog-state and not already revealed
      (if (and fog-entry
               (not (:revealed? fog-entry))
               scenario-config)
-       (let [terrain     (get-in db [:board :fog-state :hexes coord :terrain])
-             is-water?   (= :water terrain)
+       (let [terrain-deck (get-in db [:board :fog-state :terrain-deck])
+             terrain (first terrain-deck)
+             is-water? (= :water terrain)
              number-deck (get-in db [:board :fog-state :number-deck])
-             number      (if is-water?
+             number (if is-water?
                       nil
                       (first number-deck))]
-         ;; Update fog state and number and remove number from fog-number-deck
+         ;; Update fog state with terrain and number, remove from decks
          (cond-> db
-           :always         (assoc-in [:board :fog-state :hexes coord :revealed?] true)
-           :always         (assoc-in [:board :fog-state :hexes coord :number] number)
+           :always (assoc-in [:board :fog-state :hexes coord :revealed?] true)
+           :always (assoc-in [:board :fog-state :hexes coord :terrain] terrain)
+           :always (assoc-in [:board :fog-state :hexes coord :number] number)
+           :always (assoc-in [:board :fog-state :terrain-deck] (rest terrain-deck))
            (not is-water?) (assoc-in [:board :fog-state :number-deck] (rest number-deck))))
        ;; If already revealed or invalid coordinate, return db unchanged
        db))))
@@ -171,19 +179,13 @@
  :shuffle-hidden-fog-tiles
  [persist-db]
  (fn [db]
-   (let [fog-state-hexes            (get-in db [:board :fog-state :hexes])
-         hidden-fog-state-hexes     (remove (fn [[_k v]] (:revealed? v)) fog-state-hexes)
-         new-fog-terrain-deck       (shuffle (map :terrain (vals hidden-fog-state-hexes)))
-         new-hidden-fog-state-hexes (into {} (map
-                                              (fn [[coord info] new-resource]
-                                                [coord (assoc info :terrain new-resource)])
-                                              hidden-fog-state-hexes
-                                              new-fog-terrain-deck))
-         fog-state-numbers          (get-in db [:board :fog-state :number-deck])]
+   (let [terrain-deck (get-in db [:board :fog-state :terrain-deck])
+         shuffled-terrain-deck (shuffle terrain-deck)
+         number-deck (get-in db [:board :fog-state :number-deck])
+         shuffled-number-deck (shuffle number-deck)]
      (-> db
-         (assoc-in [:board :fog-state :hexes]
-                   (merge fog-state-hexes new-hidden-fog-state-hexes))
-         (assoc-in [:board :fog-state :number-deck] (shuffle fog-state-numbers))))))
+         (assoc-in [:board :fog-state :terrain-deck] shuffled-terrain-deck)
+         (assoc-in [:board :fog-state :number-deck] shuffled-number-deck)))))
 
 ;; -- UI Controls -------------------------------------------------------------
 
@@ -242,17 +244,17 @@
    (let [current-selection (get-in db [:ui :selected-token-coord])]
      (if current-selection
        ;; Second selection - perform swap
-       (let [hexes           (get-in db [:board :hexes])
+       (let [hexes (get-in db [:board :hexes])
              fog-state-hexes (get-in db [:board :fog-state :hexes])
-             hex1-idx        (first (keep-indexed #(when (= (:coord %2) current-selection) %1) hexes))
-             hex2-idx        (first (keep-indexed #(when (= (:coord %2) coord) %1) hexes))]
+             hex1-idx (first (keep-indexed #(when (= (:coord %2) current-selection) %1) hexes))
+             hex2-idx (first (keep-indexed #(when (= (:coord %2) coord) %1) hexes))]
          (if (and hex1-idx hex2-idx)
            (let [hex1 (nth hexes hex1-idx)
                  hex2 (nth hexes hex2-idx)
 
                  ;; Check if each hex is a revealed fog tile
-                 fog1-info         (get fog-state-hexes (:coord hex1))
-                 fog2-info         (get fog-state-hexes (:coord hex2))
+                 fog1-info (get fog-state-hexes (:coord hex1))
+                 fog2-info (get fog-state-hexes (:coord hex2))
                  is-fog1-revealed? (and (= (:resource hex1) :fog) (:revealed? fog1-info))
                  is-fog2-revealed? (and (= (:resource hex2) :fog) (:revealed? fog2-info))
 
@@ -263,14 +265,14 @@
              ;; Update both hex :number fields AND fog-state entries as needed
              (cond-> db
                ;; Always update hex :number fields
-               true              (assoc-in [:board :hexes hex1-idx :number] num2)
-               true              (assoc-in [:board :hexes hex2-idx :number] num1)
+               true (assoc-in [:board :hexes hex1-idx :number] num2)
+               true (assoc-in [:board :hexes hex2-idx :number] num1)
                ;; Update fog-state if hex1 is revealed fog
                is-fog1-revealed? (assoc-in [:board :fog-state :hexes (:coord hex1) :number] num2)
                ;; Update fog-state if hex2 is revealed fog
                is-fog2-revealed? (assoc-in [:board :fog-state :hexes (:coord hex2) :number] num1)
                ;; Clear selection
-               true              (assoc-in [:ui :selected-token-coord] nil)))
+               true (assoc-in [:ui :selected-token-coord] nil)))
            ;; Invalid selection, just clear
            (assoc-in db [:ui :selected-token-coord] nil)))
        ;; First selection - store coordinate

@@ -4,6 +4,8 @@
    [re-frame.core :as rf]
    [catan-board.events :as events]
    [catan-board.subs :as subs]
+   [catan-board.custom-editor.events :as custom-editor-events]
+   [catan-board.custom-editor.subs :as custom-editor-subs]
    [catan-board.views :as views]))
 
 (defn mount-root []

@@ -100,16 +100,16 @@
         ;; Terrain should be assigned
         (is (some? (:terrain revealed-hex))
             "Revealed fog hex should have terrain assigned")
-        (is (contains? #{:wood :brick :sheep :wheat :ore :desert :gold}
-                      (:terrain revealed-hex))
+        (is (contains? #{:wood :brick :sheep :wheat :ore :desert :gold :water}
+                       (:terrain revealed-hex))
             "Terrain should be a valid resource type")
 
-        ;; Number should be assigned (or nil for desert)
+        ;; Number should be assigned (or nil for desert/water)
         (is (contains? revealed-hex :number)
             "Revealed fog hex should have number key")
-        (when (not= :desert (:terrain revealed-hex))
+        (when (not (#{:desert :water} (:terrain revealed-hex)))
           (is (number? (:number revealed-hex))
-              "Non-desert revealed fog should have number token"))
+              "Non-desert/water revealed fog should have number token"))
 
         ;; Clicking again should not change state
         (let [state-after-first-reveal updated-fog-state]
@@ -248,10 +248,12 @@
           face-up-resources (get-in config [:face-up-distribution :resources])
           face-up-resource-total (reduce + (vals face-up-resources))
           face-up-numbers (get-in config [:face-up-distribution :number-tokens])
+          face-up-numbers-total (reduce + (vals face-up-numbers))
 
           fog-resources (get-in config [:fog-distribution :resources])
           fog-resource-total (reduce + (vals fog-resources))
-          fog-numbers (get-in config [:fog-distribution :number-tokens])]
+          fog-numbers (get-in config [:fog-distribution :number-tokens])
+          fog-numbers-total (reduce + (vals fog-numbers))]
 
       ;; Total hexes should be 44
       (is (= 44 total-hexes)
@@ -268,13 +270,13 @@
       ;; Face-up distribution integrity
       (is (= terrain-count face-up-resource-total)
           "Face-up resource count should match terrain hex count")
-      (is (= 13 (count face-up-numbers))
+      (is (= 13 face-up-numbers-total)
           "Should have 13 number tokens for face-up hexes (14 - 1 desert)")
 
       ;; Fog distribution integrity
       (is (= fog-count fog-resource-total)
           "Fog resource count should match fog hex count")
-      (is (= 10 (count fog-numbers))
+      (is (= 10 fog-numbers-total)
           "Should have 10 number tokens for fog hexes (12 - 2 deserts)")
 
       ;; Gold resource should only appear in fog distribution
@@ -366,8 +368,8 @@
           (is (or (not= first-resources second-resources)
                   ;; If they match, at least verify they're valid
                   (every? #(contains? #{:wood :brick :sheep :wheat :ore :desert}
-                                     %)
-                         first-resources))
+                                      %)
+                          first-resources))
               "Board generation should randomize resource placement"))
 
         ;; All coordinates should be valid for all hexes

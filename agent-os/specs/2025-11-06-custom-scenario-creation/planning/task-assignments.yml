@@ -1,0 +1,20 @@
+task_assignments:
+  - task_group: "Task Group 1: Database Schema & Re-frame Foundation"
+    assigned_subagent: "database-engineer"
+    verified_by: "backend-verifier"
+
+  - task_group: "Task Group 2: Custom Scenario Editor UI - Sidebar Form"
+    assigned_subagent: "ui-designer"
+    verified_by: "frontend-verifier"
+
+  - task_group: "Task Group 3: Interactive Board Editing - Hex & Harbor Placement"
+    assigned_subagent: "api-engineer"
+    verified_by: "frontend-verifier"
+
+  - task_group: "Task Group 4: Integration & Scenario Loading"
+    assigned_subagent: "api-engineer"
+    verified_by: "frontend-verifier"
+
+  - task_group: "Task Group 5: Testing, Validation & Polish"
+    assigned_subagent: "testing-engineer"
+    verified_by: null

@@ -34,17 +34,17 @@
   "Determines hex type (water/fog/terrain) based on coordinate and config."
   [coord {:keys [hex-types]}]
   (cond
-    (contains? (:water hex-types) coord)   :water
-    (contains? (:fog hex-types) coord)     :fog
+    (contains? (:water hex-types) coord) :water
+    (contains? (:fog hex-types) coord) :fog
     (contains? (:village hex-types) coord) :village
-    :else                                  :terrain)) ; default to terrain if not specified
+    :else :terrain)) ; default to terrain if not specified
 
 (defn- assign-resource-to-hex
   "Assigns resource to a hex coordinate, consuming from resource deck."
   [coord resource]
-  {:coord    coord
+  {:coord coord
    :resource resource
-   :number   nil})
+   :number nil})
 
 (defn- assign-number-to-hex
   "Assigns number token to hex if it's not a desert, water, or fog."
@@ -65,7 +65,6 @@
 
     :else
     (let [num (first @number-atom)]
-      (prn "num:" num)
       (swap! number-atom rest)
       (assoc hex :number num))))
 
@@ -96,18 +95,18 @@
 
         ;; Step 2: Classify coordinates by type
         classified-coords (group-by #(classify-hex-by-type % scenario-config) all-coords)
-        water-coords      (get classified-coords :water [])
-        fog-coords        (get classified-coords :fog [])
-        village-coords    (get classified-coords :village [])
-        terrain-coords    (get classified-coords :terrain all-coords)
+        water-coords (get classified-coords :water [])
+        fog-coords (get classified-coords :fog [])
+        village-coords (get classified-coords :village [])
+        terrain-coords (get classified-coords :terrain all-coords)
 
         ;; Step 3: Prepare shuffled resource and number decks
         resource-deck (shuffle-resources (:resources face-up-distribution))
-        number-deck   (shuffle-numbers (:number-tokens face-up-distribution))
+        number-deck (shuffle-numbers (:number-tokens face-up-distribution))
 
         ;; Step 4: Create hexes for each type
-        water-hexes   (mapv #(assign-resource-to-hex % :water) water-coords)
-        fog-hexes     (mapv #(assign-resource-to-hex % :fog) fog-coords)
+        water-hexes (mapv #(assign-resource-to-hex % :water) water-coords)
+        fog-hexes (mapv #(assign-resource-to-hex % :fog) fog-coords)
         village-hexes (mapv #(assign-resource-to-hex % :village) village-coords)
 
         ;; Step 5: Assign resources to terrain hexes
@@ -116,7 +115,7 @@
                                            resource-deck)
 
         ;; Step 6: Assign numbers to non-desert terrain hexes
-        number-atom                (atom number-deck)
+        number-atom (atom number-deck)
         terrain-hexes-with-numbers (mapv #(assign-number-to-hex % number-atom)
                                          (concat terrain-hexes-with-resources village-hexes))
 
@@ -132,16 +131,15 @@
                       harbors)]
 
     ;; Return complete board structure
-    {:hexes    all-hexes
+    {:hexes all-hexes
      ;; :harbors  (vec harbors) ; Use harbors from config directly (no shuffling)
-     :harbors  harbor-deck
+     :harbors harbor-deck
      :metadata {:generated-at (.toLocaleString (js/Date.))
-                :board-id     (str (random-uuid))
-                :scenario-id  (:id scenario-config)
-                :hex-counts   {:water   (count water-hexes)
-                               :fog     (count fog-hexes)
-                               :terrain (count terrain-hexes-with-numbers)}}}))
-
+                :board-id (str (random-uuid))
+                :scenario-id (:id scenario-config)
+                :hex-counts {:water (count water-hexes)
+                             :fog (count fog-hexes)
+                             :terrain (count terrain-hexes-with-numbers)}}}))
 
 ;; -- Seafarers
 
@@ -151,6 +149,16 @@
   [{:keys [fog-distribution]}]
   (let [number-tokens (:number-tokens fog-distribution)]
     (shuffle-numbers number-tokens)))
+
+(defn initialize-fog-terrain-deck
+  "Creates shuffled deck of terrain types for fog hexes.
+
+   Returns a shuffled sequence of terrain keywords based on fog distribution."
+  [{:keys [fog-distribution]}]
+  (when fog-distribution
+    (shuffle (mapcat (fn [[resource count]]
+                       (repeat count resource))
+                     (:resources fog-distribution)))))
 
 ;; -- Fog State Initialization ------------------------------------------------
 
@@ -163,15 +171,11 @@
      {[q r] {:revealed? false :terrain nil :number nil}}
 
    All fog hexes start unrevealed with no terrain or number assigned."
-  [{:keys [hex-types fog-distribution]}]
-  (let [fog-coords    (:fog hex-types #{})
-        resource-deck (shuffle (mapcat (fn [[resource count]]
-                                         (repeat count resource))
-                                       (:resources fog-distribution)))]
+  [{:keys [hex-types]}]
+  (let [fog-coords (:fog hex-types #{})]
     (into {}
-          (map (fn [coord terrain]
+          (map (fn [coord]
                  [coord {:revealed? false
-                         :terrain   terrain
-                         :number    nil}])
-               fog-coords
-               resource-deck))))
+                         :terrain nil
+                         :number nil}])
+               fog-coords))))

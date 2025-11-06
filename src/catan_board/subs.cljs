@@ -35,19 +35,19 @@
  :fog-state
  :<- [:board]
  (fn [db _]
-   (:fog-state db)))
+   (get-in db [:fog-state :hexes])))
 
 (rf/reg-sub
  :fog-state-hexes
- :<- [:fog-state]
- (fn [db _]
-   (:hexes db)))
+ :<- [:board]
+ (fn [board _]
+   (get-in board [:fog-state :hexes])))
 
 (rf/reg-sub
  :fog-number-deck
- :<- [:fog-state]
- (fn [db _]
-   (:number-deck db)))
+ :<- [:board]
+ (fn [board _]
+   (get-in board [:fog-state :number-deck])))
 
 ;; -- Scenario Subscriptions --------------------------------------------------
 

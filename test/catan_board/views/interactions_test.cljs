@@ -26,9 +26,11 @@
     ;; Initialize test database
     (rf/dispatch-sync [:test/set-db
                        {:scenario :fog-islands-3p
-                        :fog-state {[1 0] {:revealed? false :terrain nil :number nil}}
                         :board {:hexes [{:coord [1 0] :resource :fog :number nil}]
-                                :harbors []}
+                                :harbors []
+                                :fog-state {:hexes {[1 0] {:revealed? false :terrain nil :number nil}}
+                                            :terrain-deck [:wood]
+                                            :number-deck [5]}}
                         :ui {:swap-number-mode false}}])
 
     ;; Trigger fog reveal

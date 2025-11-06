@@ -86,7 +86,8 @@
 (deftest generate-board-clears-selection-workflow-test
   (testing "Generating new board clears active token selection"
     ;; Initialize with edit mode on and a selected token
-    (rf/dispatch-sync [:test/set-db {:ui {:swap-number-mode true
+    (rf/dispatch-sync [:test/set-db {:scenario :base-game
+                                     :ui {:swap-number-mode true
                                           :selected-token-coord [0 0]
                                           :tournament-mode false}
                                      :board {:hexes [{:coord [0 0] :resource :wood :number 5}]}}])

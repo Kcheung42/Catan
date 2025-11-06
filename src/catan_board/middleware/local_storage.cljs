@@ -2,10 +2,16 @@
   (:require [re-frame.core :as re-frame]
             [cljs.reader :as reader]))
 
+(defn- has-local-storage?
+  "Check if localStorage is available"
+  []
+  (exists? js/localStorage))
+
 (defn save-to-local-storage!
   "Helper that serializes and saves the given data to localStorage under a key."
   [key data]
-  (.setItem js/localStorage key (pr-str data)))
+  (when (has-local-storage?)
+    (.setItem js/localStorage key (pr-str data))))
 
 (defn assoc-to-local-storage-array!
   "Assoc `entry` to a value stored under `key` in localStorage.
@@ -13,12 +19,13 @@
    Example:
      (append-to-local-storage-array! \"app-state\" {:id 1 :data \"foo\"})"
   [key entry]
-  (let [existing (some-> (.getItem js/localStorage key)
-                         (reader/read-string))
-        current  (if (map? existing) existing {})
-        new-data (merge current entry)]
-    (save-to-local-storage! key new-data)
-    new-data))
+  (when (has-local-storage?)
+    (let [existing (some-> (.getItem js/localStorage key)
+                           (reader/read-string))
+          current  (if (map? existing) existing {})
+          new-data (merge current entry)]
+      (save-to-local-storage! key new-data)
+      new-data)))
 
 (defn append-to-local-storage-array!
   "Appends `entry` to a vector stored under `key` in localStorage.
@@ -26,12 +33,13 @@
    Example:
      (append-to-local-storage-array! \"app-state\" {:id 1 :data \"foo\"})"
   [key entry]
-  (let [existing (some-> (.getItem js/localStorage key)
-                         (reader/read-string))
-        current  (if (seq existing) existing '())
-        new-data (conj (take 20 current) entry)] ;; keeps only the last 20 edits
-    (save-to-local-storage! key new-data)
-    new-data))
+  (when (has-local-storage?)
+    (let [existing (some-> (.getItem js/localStorage key)
+                           (reader/read-string))
+          current  (if (seq existing) existing '())
+          new-data (conj (take 20 current) entry)] ;; keeps only the last 20 edits
+      (save-to-local-storage! key new-data)
+      new-data)))
 
 (defn pop-first-from-local-storage-array!
   "Removes and returns the first element of the vector stored under `key` in localStorage.
@@ -40,17 +48,20 @@
      {:removed <the element removed>
       :remaining <the updated vector>}"
   [key]
-  (let [existing (some-> (.getItem js/localStorage key)
-                         (reader/read-string))]
-    (if (seq existing)
-      (let [removed   (first existing)
-            remaining (rest existing)]
-        (save-to-local-storage! key remaining)
-        {:removed   removed
-         :remaining remaining})
-      ;; nothing to pop
-      {:removed   nil
-       :remaining '()})))
+  (if (has-local-storage?)
+    (let [existing (some-> (.getItem js/localStorage key)
+                           (reader/read-string))]
+      (if (seq existing)
+        (let [removed   (first existing)
+              remaining (rest existing)]
+          (save-to-local-storage! key remaining)
+          {:removed   removed
+           :remaining remaining})
+        ;; nothing to pop
+        {:removed   nil
+         :remaining '()}))
+    {:removed   nil
+     :remaining '()}))
 
 (defn load-latest-app-db-from-local-storage
   "Loads data from localStorage (if any) and optionally extracts a value at the given path.
@@ -58,14 +69,16 @@
      (load-latest-app-db-from-local-storage)                ;=> entire map
      (load-latest-app-db-from-local-storage [:settings])    ;=> just (:settings saved-db)"
   ([]
-   (some-> (.getItem js/localStorage "app-db")
-           (reader/read-string)
-           first))
+   (when (has-local-storage?)
+     (some-> (.getItem js/localStorage "app-db")
+             (reader/read-string)
+             first)))
   ([path]
-   (some-> (.getItem js/localStorage "app-db")
-           (reader/read-string)
-           first
-           (get-in path))))
+   (when (has-local-storage?)
+     (some-> (.getItem js/localStorage "app-db")
+             (reader/read-string)
+             first
+             (get-in path)))))
 
 (defn load-from-local-storage
   "Loads data from localStorage (if any) and optionally extracts a value at the given path.
@@ -73,12 +86,14 @@
      (load-from-local-storage \"app-db\")                ;=> entire map
      (load-from-local-storage \"app-db\" [:settings])    ;=> just (:settings saved-db)"
   ([key]
-   (some-> (.getItem js/localStorage key)
-           (reader/read-string)))
+   (when (has-local-storage?)
+     (some-> (.getItem js/localStorage key)
+             (reader/read-string))))
   ([key path]
-   (some-> (.getItem js/localStorage key)
-           (reader/read-string)
-           (get-in path))))
+   (when (has-local-storage?)
+     (some-> (.getItem js/localStorage key)
+             (reader/read-string)
+             (get-in path)))))
 
 (defn persist-db-after
   "Returns an interceptor that saves the whole db or a path of it to localStorage
@@ -88,9 +103,10 @@
    (re-frame/->interceptor
     :id     :persist-db
     :after  (fn [context]
-              (let [new-db (get-in context [:effects :db])
-                    data   (path-fn new-db)]
-                (append-to-local-storage-array! key data))
+              (when (has-local-storage?)
+                (let [new-db (get-in context [:effects :db])
+                      data   (path-fn new-db)]
+                  (append-to-local-storage-array! key data)))
               context))))
 
 

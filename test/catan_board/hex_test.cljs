@@ -11,13 +11,15 @@
              (hex/axial-to-pixel [0 0] hex-size)))
 
       ;; Hex to the right (q=1, r=0)
-      (is (= [90.0 0.0]
-             (hex/axial-to-pixel [1 0] hex-size)))
+      ;; For flat-top hexagons: x = 3/2 * size * q, y = sqrt(3) * size * (r + q/2)
+      (let [[x y] (hex/axial-to-pixel [1 0] hex-size)]
+        (is (= 90.0 x) "x coordinate should be 90")
+        (is (< (Math/abs (- y 51.96)) 0.01) "y coordinate should be ~51.96"))
 
       ;; Hex down-right (q=0, r=1)
       (let [[x y] (hex/axial-to-pixel [0 1] hex-size)]
-        (is (< (Math/abs x) 0.01))  ; x should be ~0
-        (is (> y 100)))             ; y should be positive
+        (is (< (Math/abs x) 0.01)) ; x should be ~0
+        (is (> y 100))) ; y should be positive
 
       ;; Round trip conversions
       (is (= [1 0]
@@ -30,11 +32,11 @@
   (testing "Finds the 6 neighbors of a hex"
     (let [neighbors (hex/hex-neighbors [0 0])]
       (is (= 6 (count neighbors)))
-      (is (contains? (set neighbors) [1 0]))   ; right
-      (is (contains? (set neighbors) [-1 0]))  ; left
-      (is (contains? (set neighbors) [0 1]))   ; down-right
-      (is (contains? (set neighbors) [0 -1]))  ; up-left
-      (is (contains? (set neighbors) [1 -1]))  ; up-right
+      (is (contains? (set neighbors) [1 0])) ; right
+      (is (contains? (set neighbors) [-1 0])) ; left
+      (is (contains? (set neighbors) [0 1])) ; down-right
+      (is (contains? (set neighbors) [0 -1])) ; up-left
+      (is (contains? (set neighbors) [1 -1])) ; up-right
       (is (contains? (set neighbors) [-1 1]))))) ; down-left
 
 (deftest hex-distance-test
@@ -52,7 +54,7 @@
       (is (= 19 (count grid)))
 
       ;; Check that specific positions are included
-      (is (contains? (set grid) [0 0]))   ; center hex
+      (is (contains? (set grid) [0 0])) ; center hex
       (is (contains? (set grid) [1 0]))
       (is (contains? (set grid) [0 1]))
 

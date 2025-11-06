@@ -12,8 +12,8 @@
    - Southeast island: 7 face-up terrain hexes (right side of board)
    - 12 fog hexes: positioned between islands and around edges
    - 18 water hexes: outer border surrounding all hexes"
-  {:id           :fog-islands-3p
-   :name         "Fog Islands (3-player)"
+  {:id :fog-islands-3p
+   :name "Fog Islands (3-player)"
    :player-count 3
 
    ;; Grid pattern: 5-6-7-8-7-6-5 columns = 44 total hexes
@@ -32,8 +32,12 @@
    ;; q=3  (5 hexes): [3 -4] [3 -3] [3 -2] [3 -1] [3 0]
    :hex-types
    {;; Outer border water hexes (18 total)
-    :water #{[-3 -1] [-2 -2] [-1 -3] [0 -4] [1 -4] [1 -3] [1 -2] [0 -1] [ -1 0] [-2 1] [-3 1]
-             [0 3] [-1 3] [-1 2] [-0 1] [1 0] [2 -1] [3 -2]}
+    :water #{[-3 -1] [-2 -2] [-1 -3] [0 -4] [1 -4] [1 -3] [1 -2] [0 -1] [-1 0] [-2 1] [-3 1]
+             [0 3] [-1 3] [-1 2] [0 1] [1 0] [2 -1] [3 -2]}
+
+    ;; Face-up terrain hexes (14 total - two island clusters)
+    :terrain #{[-3 0] [-2 -1] [-2 0] [-1 -2] [-1 -1] [0 -3] [0 -2]
+               [0 2] [1 1] [1 2] [2 0] [2 1] [3 -1] [3 0]}
 
     ;; Fog hexes between and around islands (12 total)
     :fog #{;; cluster on the left
@@ -47,50 +51,49 @@
 
    ;; Resource and number distribution for face-up terrain hexes
    :face-up-distribution
-   {:resources     {:water  0
-                    :desert 1
-                    :gold   0
-                    :wheat  3
-                    :brick  2
-                    :ore    2
-                    :sheep  3
-                    :wood   3}
+   {:resources {:water 0
+                :desert 1
+                :wheat 3
+                :brick 2
+                :ore 2
+                :sheep 3
+                :wood 3}
     ;; Number tokens for non-desert hexes (14 terrain, 1 desert, so 13 tokens)
-    :number-tokens {2  0
-                    3  1
-                    4  1
-                    5  2
-                    6  2
-                    8  2
-                    9  2
+    :number-tokens {2 0
+                    3 1
+                    4 1
+                    5 2
+                    6 2
+                    8 2
+                    9 2
                     10 1
-                    11 2
+                    11 1
                     12 1}
-    :assignment    :random}
+    :assignment :random}
 
    ;; Resource and number distribution for fog hexes
    ;; Includes new :gold resource type unique to Seafarers scenarios
    :fog-distribution
-   {:resources     {:water  2
-                    :desert 0
-                    :gold   2
-                    :wheat  2
-                    :brick  2
-                    :ore    2
-                    :sheep  1
-                    :wood   1}
+   {:resources {:water 2
+                :desert 0
+                :gold 2
+                :wheat 2
+                :brick 2
+                :ore 2
+                :sheep 1
+                :wood 1}
     ;; Number tokens for non-desert fog hexes (12 fog, 2 desert, so 10 tokens)
-    :number-tokens {2  0
-                    3  2
-                    4  1
-                    5  1
-                    6  1
-                    8  1
-                    9  1
+    :number-tokens {2 0
+                    3 2
+                    4 1
+                    5 1
+                    6 1
+                    8 1
+                    9 1
                     10 1
                     11 1
                     12 1}
-    :assignment    :on-reveal}
+    :assignment :on-reveal}
 
    ;; Harbor positions (8 total)
    ;; Each harbor: {:land-hex [q r] :direction int :type keyword}
@@ -100,35 +103,35 @@
    :harbors
    [;; Northwest island harbors
 
-    {:land-hex  [-3 0]
+    {:land-hex [-3 0]
      :direction hex/DIRECTION_N
-     :type      :generic}
+     :type :generic}
 
-    {:land-hex  [-1 -2]
+    {:land-hex [-1 -2]
      :direction hex/DIRECTION_NW
-     :type      :wood}
+     :type :wood}
 
-    {:land-hex  [0 -3]
+    {:land-hex [0 -3]
      :direction hex/DIRECTION_NW
-     :type      :ore}
+     :type :ore}
 
-    {:land-hex  [-2 0]
+    {:land-hex [-2 0]
      :direction hex/DIRECTION_SW
-     :type      :brick}
+     :type :brick}
 
     ;; Southeast island harbors
-    {:land-hex  [0 2]
+    {:land-hex [0 2]
      :direction hex/DIRECTION_S
-     :type      :generic}
+     :type :generic}
 
-    {:land-hex  [1 2]
+    {:land-hex [1 2]
      :direction hex/DIRECTION_SE
-     :type      :wheat}
+     :type :wheat}
 
-    {:land-hex  [3 0]
+    {:land-hex [3 0]
      :direction hex/DIRECTION_S
-     :type      :sheep}
+     :type :sheep}
 
-    {:land-hex  [3 -1]
+    {:land-hex [3 -1]
      :direction hex/DIRECTION_SE
-     :type      :generic}]})
+     :type :generic}]})
