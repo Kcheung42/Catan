@@ -7,6 +7,74 @@
    [catan-board.scenarios.registry :as registry]
    [catan-board.middleware.local-storage :as local-storage]))
 
+;; -- Constants ---------------------------------------------------------------
+
+(def persist-db
+  "Middleware to persist the database to local storage after an event"
+  (local-storage/persist-db-after "app-db"))
+
+(def scale-config
+  "Configuration for board scale settings"
+  {:min     100
+   :max     500
+   :default 100
+   :step    25})
+
+;; -- Helper Functions --------------------------------------------------------
+
+(defn reg-toggle-event
+  "Register a simple toggle event handler for a boolean value in the db.
+
+  Parameters:
+  - event-id: The event keyword to register
+  - path: Vector path to the boolean value in the db
+  - persist?: If true, persist db changes to local storage (default: false)"
+  [event-id path & {:keys [persist?] :or {persist? false}}]
+  (rf/reg-event-db
+   event-id
+   (cond-> []
+     persist? (conj persist-db))
+   (fn [db _]
+     (update-in db path not))))
+
+(defn- get-generation-modes
+  "Extract generation mode settings from the database."
+  [db]
+  {:tournament-mode?    (get-in db [:ui :tournament-mode] false)
+   :random-harbor-mode? (get-in db [:ui :random-harbor-mode] false)})
+
+(defn- generate-board-with-fog
+  "Generates a board with fog state for the given scenario config.
+
+  Parameters:
+  - db: The current database
+  - scenario-config: The scenario configuration from the registry
+  - scenario-id: Optional scenario ID to update in the db (if switching scenarios)
+
+  Returns: Updated db with new board and fog state"
+  [db scenario-config & {:keys [scenario-id]}]
+  (let [{:keys [tournament-mode? random-harbor-mode?]} (get-generation-modes db)
+        new-board                                      (board-gen/generate-board scenario-config
+                                            tournament-mode?
+                                            random-harbor-mode?)
+        fog-state-hexes                                (scenario-gen/initialize-fog-state scenario-config)
+        fog-number-deck                                (scenario-gen/initialize-fog-number-deck scenario-config)]
+    (cond-> db
+      scenario-id           (assoc :scenario scenario-id)
+      :always               (assoc :board new-board)
+      :always               (assoc-in [:ui :selected-token-coord] nil)
+      (seq fog-state-hexes) (assoc-in [:board :fog-state :hexes] fog-state-hexes)
+      (seq fog-number-deck) (assoc-in [:board :fog-state :number-deck] fog-number-deck))))
+
+(defn- update-scale
+  "Update the board scale by applying a delta, clamped to min/max bounds."
+  [db delta]
+  (let [current-scale (get-in db [:ui :board-scale] (:default scale-config))
+        new-scale     (-> (+ current-scale delta)
+                      (max (:min scale-config))
+                      (min (:max scale-config)))]
+    (assoc-in db [:ui :board-scale] new-scale)))
+
 ;; -- Initialization ----------------------------------------------------------
 
 (rf/reg-event-db
@@ -28,7 +96,7 @@
 
 (rf/reg-event-fx
  :undo
- (fn [_ ]
+ (fn [_]
    {:fx [[:dispatch [:pop-history]]
          [:dispatch [:reload-board]]]}))
 
@@ -36,23 +104,11 @@
 
 (rf/reg-event-db
  :generate-board
- [(local-storage/persist-db-after "app-db")]
+ [persist-db]
  (fn [db _]
-   (let [current-scenario    (:scenario db)
-         tournament-mode?    (get-in db [:ui :tournament-mode] false)
-         random-harbor-mode? (get-in db [:ui :random-harbor-mode] false)
-         scenario-config     (registry/get-scenario current-scenario)
-         new-board           (board-gen/generate-board scenario-config
-                                                       tournament-mode?
-                                                       random-harbor-mode?)
-         fog-state-hexes     (scenario-gen/initialize-fog-state scenario-config)
-         fog-number-deck     (scenario-gen/initialize-fog-number-deck scenario-config)]
-
-     (cond-> db
-       :always               (assoc :board new-board)
-       :always               (assoc-in [:ui :selected-token-coord] nil)
-       (seq fog-state-hexes) (assoc-in [:board :fog-state :hexes] fog-state-hexes)
-       (seq fog-number-deck) (assoc-in [:board :fog-state :number-deck] fog-number-deck)))))
+   (let [current-scenario (:scenario db)
+         scenario-config  (registry/get-scenario current-scenario)]
+     (generate-board-with-fog db scenario-config))))
 
 (rf/reg-event-db
  :generate-board-success
@@ -72,24 +128,12 @@
 
 (rf/reg-event-db
  :set-scenario
- [(local-storage/persist-db-after "app-db")]
+ [persist-db]
  (fn [db [_ scenario-id]]
    (let [scenario-config (registry/get-scenario scenario-id)]
      (if scenario-config
        ;; Scenario: use scenario generator
-       (let [tournament-mode?    (get-in db [:ui :tournament-mode] false)
-             random-harbor-mode? (get-in db [:ui :random-harbor-mode] false)
-             new-board           (board-gen/generate-board scenario-config
-                                                           tournament-mode?
-                                                           random-harbor-mode?)
-             fog-state-hexes     (scenario-gen/initialize-fog-state scenario-config)
-             fog-number-deck     (scenario-gen/initialize-fog-number-deck scenario-config)]
-         (cond-> db
-           :always               (assoc :scenario scenario-id)
-           :always               (assoc :board new-board)
-           :always               (assoc-in [:ui :selected-token-coord] nil)
-           (seq fog-state-hexes) (assoc-in [:board :fog-state :hexes] fog-state-hexes)
-           (seq fog-number-deck) (assoc-in [:board :fog-state :number-deck] fog-number-deck)))
+       (generate-board-with-fog db scenario-config :scenario-id scenario-id)
        ;; Invalid scenario ID, return db unchanged
        db))))
 
@@ -97,7 +141,7 @@
 
 (rf/reg-event-db
  :reveal-fog-tile
- [(local-storage/persist-db-after "app-db")]
+ [persist-db]
  (fn [db [_ coord]]
    (let [fog-state        (get-in db [:board :fog-state :hexes])
          fog-entry        (get fog-state coord)
@@ -111,8 +155,8 @@
              is-water?   (= :water terrain)
              number-deck (get-in db [:board :fog-state :number-deck])
              number      (if is-water?
-                           nil
-                           (first number-deck))]
+                      nil
+                      (first number-deck))]
          ;; Update fog state and number and remove number from fog-number-deck
          (cond-> db
            :always         (assoc-in [:board :fog-state :hexes coord :revealed?] true)
@@ -125,7 +169,7 @@
 
 (rf/reg-event-db
  :shuffle-hidden-fog-tiles
- [(local-storage/persist-db-after "app-db")]
+ [persist-db]
  (fn [db]
    (let [fog-state-hexes            (get-in db [:board :fog-state :hexes])
          hidden-fog-state-hexes     (remove (fn [[_k v]] (:revealed? v)) fog-state-hexes)
@@ -143,59 +187,44 @@
 
 ;; -- UI Controls -------------------------------------------------------------
 
-(rf/reg-event-db
- :toggle-info-panel
- (fn [db _]
-   (update-in db [:ui :show-info-panel] not)))
+(reg-toggle-event :toggle-info-panel [:ui :show-info-panel])
 
 ;; -- Board Scaling -----------------------------------------------------------
 
 (rf/reg-event-db
  :set-board-scale
- [(local-storage/persist-db-after "app-db")]
+ [persist-db]
  (fn [db [_ scale]]
    (let [clamped-scale (-> scale
-                           (max 50)
-                           (min 500))]
+                           (max (:min scale-config))
+                           (min (:max scale-config)))]
      (assoc-in db [:ui :board-scale] clamped-scale))))
 
 (rf/reg-event-db
  :increase-scale
- [(local-storage/persist-db-after "app-db")]
+ [persist-db]
  (fn [db _]
-   (let [current-scale (get-in db [:ui :board-scale] 100)
-         new-scale     (min 500 (+ current-scale 25))]
-     (assoc-in db [:ui :board-scale] new-scale))))
+   (update-scale db (:step scale-config))))
 
 (rf/reg-event-db
  :decrease-scale
- [(local-storage/persist-db-after "app-db")]
+ [persist-db]
  (fn [db _]
-   (let [current-scale (get-in db [:ui :board-scale] 100)
-         new-scale     (max 50 (- current-scale 25))]
-     (assoc-in db [:ui :board-scale] new-scale))))
+   (update-scale db (- (:step scale-config)))))
 
 (rf/reg-event-db
  :reset-scale
- [(local-storage/persist-db-after "app-db")]
+ [persist-db]
  (fn [db _]
-   (assoc-in db [:ui :board-scale] 100)))
+   (assoc-in db [:ui :board-scale] (:default scale-config))))
 
 ;; -- Tournament Mode ---------------------------------------------------------
 
-(rf/reg-event-db
- :toggle-tournament-mode
- [(local-storage/persist-db-after "app-db")]
- (fn [db _]
-   (update-in db [:ui :tournament-mode] not)))
+(reg-toggle-event :toggle-tournament-mode [:ui :tournament-mode] :persist? true)
 
 ;; -- Developer Mode ---------------------------------------------------------
 
-(rf/reg-event-db
- :toggle-developer-mode
- [(local-storage/persist-db-after "app-db")]
- (fn [db _]
-   (update-in db [:ui :developer-mode] not)))
+(reg-toggle-event :toggle-developer-mode [:ui :developer-mode] :persist? true)
 
 ;; -- Edit Mode & Token Swapping ---------------------------------------------
 
@@ -208,7 +237,7 @@
 
 (rf/reg-event-db
  :select-token
- [(local-storage/persist-db-after "app-db")]
+ [persist-db]
  (fn [db [_ coord]]
    (let [current-selection (get-in db [:ui :selected-token-coord])]
      (if current-selection
@@ -254,17 +283,8 @@
 
 ;; -- Landscape Mode ---------------------------------------------------------
 
-(rf/reg-event-db
- :toggle-landscape-mode
- [(local-storage/persist-db-after "app-db")]
- (fn [db _]
-   (-> db
-       (update-in [:ui :landscape-mode] not))))
+(reg-toggle-event :toggle-landscape-mode [:ui :landscape-mode] :persist? true)
 
-;; -- Landscape Mode ---------------------------------------------------------
+;; -- Random Harbor Mode -----------------------------------------------------
 
-(rf/reg-event-db
- :toggle-random-harbor-mode
- [(local-storage/persist-db-after "app-db")]
- (fn [db _]
-   (update-in db [:ui :random-harbor-mode] not)))
+(reg-toggle-event :toggle-random-harbor-mode [:ui :random-harbor-mode] :persist? true)
