@@ -6,7 +6,8 @@
    [catan-board.scenarios.fog-islands-4p :as fog-islands-4p]
    [catan-board.scenarios.base-game-6p :as base-game-6p]
    [catan-board.scenarios.base-game-4p :as base-game-4p]
-   [catan-board.middleware.local-storage :as local-storage]))
+   [catan-board.middleware.local-storage :as local-storage]
+   [catan-board.scenarios.cloth-for-catan :as cloth-for-catan]))
 
 ;; Central scenario registry
 (def scenarios
@@ -14,7 +15,8 @@
   {:base-game       base-game-4p/base-game-4p
    :base-game-6p    base-game-6p/base-game-6p
    :fog-islands-3p  fog-islands-3p/fog-islands-3p-scenario
-   :fog--islands-4p fog-islands-4p/fog-islands-4p-scenario})
+   :fog-islands-4p  fog-islands-4p/fog-islands-4p-scenario
+   :cloth-for-catan cloth-for-catan/cloth-for-catan-scenario})
 
 ;; -- Public API --------------------------------------------------------------
 

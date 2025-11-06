@@ -45,14 +45,14 @@
          new-board           (board-gen/generate-board scenario-config
                                                        tournament-mode?
                                                        random-harbor-mode?)
-         fog-state           (scenario-gen/initialize-fog-state scenario-config)
+         fog-state-hexes     (scenario-gen/initialize-fog-state scenario-config)
          fog-number-deck     (scenario-gen/initialize-fog-number-deck scenario-config)]
 
-     (-> db
-         (assoc :board new-board)
-         (assoc-in [:board :fog-state :hexes] fog-state)
-         (assoc-in [:board :fog-state :number-deck] fog-number-deck)
-         (assoc-in [:ui :selected-token-coord] nil)))))
+     (cond-> db
+       :always               (assoc :board new-board)
+       :always               (assoc-in [:ui :selected-token-coord] nil)
+       (seq fog-state-hexes) (assoc-in [:board :fog-state :hexes] fog-state-hexes)
+       (seq fog-number-deck) (assoc-in [:board :fog-state :number-deck] fog-number-deck)))))
 
 (rf/reg-event-db
  :generate-board-success
@@ -75,7 +75,6 @@
  [(local-storage/persist-db-after "app-db")]
  (fn [db [_ scenario-id]]
    (let [scenario-config (registry/get-scenario scenario-id)]
-     (prn "scenario-config:" scenario-config)
      (if scenario-config
        ;; Scenario: use scenario generator
        (let [tournament-mode?    (get-in db [:ui :tournament-mode] false)
@@ -85,12 +84,12 @@
                                                            random-harbor-mode?)
              fog-state-hexes     (scenario-gen/initialize-fog-state scenario-config)
              fog-number-deck     (scenario-gen/initialize-fog-number-deck scenario-config)]
-         (-> db
-             (assoc :scenario scenario-id)
-             (assoc :board new-board)
-             (assoc-in [:board :fog-state :hexes] fog-state-hexes)
-             (assoc-in [:board :fog-state :number-deck] fog-number-deck)
-             (assoc-in [:ui :selected-token-coord] nil)))
+         (cond-> db
+           :always               (assoc :scenario scenario-id)
+           :always               (assoc :board new-board)
+           :always               (assoc-in [:ui :selected-token-coord] nil)
+           (seq fog-state-hexes) (assoc-in [:board :fog-state :hexes] fog-state-hexes)
+           (seq fog-number-deck) (assoc-in [:board :fog-state :number-deck] fog-number-deck)))
        ;; Invalid scenario ID, return db unchanged
        db))))
 

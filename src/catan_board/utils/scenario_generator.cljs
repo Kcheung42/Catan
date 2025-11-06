@@ -36,6 +36,7 @@
   (cond
     (contains? (:water hex-types) coord)   :water
     (contains? (:fog hex-types) coord)     :fog
+    (contains? (:village hex-types) coord) :village
     :else                                  :terrain)) ; default to terrain if not specified
 
 (defn- assign-resource-to-hex
@@ -48,11 +49,23 @@
 (defn- assign-number-to-hex
   "Assigns number token to hex if it's not a desert, water, or fog."
   [hex number-atom]
-  (if (or (= :desert (:resource hex))
-          (= :water (:resource hex))
-          (= :fog (:resource hex)))
+  (cond
+    (or (= :desert (:resource hex))
+        (= :water (:resource hex)) ;; water hex as described in Seafarers
+        (= :fog (:resource hex))) ;; Fog hex as described in Fog Island Scenario
     hex
+
+    ;; Village hex as described in Cloth of Catan Scenario
+    (= :village (:resource hex))
+    (let [[num1 num2 & remain] @number-atom]
+      (reset! number-atom remain)
+      (-> hex
+          (dissoc :number)
+          (assoc :numbers [num1 num2])))
+
+    :else
     (let [num (first @number-atom)]
+      (prn "num:" num)
       (swap! number-atom rest)
       (assoc hex :number num))))
 
@@ -85,6 +98,7 @@
         classified-coords (group-by #(classify-hex-by-type % scenario-config) all-coords)
         water-coords      (get classified-coords :water [])
         fog-coords        (get classified-coords :fog [])
+        village-coords    (get classified-coords :village [])
         terrain-coords    (get classified-coords :terrain all-coords)
 
         ;; Step 3: Prepare shuffled resource and number decks
@@ -92,8 +106,9 @@
         number-deck   (shuffle-numbers (:number-tokens face-up-distribution))
 
         ;; Step 4: Create hexes for each type
-        water-hexes (mapv #(assign-resource-to-hex % :water) water-coords)
-        fog-hexes   (mapv #(assign-resource-to-hex % :fog) fog-coords)
+        water-hexes   (mapv #(assign-resource-to-hex % :water) water-coords)
+        fog-hexes     (mapv #(assign-resource-to-hex % :fog) fog-coords)
+        village-hexes (mapv #(assign-resource-to-hex % :village) village-coords)
 
         ;; Step 5: Assign resources to terrain hexes
         terrain-hexes-with-resources (mapv assign-resource-to-hex
@@ -103,7 +118,7 @@
         ;; Step 6: Assign numbers to non-desert terrain hexes
         number-atom                (atom number-deck)
         terrain-hexes-with-numbers (mapv #(assign-number-to-hex % number-atom)
-                                         terrain-hexes-with-resources)
+                                         (concat terrain-hexes-with-resources village-hexes))
 
         ;; Step 7: Combine all hexes
         all-hexes (vec (concat water-hexes fog-hexes terrain-hexes-with-numbers))
@@ -126,6 +141,9 @@
                 :hex-counts   {:water   (count water-hexes)
                                :fog     (count fog-hexes)
                                :terrain (count terrain-hexes-with-numbers)}}}))
+
+
+;; -- Seafarers
 
 ;; -- Fog Number Token Pool Initialization ------------------------------------------------
 

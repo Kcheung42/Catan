@@ -37,7 +37,7 @@
 
     {:land-hex  [-1 2]
      :direction hex/DIRECTION_S
-     :type :wood}
+     :type      :wood}
 
     {:land-hex  [1 1]
      :direction hex/DIRECTION_S

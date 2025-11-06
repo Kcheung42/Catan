@@ -11,7 +11,7 @@
    :player-count 3
    :grid-pattern "5-6-7-8-7-6-5"
 
-   ;; Hex coordinate sets by type
+   ;; Special Hex coordinate sets by type
    :hex-types
    {;; Outer border water hexes (18 total)
     :water #{[-3 1] [-2 0] [0 -2] [1 -3] [1 -4] [0 -4] [0 3] [-1 -1]
