@@ -24,6 +24,7 @@
                            (reader/read-string))
           current  (if (map? existing) existing {})
           new-data (merge current entry)]
+      (prn "new-data:" new-data)
       (save-to-local-storage! key new-data)
       new-data)))
 

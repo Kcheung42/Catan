@@ -19,27 +19,27 @@
    :name          ""
    :player-count  4
    :grid-pattern  "3-4-5-4-3"
-   :hex-types     {}
+   :hex-types     {:water #{} :terrain #{} :fog #{} :village #{}}
    :harbors       []
    :face-up-distribution
    {:resources     {:water  0
-                    :desert 1
+                    :desert 0
                     :gold   0
-                    :wheat  4
-                    :brick  3
-                    :ore    3
-                    :sheep  4
-                    :wood   4}
-    :number-tokens {2  1
-                    3  2
-                    4  2
-                    5  2
-                    6  2
-                    8  2
-                    9  2
-                    10 2
-                    11 2
-                    12 1}
+                    :wheat  0
+                    :brick  0
+                    :ore    0
+                    :sheep  0
+                    :wood   0}
+    :number-tokens {2  0
+                    3  0
+                    4  0
+                    5  0
+                    6  0
+                    8  0
+                    9  0
+                    10 0
+                    11 0
+                    12 0}
     :assignment    :random}
    :fog-distribution
    {:resources     {:water  0
@@ -64,6 +64,38 @@
 
 ;; -- Helper Functions --------------------------------------------------------
 
+(defn- get-hex-type
+  "Gets the type of a hex from the hex-types structure.
+   hex-types structure: {:water #{coords} :terrain #{coords} :fog #{coords} :village #{coords}}
+   Returns the type keyword (:water/:terrain/:fog/:village) or nil if not found."
+  [hex-types coord]
+  (cond
+    (contains? (:water hex-types) coord) :water
+    (contains? (:fog hex-types) coord) :fog
+    (contains? (:village hex-types) coord) :village
+    (contains? (:terrain hex-types) coord) :terrain
+    :else nil))
+
+(defn- add-hex-to-type
+  "Adds a coordinate to the appropriate type set in hex-types.
+   Removes the coord from all other type sets first to ensure uniqueness."
+  [hex-types coord new-type]
+  (let [;; Remove from all sets first
+        cleaned (reduce (fn [acc type-key]
+                         (update acc type-key disj coord))
+                       hex-types
+                       [:water :fog :village :terrain])]
+    ;; Add to new type set
+    (update cleaned new-type (fn [s] (conj (or s #{}) coord)))))
+
+(defn- remove-hex-from-all-types
+  "Removes a coordinate from all type sets in hex-types."
+  [hex-types coord]
+  (reduce (fn [acc type-key]
+           (update acc type-key disj coord))
+         hex-types
+         [:water :fog :village :terrain]))
+
 (defn- generate-scenario-id
   "Generate a kebab-case keyword ID from a scenario name.
    Handles duplicates by appending a number."
@@ -85,12 +117,11 @@
       base-id)))
 
 (defn- count-terrain-hexes
-  "Count the number of terrain hexes (excludes water and fog) from hex-types map"
+  "Count the number of terrain hexes (excludes water, fog, and village) from hex-types map.
+   hex-types structure: {:water #{coords} :terrain #{coords} :fog #{coords} :village #{coords}}"
   [hex-types]
-  (->> hex-types
-       vals
-       (remove #{:water :fog})
-       count))
+  (+ (count (:terrain hex-types))
+     (count (:village hex-types))))
 
 (defn- validate-draft
   "Validate a scenario draft and return a map of validation errors.
@@ -150,6 +181,30 @@
                  errors)]
     errors))
 
+(defn- drafts-are-different?
+  "Check if two drafts are different. Used to detect unsaved changes."
+  [draft1 draft2]
+  (not= draft1 draft2))
+
+(defn- has-unsaved-changes?
+  "Check if the current draft has unsaved changes compared to the saved version.
+   Returns true if:
+   - Draft has no ID (never saved)
+   - Draft differs from the saved scenario in local storage"
+  [db]
+  (let [draft (get-in db [:ui :custom-scenario-draft])
+        draft-id (:id draft)]
+    (if draft-id
+      ;; Draft has been saved before - compare with saved version
+      (let [custom-scenarios (local-storage/load-from-local-storage :custom-scenarios)
+            saved-version (get custom-scenarios draft-id)]
+        (if saved-version
+          (drafts-are-different? draft saved-version)
+          ;; Saved version not found - treat as unsaved changes
+          true))
+      ;; No ID means never saved - check if any meaningful changes from default
+      (drafts-are-different? draft default-draft))))
+
 ;; -- Mode Management Events --------------------------------------------------
 
 (rf/reg-event-db
@@ -172,12 +227,19 @@
 (rf/reg-event-db
  :load-custom-scenario-for-editing
  [persist-db]
- (fn [db [_ scenario-id]]
-   (let [custom-scenarios (local-storage/load-from-local-storage :custom-scenarios)
-         scenario-config (get custom-scenarios scenario-id)]
-     (if scenario-config
-       (assoc-in db [:ui :custom-scenario-draft] scenario-config)
-       db))))
+ (fn [db [_ scenario-id force-load?]]
+   ;; Check for unsaved changes unless force-load? is true
+   (if (and (not force-load?)
+            (has-unsaved-changes? db))
+     ;; Has unsaved changes - don't load, return db unchanged
+     ;; UI should handle showing confirmation dialog
+     db
+     ;; No unsaved changes or forced load - proceed
+     (let [custom-scenarios (local-storage/load-from-local-storage :custom-scenarios)
+           scenario-config (get custom-scenarios scenario-id)]
+       (if scenario-config
+         (assoc-in db [:ui :custom-scenario-draft] scenario-config)
+         db)))))
 
 ;; -- Configuration Update Events ---------------------------------------------
 
@@ -234,26 +296,30 @@
  :set-editor-hex-selection-mode
  [persist-db]
  (fn [db [_ mode]]
-   (assoc-in db [:ui :editor-hex-selection-mode] mode)))
+   (cond-> db
+       :always (assoc-in [:ui :editor-hex-selection-mode] mode)
+       (not= mode :harbor) (assoc-in [:ui :harbor-placement-coord] nil))))
 
 (rf/reg-event-db
  :assign-hex-type
  [persist-db]
  (fn [db [_ coord hex-type]]
-   (assoc-in db [:ui :custom-scenario-draft :hex-types coord] hex-type)))
+   (update-in db [:ui :custom-scenario-draft :hex-types]
+              #(add-hex-to-type % coord hex-type))))
 
 (rf/reg-event-db
  :clear-hex-assignment
  [persist-db]
  (fn [db [_ coord]]
-   (update-in db [:ui :custom-scenario-draft :hex-types] dissoc coord)))
+   (update-in db [:ui :custom-scenario-draft :hex-types]
+              #(remove-hex-from-all-types % coord))))
 
 (rf/reg-event-db
  :clear-all-hex-assignments
  [persist-db]
  (fn [db _]
    (-> db
-       (assoc-in [:ui :custom-scenario-draft :hex-types] {})
+       (assoc-in [:ui :custom-scenario-draft :hex-types] {:water #{} :terrain #{} :fog #{} :village #{}})
        (assoc-in [:ui :custom-scenario-draft :harbors] []))))
 
 ;; -- Harbor Management Events ------------------------------------------------
@@ -306,6 +372,12 @@
                           harbors)]
      (assoc-in db [:ui :custom-scenario-draft :harbors] updated-harbors))))
 
+(rf/reg-event-db
+ :set-harbor-type-selection-mode
+ [persist-db]
+ (fn [db]
+   (assoc-in db [:ui :harbor-type-selection-mode] true)))
+
 ;; -- Scenario Persistence Events ---------------------------------------------
 
 (rf/reg-event-db
@@ -316,7 +388,7 @@
          validation-errors (validate-draft draft)]
      (if (empty? validation-errors)
        ;; Valid scenario - generate ID and save
-       (let [scenario-id (generate-scenario-id (:name draft))
+       (let [scenario-id (or (:id draft) (generate-scenario-id (:name draft)))
              scenario-to-save (assoc draft :id scenario-id)]
          ;; Save to local storage
          (local-storage/assoc-to-local-storage-array!

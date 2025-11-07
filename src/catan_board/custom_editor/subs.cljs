@@ -4,7 +4,8 @@
   (:require
    [re-frame.core :as rf]
    [catan-board.middleware.local-storage :as local-storage]
-   [catan-board.custom-editor.events :as events]))
+   [catan-board.custom-editor.events :as events]
+   [catan-board.utils.hex :as hex-utils]))
 
 ;; -- Editor Mode Subscriptions -----------------------------------------------
 
@@ -27,6 +28,44 @@
  :harbor-placement-coord
  (fn [db _]
    (get-in db [:ui :harbor-placement-coord])))
+
+(rf/reg-sub
+ :harbor-type-selection-mode
+ (fn [db _]
+   (get-in db [:ui :harbor-type-selection-mode])))
+
+;; -- Editor Hexes Generation -------------------------------------------------
+
+(defn- get-hex-type
+  "Gets the type of a hex from the hex-types structure.
+   hex-types structure: {:water #{coords} :terrain #{coords} :fog #{coords} :village #{coords}}
+   Returns the type keyword (:water/:terrain/:fog/:village) or nil if not found."
+  [hex-types coord]
+  (cond
+    (contains? (:water hex-types) coord) :water
+    (contains? (:fog hex-types) coord) :fog
+    (contains? (:village hex-types) coord) :village
+    (contains? (:terrain hex-types) coord) :terrain
+    :else nil))
+
+(rf/reg-sub
+ :editor-hexes
+ :<- [:custom-scenario-draft]
+ (fn [draft _]
+   (when draft
+     (let [grid-pattern (:grid-pattern draft)
+           hex-types (:hex-types draft)]
+       (if (and grid-pattern (not (clojure.string/blank? grid-pattern)))
+         ;; Generate hex coordinates from grid pattern
+         (let [coords (hex-utils/generate-grid-from-pattern grid-pattern)]
+           ;; Create hex data structures with assigned types from hex-types map
+           (mapv (fn [coord]
+                   {:coord coord
+                    :type (or (get-hex-type hex-types coord) :unassigned)
+                    :resource nil
+                    :number nil})
+                 coords))
+         [])))))
 
 ;; -- Validation Subscriptions ------------------------------------------------
 
@@ -59,11 +98,9 @@
                     (assoc errors :grid-pattern "Grid pattern is invalid (use format: 3-4-5-4-3)")
                     errors)
 
-           ;; Count terrain hexes
-           terrain-count (->> hex-types
-                              vals
-                              (remove #{:water :fog})
-                              count)
+           ;; Count terrain hexes (including village hexes which also need resources/numbers)
+           terrain-count (+ (count (:terrain hex-types))
+                           (count (:village hex-types)))
 
            ;; Resource distribution validation
            face-up-resources (:resources face-up-distribution)

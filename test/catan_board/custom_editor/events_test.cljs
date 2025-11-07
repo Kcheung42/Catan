@@ -13,6 +13,18 @@
 ;; Helper to set up test database
 (rf/reg-event-db :test/set-db (fn [_ [_ new-db]] new-db))
 
+;; Helper to get hex type from new structure
+(defn- get-hex-type
+  "Gets the type of a hex from the new hex-types structure.
+   hex-types structure: {:water #{coords} :terrain #{coords} :fog #{coords} :village #{coords}}"
+  [hex-types coord]
+  (cond
+    (contains? (:water hex-types) coord) :water
+    (contains? (:fog hex-types) coord) :fog
+    (contains? (:village hex-types) coord) :village
+    (contains? (:terrain hex-types) coord) :terrain
+    :else nil))
+
 ;; -- Test 1: Editor Mode Toggle ----------------------------------------------
 
 (deftest toggle-custom-scenario-editor-test
@@ -59,8 +71,8 @@
       (is (= 2 (get-in face-up [:number-tokens 3])))
       (is (= 2 (get-in face-up [:number-tokens 6])))
 
-      ;; Check initial empty collections
-      (is (= {} (:hex-types draft)))
+      ;; Check initial empty collections (new structure has empty sets)
+      (is (= {:water #{} :terrain #{} :fog #{} :village #{}} (:hex-types draft)))
       (is (= [] (:harbors draft))))))
 
 ;; -- Test 3: Hex Selection Mode Switching ------------------------------------
@@ -85,37 +97,43 @@
 (deftest assign-hex-type-test
   (testing "Can assign hex types to coordinates"
     (rf/dispatch-sync [:test/set-db {:ui {:custom-scenario-draft
-                                          {:hex-types {}}}}])
+                                          {:hex-types {:water #{} :terrain #{} :fog #{} :village #{}}}}}])
 
     ;; Assign first hex
     (rf/dispatch-sync [:assign-hex-type [0 0] :terrain])
-    (let [draft @(rf/subscribe [:custom-scenario-draft])]
-      (is (= :terrain (get-in draft [:hex-types [0 0]]))))
+    (let [draft @(rf/subscribe [:custom-scenario-draft])
+          hex-types (:hex-types draft)]
+      (is (= :terrain (get-hex-type hex-types [0 0]))))
 
     ;; Assign second hex
     (rf/dispatch-sync [:assign-hex-type [1 0] :water])
-    (let [draft @(rf/subscribe [:custom-scenario-draft])]
-      (is (= :terrain (get-in draft [:hex-types [0 0]])))
-      (is (= :water (get-in draft [:hex-types [1 0]]))))
+    (let [draft @(rf/subscribe [:custom-scenario-draft])
+          hex-types (:hex-types draft)]
+      (is (= :terrain (get-hex-type hex-types [0 0])))
+      (is (= :water (get-hex-type hex-types [1 0]))))
 
     ;; Re-assign first hex (should update)
     (rf/dispatch-sync [:assign-hex-type [0 0] :fog])
-    (let [draft @(rf/subscribe [:custom-scenario-draft])]
-      (is (= :fog (get-in draft [:hex-types [0 0]])))
-      (is (= :water (get-in draft [:hex-types [1 0]]))))))
+    (let [draft @(rf/subscribe [:custom-scenario-draft])
+          hex-types (:hex-types draft)]
+      (is (= :fog (get-hex-type hex-types [0 0])))
+      (is (= :water (get-hex-type hex-types [1 0]))))))
 
 ;; -- Test 5: Clear Hex Assignment --------------------------------------------
 
 (deftest clear-hex-assignment-test
   (testing "Can clear individual hex assignments"
     (rf/dispatch-sync [:test/set-db {:ui {:custom-scenario-draft
-                                          {:hex-types {[0 0] :terrain
-                                                       [1 0] :water}}}}])
+                                          {:hex-types {:water #{[1 0]}
+                                                       :terrain #{[0 0]}
+                                                       :fog #{}
+                                                       :village #{}}}}}])
 
     (rf/dispatch-sync [:clear-hex-assignment [0 0]])
-    (let [draft @(rf/subscribe [:custom-scenario-draft])]
-      (is (nil? (get-in draft [:hex-types [0 0]])))
-      (is (= :water (get-in draft [:hex-types [1 0]]))))))
+    (let [draft @(rf/subscribe [:custom-scenario-draft])
+          hex-types (:hex-types draft)]
+      (is (nil? (get-hex-type hex-types [0 0])))
+      (is (= :water (get-hex-type hex-types [1 0]))))))
 
 ;; -- Test 6: Configuration Updates -------------------------------------------
 

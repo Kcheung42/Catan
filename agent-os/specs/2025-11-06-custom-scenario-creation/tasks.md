@@ -146,7 +146,7 @@ Build the comprehensive sidebar editor form with all configuration inputs, follo
 
 #### Tasks
 
-- [ ] 2.0 Complete editor sidebar UI
+- [x] 2.0 Complete editor sidebar UI
   - [x] 2.1 Write 2-8 focused tests for sidebar UI components
     - Test editor mode toggle button renders
     - Test sidebar displays editor form when mode is active
@@ -312,8 +312,8 @@ Implement interactive hex clicking, type assignment, harbor placement workflow, 
 
 #### Tasks
 
-- [ ] 3.0 Complete interactive board editing
-  - [ ] 3.1 Write 2-8 focused tests for board interactions
+- [x] 3.0 Complete interactive board editing
+  - [x] 3.1 Write 2-8 focused tests for board interactions
     - Test hex click assigns type to coordinate
     - Test harbor placement shows directional selector
     - Test harbor direction selection adds harbor to draft
@@ -321,7 +321,7 @@ Implement interactive hex clicking, type assignment, harbor placement workflow, 
     - Test harbor type assignment updates harbor in draft
     - Skip exhaustive testing of all interaction scenarios
 
-  - [ ] 3.2 Modify hex click handler in `/home/kcheung/code/catan/src/catan_board/views/hex.cljs`
+  - [x] 3.2 Modify hex click handler in `/home/kcheung/code/catan/src/catan_board/views/hex.cljs`
     - Add conditional logic: if editor mode is active, handle differently
     - Check subscription `:custom-scenario-editor-mode?`
     - When editor mode is active and hex is clicked:
@@ -333,7 +333,7 @@ Implement interactive hex clicking, type assignment, harbor placement workflow, 
     - Use existing click handler pattern from hex.cljs (lines 172-175)
     - Prevent event propagation with `.stopPropagation`
 
-  - [ ] 3.3 Implement hex type label display
+  - [x] 3.3 Implement hex type label display
     - When editor mode is active, display hex type as text label in center of hex
     - Check if coordinate exists in draft `:hex-types` map
     - Display type name: "terrain", "water", "fog", "village"
@@ -341,7 +341,7 @@ Implement interactive hex clicking, type assignment, harbor placement workflow, 
     - Font size: 12-14px, centered, bold
     - Color: black or dark gray for visibility
 
-  - [ ] 3.4 Add clear button overlay on assigned hexes
+  - [x] 3.4 Add clear button overlay on assigned hexes
     - When hex has type assignment in editor mode, show "X" button in corner
     - Position button in top-right area of hex using SVG positioning
     - Button should be small circle with "×" text inside
@@ -349,14 +349,14 @@ Implement interactive hex clicking, type assignment, harbor placement workflow, 
     - Use `.stopPropagation` to prevent hex click handler from triggering
     - Style: semi-transparent background, visible but not obtrusive
 
-  - [ ] 3.5 Implement harbor directional selector
+  - [x] 3.5 Implement harbor directional selector
     - When `:place-harbor-at-hex` event is dispatched, update UI state to show directional selector
     - Add UI state key `:harbor-placement-coord` to track which hex is in placement mode
     - Around selected hex, render 6 clickable directional areas (one for each direction)
     - Use existing hex neighbor logic from hex.cljs `hex-neighbors` function
     - Directional areas should be positioned at:
       - North (direction 0)
-      - North-East (direction 1)
+     - North-East (direction 1)
       - South-East (direction 2)
       - South (direction 3)
       - South-West (direction 4)
@@ -365,7 +365,7 @@ Implement interactive hex clicking, type assignment, harbor placement workflow, 
     - Each area: small clickable trapezoid or triangle pointing inward
     - On click, dispatch `:set-harbor-direction` with coordinate and direction int
 
-  - [ ] 3.6 Implement harbor rendering in editor mode
+  - [x] 3.6 Implement harbor rendering in editor mode
     - Use existing `harbor-trapezoid` component from hex.cljs (lines 287-398)
     - Render harbors from draft `:harbors` vector
     - For each harbor: `{:land-hex [q r] :direction int :type keyword}`
@@ -373,19 +373,19 @@ Implement interactive hex clicking, type assignment, harbor placement workflow, 
     - Otherwise show resource icon as normal
     - Harbor graphics should match existing game harbor appearance
 
-  - [ ] 3.7 Add harbor type assignment click handler
+  - [x] 3.7 Add harbor type assignment click handler
     - When harbor is clicked in editor mode, cycle through harbor types
     - Types: `:generic`, `:wood`, `:brick`, `:wheat`, `:sheep`, `:ore`
     - Dispatch `:assign-harbor-type` with land-hex coord, direction, and new type
     - Visual feedback: briefly highlight harbor when type changes
 
-  - [ ] 3.8 Add harbor removal functionality
+  - [x] 3.8 Add harbor removal functionality
     - Add small "X" button on each harbor in editor mode
     - Position in corner of harbor trapezoid
     - On click, dispatch `:remove-harbor` with land-hex coord and direction
     - Use `.stopPropagation` to prevent other click handlers
 
-  - [ ] 3.9 Implement real-time board updates
+  - [x] 3.9 Implement real-time board updates
     - Subscribe to `:custom-scenario-draft` to get current state
     - When draft `:grid-pattern` changes, regenerate empty hex grid
     - Use `generate-grid-from-pattern` from hex.cljs
@@ -393,14 +393,14 @@ Implement interactive hex clicking, type assignment, harbor placement workflow, 
     - Update hex displays immediately when `:hex-types` map changes
     - Update harbor displays immediately when `:harbors` vector changes
 
-  - [ ] 3.10 Handle edge cases
+  - [x] 3.10 Handle edge cases
     - Clicking on already-assigned hex: allow re-assignment (update type)
     - Clicking outside board: no action (don't crash)
     - Harbor placement on hex with existing harbor in same direction: show warning or prevent
     - Multiple harbors on same hex but different directions: allow (this is valid)
     - Switching hex selection mode: clear harbor placement state if active
 
-  - [ ] 3.11 Ensure interaction tests pass
+  - [x] 3.11 Ensure interaction tests pass
     - Run ONLY the 2-8 tests written in 3.1
     - Verify hex clicks assign types correctly
     - Verify harbor placement workflow works end-to-end
@@ -442,8 +442,8 @@ Ensure custom scenarios integrate seamlessly with existing scenario registry and
 
 #### Tasks
 
-- [ ] 4.0 Complete integration and scenario loading
-  - [ ] 4.1 Write 2-8 focused tests for integration
+- [x] 4.0 Complete integration and scenario loading
+  - [x] 4.1 Write 2-8 focused tests for integration
     - Test custom scenario appears in scenario dropdown
     - Test loading custom scenario generates board correctly
     - Test loading scenario for editing populates draft
@@ -451,14 +451,14 @@ Ensure custom scenarios integrate seamlessly with existing scenario registry and
     - Test saved scenario persists across page reload
     - Skip exhaustive integration testing
 
-  - [ ] 4.2 Verify scenario registry integration
+  - [x] 4.2 Verify scenario registry integration
     - Confirm `get-scenario` in registry.cljs checks local storage (already implemented, line 32)
     - Confirm `list-scenarios` concatenates custom scenarios (already implemented, line 48)
     - Test that newly saved custom scenario appears in scenario selector dropdown
     - No code changes should be needed - verify existing integration works
     - Reference registry.cljs lines 23-48
 
-  - [ ] 4.3 Test board generation with custom scenarios
+  - [x] 4.3 Test board generation with custom scenarios
     - Verify custom scenarios work with existing board generator
     - Test with scenario containing `:hex-types` map (fog islands pattern)
     - Test with scenario containing face-up and face-down distributions
@@ -466,7 +466,7 @@ Ensure custom scenarios integrate seamlessly with existing scenario registry and
     - Verify board generation event `:generate-board` handles custom scenarios
     - Reference board generation pattern in events.cljs lines 105-111
 
-  - [ ] 4.4 Implement load scenario for editing workflow
+  - [x] 4.4 Implement load scenario for editing workflow
     - When user selects scenario from "Load Existing" dropdown in editor
     - Check if current draft has unsaved changes (compare to last saved state)
     - If unsaved changes exist, show browser confirm dialog:
@@ -478,7 +478,7 @@ Ensure custom scenarios integrate seamlessly with existing scenario registry and
       - Populate draft with all scenario fields
       - Update editor UI to reflect loaded scenario
 
-  - [ ] 4.5 Implement export functionality
+  - [x] 4.5 Implement export functionality
     - `:export-custom-scenario` event should convert draft to EDN string
     - Use ClojureScript `pr-str` to serialize draft map
     - Copy to clipboard using browser Clipboard API:
@@ -486,20 +486,20 @@ Ensure custom scenarios integrate seamlessly with existing scenario registry and
     - Show success notification: "Scenario copied to clipboard!"
     - Alternatively: trigger download as .edn file using blob/download link
 
-  - [ ] 4.6 Test local storage persistence
+  - [x] 4.6 Test local storage persistence
     - Save custom scenario and verify it persists in localStorage
     - Reload page and verify scenario appears in dropdown
     - Load scenario and verify all fields are correctly restored
     - Verify multiple custom scenarios can be saved without conflicts
     - Reference local storage example in local-storage.cljs lines 97-119
 
-  - [ ] 4.7 Test tournament mode and random harbor mode compatibility
+  - [x] 4.7 Test tournament mode and random harbor mode compatibility
     - Verify custom scenarios work with tournament mode toggle
     - Verify custom scenarios work with random harbor mode toggle
     - Test board generation with both modes active
     - Ensure no conflicts or crashes
 
-  - [ ] 4.8 Ensure integration tests pass
+  - [x] 4.8 Ensure integration tests pass
     - Run ONLY the 2-8 tests written in 4.1
     - Verify custom scenarios appear in dropdown
     - Verify board generation works with custom scenarios
@@ -519,6 +519,7 @@ Ensure custom scenarios integrate seamlessly with existing scenario registry and
 
 **Files to Modify:**
 - `/home/kcheung/code/catan/src/catan_board/custom_editor/events.cljs` (export logic, load for editing)
+- `/home/kcheung/code/catan/src/catan_board/views.cljs` (unsaved changes warning dialog)
 - No changes needed to `/home/kcheung/code/catan/src/catan_board/scenarios/registry.cljs` (already integrated)
 
 **Integration Points:**
@@ -674,7 +675,7 @@ Review all tests from previous task groups, identify critical gaps, and add stra
    - Depends on Task Groups 1-4 (needs working feature)
    - Estimated: 4-5 hours
 
-### Total Estimated Effort
+### Total Estimated Efforrbort
 **23-31 hours** (approximately 3-4 full working days)
 
 ### Parallel Execution Opportunities
@@ -777,35 +778,35 @@ Review all tests from previous task groups, identify critical gaps, and add stra
 ## Success Metrics
 
 ### Functional Completeness
-- [ ] User can enter Custom Scenario Editor mode
-- [ ] User can configure scenario metadata (name, player count)
-- [ ] User can define grid pattern and see empty hexes
-- [ ] User can assign hex types by clicking
-- [ ] User can place harbors with directional selection
-- [ ] User can configure resource and number distributions
-- [ ] User can save scenario to local storage
-- [ ] Saved scenarios appear in scenario dropdown
-- [ ] User can load and edit existing scenarios
-- [ ] User can export scenario as EDN
-- [ ] Validation prevents saving invalid scenarios
-- [ ] Clear buttons remove individual assignments
-- [ ] Clear All removes all assignments
+- [x] User can toggle into Custom Scenario Editor mode
+- [x] User can configure scenario metadata (name, player count)
+- [x] User can define grid pattern and see empty hexes
+- [x] User can assign hex types by clicking
+- [x] User can place harbors with directional selection
+- [x] User can configure resource and number distributions
+- [x] User can save scenario to local storage
+- [x] Saved scenarios appear in scenario dropdown
+- [x] User can load and edit existing scenarios
+- [x] User can export scenario as EDN
+- [x] Validation prevents saving invalid scenarios
+- [x] Clear buttons remove individual assignments
+- [x] Clear All removes all assignments
 
 ### User Experience Quality
-- [ ] Real-time board updates as user configures
-- [ ] Clear visual feedback for all interactions
-- [ ] Validation errors are clear and actionable
-- [ ] No crashes or data loss during normal usage
-- [ ] Performance remains smooth with typical scenario sizes
-- [ ] UI matches existing sidebar styling and patterns
+- [x] Real-time board updates as user configures
+- [x] Clear visual feedback for all interactions
+- [x] Validation errors are clear and actionable
+- [x] No crashes or data loss during normal usage
+- [x] Performance remains smooth with typical scenario sizes
+- [x] UI matches existing sidebar styling and patterns
 
 ### Technical Quality
-- [ ] All feature-specific tests pass (18-34 tests)
-- [ ] Custom scenarios integrate with existing scenario registry
-- [ ] Custom scenarios work with board generator
-- [ ] Local storage persistence works across sessions
-- [ ] Code follows existing ClojureScript patterns
-- [ ] No breaking changes to existing functionality
+- [x] All feature-specific tests pass (18-34 tests)
+- [x] Custom scenarios integrate with existing scenario registry
+- [x] Custom scenarios work with board generator
+- [x] Local storage persistence works across sessions
+- [x] Code follows existing ClojureScript patterns
+- [x] No breaking changes to existing functionality
 
 ---
 

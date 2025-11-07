@@ -45,7 +45,7 @@
     [:p.help-text "Give your scenario a unique name"]]
 
    ;; Player Count
-   [:div.form-group
+   #_[:div.form-group
     [:label "Player Count"]
     [:select.form-select
      {:value (str (:player-count draft 4))
@@ -80,7 +80,7 @@
                     :update-face-up-resource
                     :update-face-down-resource)
         resources (get-in draft [distribution-key :resources] {})
-        resource-types [:water :desert :gold :wheat :brick :ore :sheep :wood]]
+        resource-types [:water :desert :gold :wheat :brick :ore :sheep :wood :village]]
     [:div.control-section
      [:h3 title]
      [:div.resource-grid
@@ -147,7 +147,15 @@
       [:button.btn-hex-type
        {:class (when (= selection-mode :fog) "active")
         :on-click #(rf/dispatch [:set-editor-hex-selection-mode :fog])}
-       "Fog"]]
+       "Fog"]
+      [:button.btn-hex-type
+       {:class    (when (= selection-mode :village) "active")
+        :on-click #(rf/dispatch [:set-editor-hex-selection-mode :village])}
+       "Village"]
+      [:button.btn-hex-type
+       {:class    (when (= selection-mode :harbor) "active")
+        :on-click #(rf/dispatch [:set-editor-hex-selection-mode :harbor])}
+       "Harbor"]]
      [:p.help-text "Click a hex type, then click on the board to assign it"]
      [:button.btn-secondary
       {:on-click #(rf/dispatch [:clear-all-hex-assignments])}
@@ -156,7 +164,8 @@
 (defn scenario-management-editor
   "Form section for loading and managing custom scenarios"
   []
-  (let [custom-scenarios @(rf/subscribe [:custom-scenarios-list])]
+  (let [custom-scenarios @(rf/subscribe [:custom-scenarios-list])
+        draft @(rf/subscribe [:custom-scenario-draft])]
     [:div.control-section
      [:h3 "Manage Scenarios"]
      (if (seq custom-scenarios)
@@ -167,7 +176,19 @@
           {:on-change (fn [e]
                         (let [scenario-id (keyword (.. e -target -value))]
                           (when (not= scenario-id :select)
-                            (rf/dispatch [:load-custom-scenario-for-editing scenario-id]))))}
+                            ;; First attempt to load - this checks for unsaved changes
+                            (rf/dispatch [:load-custom-scenario-for-editing scenario-id false])
+                            ;; Check if load was blocked (draft unchanged)
+                            ;; If blocked, show confirmation dialog
+                            (js/setTimeout
+                             (fn []
+                               (let [current-draft @(rf/subscribe [:custom-scenario-draft])]
+                                 ;; If draft ID hasn't changed, load was blocked
+                                 (when (not= (:id current-draft) scenario-id)
+                                   (when (js/confirm "You have unsaved changes. Loading a different scenario will discard them. Continue?")
+                                     ;; User confirmed - force load
+                                     (rf/dispatch [:load-custom-scenario-for-editing scenario-id true])))))
+                             10))))}
           [:option {:value "select"} "-- Select a scenario --"]
           (for [[scenario-id scenario-config] custom-scenarios]
             ^{:key scenario-id}
@@ -195,23 +216,40 @@
    (when (seq validation-errors)
      [:p.help-text.error "Fix validation errors before saving"])])
 
+(defn board-scale [current-board-scale]
+  [:div.control-section
+   [:h3 "Board Scale"]
+   [:div.scale-controls
+    [:button.btn-scale
+     {:on-click #(rf/dispatch [:decrease-scale])}
+     "-"]
+    [:span.scale-display (str current-board-scale "%")]
+    [:button.btn-scale
+     {:on-click #(rf/dispatch [:increase-scale])}
+     "+"]]]
+  )
+
 (defn main-panel []
-  (let [loading? @(rf/subscribe [:loading?])
-        board-scale @(rf/subscribe [:board-scale])
-        tournament-mode? @(rf/subscribe [:tournament-mode?])
-        swap-number-mode? @(rf/subscribe [:swap-number-mode?])
-        developer-mode? @(rf/subscribe [:developer-mode?])
-        landscape-mode? @(rf/subscribe [:landscape-mode?])
-        random-harbor-mode? @(rf/subscribe [:random-harbor-mode?])
-        sidebar-open? @(rf/subscribe [:show-info-panel?])
-        editor-mode? @(rf/subscribe [:custom-scenario-editor-mode?])
-        draft @(rf/subscribe [:custom-scenario-draft])
-        validation-errors @(rf/subscribe [:custom-scenario-validation-errors])
-        hexes @(rf/subscribe [:hexes])
-        harbors @(rf/subscribe [:harbors])
+  (let [loading?             @(rf/subscribe [:loading?])
+        current-board-scale          @(rf/subscribe [:board-scale])
+        tournament-mode?     @(rf/subscribe [:tournament-mode?])
+        swap-number-mode?    @(rf/subscribe [:swap-number-mode?])
+        developer-mode?      @(rf/subscribe [:developer-mode?])
+        landscape-mode?      @(rf/subscribe [:landscape-mode?])
+        random-harbor-mode?  @(rf/subscribe [:random-harbor-mode?])
+        sidebar-open?        @(rf/subscribe [:show-info-panel?])
+        editor-mode?         @(rf/subscribe [:custom-scenario-editor-mode?])
+        draft                @(rf/subscribe [:custom-scenario-draft])
+        validation-errors    @(rf/subscribe [:custom-scenario-validation-errors])
+        ;; In editor mode, use hexes generated from draft grid-pattern
+        ;; In normal mode, use hexes from generated board
+        editor-hexes         @(rf/subscribe [:editor-hexes])
+        board-hexes          @(rf/subscribe [:hexes])
+        hexes                (if editor-mode? editor-hexes board-hexes)
+        harbors              @(rf/subscribe [:harbors])
         selected-token-coord @(rf/subscribe [:selected-token-coord])
-        fog-state @(rf/subscribe [:fog-state-hexes])
-        current-scenario @(rf/subscribe [:current-scenario])]
+        fog-state            @(rf/subscribe [:fog-state-hexes])
+        current-scenario     @(rf/subscribe [:current-scenario])]
     [:div.app-container
      ;; Sidebar
      [:div.sidebar {:class (when sidebar-open? "open")}
@@ -238,6 +276,14 @@
          [:div.editor-form
           (when draft
             [:div
+             [:div.toggle-container
+              [:label.toggle-label
+               [:input {:type      "checkbox"
+                        :checked   landscape-mode?
+                        :on-change #(rf/dispatch [:toggle-landscape-mode])}]
+               [:span.toggle-text "Landscape Mode"]]
+              [:p.help-text "Flip orientation to landscape"]]
+             [board-scale current-board-scale]
              [scenario-metadata-editor draft]
              [resource-distribution-editor draft :face-up]
              [number-token-distribution-editor draft :face-up]
@@ -312,16 +358,7 @@
             [:p.help-text "Click tokens to swap their numbers"]]]
 
           ;; Board Scale
-          [:div.control-section
-           [:h3 "Board Scale"]
-           [:div.scale-controls
-            [:button.btn-scale
-             {:on-click #(rf/dispatch [:decrease-scale])}
-             "-"]
-            [:span.scale-display (str board-scale "%")]
-            [:button.btn-scale
-             {:on-click #(rf/dispatch [:increase-scale])}
-             "+"]]]
+          [board-scale current-board-scale]
 
           [:div.toggle-container
            [:label.toggle-label
@@ -339,7 +376,7 @@
 
      ;; Board container
      [:div.board-container
-      [:div {:style {:transform (str "scale(" (/ board-scale 100) ")")
+      [:div {:style {:transform (str "scale(" (/ current-board-scale 100) ")")
                      :transform-origin "center center"}}
        (if (seq hexes)
          [hex-view/hex-grid
