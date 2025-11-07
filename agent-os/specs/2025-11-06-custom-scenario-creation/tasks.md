@@ -230,7 +230,7 @@ Build the comprehensive sidebar editor form with all configuration inputs, follo
     - Help text: "Click on board hexes to assign selected type"
     - Highlight currently selected mode visually
 
-  - [ ] 2.11 Build scenario management section
+  - [x] 2.11 Build scenario management section
     - Section heading: "Manage Scenarios"
     - Dropdown/select to load existing custom scenario:
       - Label: "Load Existing Scenario"
@@ -271,7 +271,7 @@ Build the comprehensive sidebar editor form with all configuration inputs, follo
     - Use consistent spacing and typography
     - Test responsive behavior at different viewport sizes
 
-  - [ ] 2.15 Ensure UI component tests pass
+  - [x] 2.15 Ensure UI component tests pass
     - Run ONLY the 2-8 tests written in 2.1
     - Verify editor toggle works
     - Verify form displays when editor mode is active
