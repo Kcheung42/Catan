@@ -147,7 +147,7 @@ Build the comprehensive sidebar editor form with all configuration inputs, follo
 #### Tasks
 
 - [ ] 2.0 Complete editor sidebar UI
-  - [ ] 2.1 Write 2-8 focused tests for sidebar UI components
+  - [x] 2.1 Write 2-8 focused tests for sidebar UI components
     - Test editor mode toggle button renders
     - Test sidebar displays editor form when mode is active
     - Test metadata inputs update draft state
@@ -155,34 +155,29 @@ Build the comprehensive sidebar editor form with all configuration inputs, follo
     - Test validation errors display correctly
     - Skip exhaustive testing of all form interactions
 
-  - [ ] 2.2 Add editor toggle button in `/home/kcheung/code/catan/src/catan_board/views.cljs`
+  - [x] 2.2 Add editor toggle button in `/home/kcheung/code/catan/src/catan_board/views.cljs`
     - Add "Custom Scenario Editor" toggle in sidebar after existing control sections
     - Use existing toggle pattern from views.cljs (lines 62-68, 70-76)
     - Toggle should dispatch `:toggle-custom-scenario-editor` event
     - Button text: "Custom Scenario Editor" with checkbox
     - Place in new control section after "Board Edit" section
 
-  - [ ] 2.3 Create conditional editor form rendering
+  - [x] 2.3 Create conditional editor form rendering
     - When `:custom-scenario-editor-mode?` is true, replace normal sidebar content with editor
     - Use subscription `@(rf/subscribe [:custom-scenario-editor-mode?])`
     - Editor form should be scrollable container with all sections visible
     - Follow existing sidebar structure pattern (views.cljs lines 44-123)
 
-  - [ ] 2.4 Build scenario metadata section
+  - [x] 2.4 Build scenario metadata section
     - Section heading: "Scenario Metadata"
     - Text input for scenario name:
       - Label: "Scenario Name"
       - Placeholder: "My Custom Scenario"
       - Value bound to draft `:name`
       - On-change dispatches `:update-scenario-name` with new value
-    - Number input for player count:
-      - Label: "Player Count"
-      - Min: 2, Max: 6, Default: 4
-      - Value bound to draft `:player-count`
-      - On-change dispatches `:update-scenario-player-count` with new value
     - Use existing form input styling from sidebar
 
-  - [ ] 2.5 Build grid pattern configuration section
+  - [x] 2.5 Build grid pattern configuration section
     - Section heading: "Grid Pattern"
     - Text input for grid pattern:
       - Label: "Grid Pattern (hyphen-separated rows)"
@@ -192,24 +187,24 @@ Build the comprehensive sidebar editor form with all configuration inputs, follo
     - Help text: "Example: 3-4-5-4-3 creates standard base game layout"
     - Reference help text pattern from views.cljs (lines 68, 76)
 
-  - [ ] 2.6 Build face-up resource distribution section
+  - [x] 2.6 Build face-up resource distribution section
     - Section heading: "Face-Up Resources"
     - Create input field for each resource type:
-      - Wood, Brick, Sheep, Wheat, Ore, Desert, Gold, Water
+      - Wood, Brick, Sheep, Wheat, Ore, Desert, Gold
       - Each with label and number input (min: 0)
       - Value bound to draft `:face-up-distribution` -> `:resources` -> resource-type
       - On-change dispatches `:update-face-up-resource` with resource-type and count
     - Display total count below inputs: "Total: X resources"
     - Use grid or flex layout for compact display
 
-  - [ ] 2.7 Build face-down resource distribution section
+  - [x] 2.7 Build face-down resource distribution section
     - Section heading: "Face-Down Resources (Fog)"
     - Same structure as face-up section
     - Value bound to draft `:fog-distribution` -> `:resources` -> resource-type
     - On-change dispatches `:update-face-down-resource` with resource-type and count
     - Help text: "Used for fog reveal mechanics"
 
-  - [ ] 2.8 Build face-up number token distribution section
+  - [x] 2.8 Build face-up number token distribution section
     - Section heading: "Face-Up Number Tokens"
     - Create input field for each number (2-12, excluding 7):
       - Numbers: 2, 3, 4, 5, 6, 8, 9, 10, 11, 12
@@ -219,13 +214,13 @@ Build the comprehensive sidebar editor form with all configuration inputs, follo
     - Display total count below inputs: "Total: X tokens"
     - Use grid or flex layout for compact display
 
-  - [ ] 2.9 Build face-down number token distribution section
+  - [x] 2.9 Build face-down number token distribution section
     - Section heading: "Face-Down Number Tokens (Fog)"
     - Same structure as face-up tokens section
     - Value bound to draft `:fog-distribution` -> `:number-tokens` -> number
     - On-change dispatches `:update-face-down-number` with number and count
 
-  - [ ] 2.10 Build hex type selection section
+  - [x] 2.10 Build hex type selection section
     - Section heading: "Hex Type Selection"
     - Radio button group or dropdown for hex type modes:
       - Options: "Terrain", "Water", "Fog", "Village", "Harbor"
@@ -244,7 +239,7 @@ Build the comprehensive sidebar editor form with all configuration inputs, follo
       - Dispatches `:load-custom-scenario-for-editing` with scenario-id
     - "Load" button next to dropdown
 
-  - [ ] 2.12 Build action buttons section
+  - [x] 2.12 Build action buttons section
     - Section heading: "Actions"
     - "Save Scenario" button:
       - Dispatches `:save-custom-scenario` on click
@@ -259,7 +254,7 @@ Build the comprehensive sidebar editor form with all configuration inputs, follo
       - Use `.btn-primary` class
       - Show confirmation dialog: "Clear all hex assignments?"
 
-  - [ ] 2.13 Build validation error display
+  - [x] 2.13 Build validation error display
     - Subscribe to `:custom-scenario-validation-errors`
     - Display errors in red/warning color near relevant sections
     - Show errors above action buttons as summary
@@ -269,7 +264,7 @@ Build the comprehensive sidebar editor form with all configuration inputs, follo
       - "Number token count (X) doesn't match terrain hexes (Y)"
     - Reference validation messages from spec.md lines 286-291
 
-  - [ ] 2.14 Apply consistent styling
+  - [x] 2.14 Apply consistent styling
     - Match existing sidebar styling from views.cljs
     - Use existing CSS classes: `.control-section`, `.btn-primary`, `.help-text`, `.toggle-container`
     - Ensure form is scrollable when content exceeds viewport

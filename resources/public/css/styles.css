@@ -276,3 +276,214 @@ body {
   transform-box: fill-box;
   transform-origin: center;
 }
+
+/* Custom Scenario Editor Styles */
+
+/* Hex Type Selection Buttons */
+.hex-type-buttons {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.btn-hex-type {
+  flex: 1;
+  min-width: 80px;
+  padding: 0.75rem 1rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  background-color: #7f8c8d;
+  color: white;
+  border: 2px solid transparent;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-hex-type:hover {
+  background-color: #95a5a6;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.btn-hex-type.active {
+  background-color: #3498db;
+  border-color: #2980b9;
+  box-shadow: 0 0 12px rgba(52, 152, 219, 0.5),
+              inset 0 0 8px rgba(255, 255, 255, 0.2);
+  transform: translateY(-2px);
+}
+
+.btn-hex-type.active:hover {
+  background-color: #2980b9;
+  box-shadow: 0 0 16px rgba(52, 152, 219, 0.7),
+              inset 0 0 10px rgba(255, 255, 255, 0.3);
+}
+
+/* Secondary Button (for actions like Clear, Reset, Export) */
+.btn-secondary {
+  width: 100%;
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  background-color: #7f8c8d;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-secondary:hover {
+  background-color: #95a5a6;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(127, 140, 141, 0.3);
+}
+
+.btn-secondary:active {
+  background-color: #6c7a7b;
+  transform: translateY(0);
+}
+
+.btn-primary:disabled,
+.btn-secondary:disabled {
+  background-color: #5a6871;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.btn-primary:disabled:hover,
+.btn-secondary:disabled:hover {
+  transform: none;
+  box-shadow: none;
+}
+
+/* Form Inputs */
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.form-group label {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #ecf0f1;
+  text-transform: capitalize;
+}
+
+.form-input {
+  padding: 0.75rem;
+  font-size: 1rem;
+  background-color: #2c3e50;
+  color: #ecf0f1;
+  border: 1px solid #34495e;
+  border-radius: 6px;
+  transition: all 0.2s;
+}
+
+.form-input:focus {
+  outline: none;
+  border-color: #3498db;
+  box-shadow: 0 0 8px rgba(52, 152, 219, 0.3);
+}
+
+.form-select {
+  padding: 0.75rem;
+  font-size: 1rem;
+  background-color: #2c3e50;
+  color: #ecf0f1;
+  border: 1px solid #34495e;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.form-select:focus {
+  outline: none;
+  border-color: #3498db;
+  box-shadow: 0 0 8px rgba(52, 152, 219, 0.3);
+}
+
+/* Resource and Number Input Grids */
+.resource-grid,
+.number-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 1rem;
+  background-color: #2c3e50;
+  border-radius: 6px;
+}
+
+.resource-input,
+.number-input {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+}
+
+.resource-input label,
+.number-input label {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #ecf0f1;
+  text-transform: capitalize;
+  flex: 1;
+}
+
+.resource-input input,
+.number-input input {
+  width: 80px;
+  padding: 0.5rem;
+  font-size: 0.95rem;
+  text-align: center;
+  background-color: #34495e;
+  color: #ecf0f1;
+  border: 1px solid #3d5266;
+  border-radius: 4px;
+}
+
+.resource-input input:focus,
+.number-input input:focus {
+  outline: none;
+  border-color: #3498db;
+}
+
+/* Validation Errors */
+.validation-errors {
+  padding: 1rem;
+  background-color: #c0392b;
+  border-radius: 6px;
+  border-left: 4px solid #e74c3c;
+}
+
+.validation-errors h4 {
+  margin-bottom: 0.5rem;
+  color: white;
+  font-size: 1rem;
+}
+
+.validation-errors ul {
+  list-style-position: inside;
+  color: #ecf0f1;
+}
+
+.validation-errors li {
+  margin-bottom: 0.25rem;
+  font-size: 0.9rem;
+}
+
+.help-text.error {
+  color: #e74c3c;
+  font-weight: 600;
+}
+
+/* Action Buttons Container */
+.action-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}

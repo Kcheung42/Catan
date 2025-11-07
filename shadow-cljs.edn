@@ -1,7 +1,8 @@
 {:source-paths ["src" "test"]
  :dependencies [[reagent "1.2.0"]
                 [re-frame "1.4.3"]
-                [day8.re-frame/http-fx "0.2.4"]]
+                [day8.re-frame/http-fx "0.2.4"]
+                [re-frisk "1.6.0"]]
 
  :dev-http {8080 "resources/public"}
 
