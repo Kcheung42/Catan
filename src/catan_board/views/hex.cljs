@@ -178,9 +178,9 @@
         editor-mode?     @(rf/subscribe [:custom-scenario-editor-mode?])
         ;; Get fill - use pattern if available, otherwise solid color
         fill             (cond
-                           (and is-fog?
-                                (not is-revealed?)) "#f5f5f5" ; Light gray for unrevealed fog
-                           editor-mode?             "#000000"
+                           (or (and is-fog?
+                                 (not is-revealed?))
+                               editor-mode?) "#949494" ; Light gray for unrevealed fog
                            display-resource         (str "url(#" (name display-resource) "-pattern)")
                            :else                    (resources/get-resource-color display-resource))
 
