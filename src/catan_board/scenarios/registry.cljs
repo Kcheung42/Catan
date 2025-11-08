@@ -16,7 +16,8 @@
    :base-game-6p    base-game-6p/base-game-6p
    :fog-islands-3p  fog-islands-3p/fog-islands-3p-scenario
    :fog-islands-4p  fog-islands-4p/fog-islands-4p-scenario
-   :cloth-for-catan cloth-for-catan/cloth-for-catan-scenario})
+   ;; :cloth-for-catan cloth-for-catan/cloth-for-catan-scenario
+   })
 
 ;; -- Public API --------------------------------------------------------------
 
