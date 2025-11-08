@@ -130,6 +130,22 @@
     [:line {:x1 12 :y1 14 :x2 20 :y2 14 :stroke "#FFF8DC" :stroke-width 0.3}]
     [:line {:x1 12 :y1 17 :x2 20 :y2 17 :stroke "#8B7500" :stroke-width 0.3}]]
 
+   ;; Village pattern - small dense houses
+   #_[:pattern {:id "village-pattern" :width 20 :height 20 :patternUnits "userSpaceOnUse"}
+      [:rect {:width 20 :height 20 :fill "#8B7355"}]
+      ;; House 1
+      [:polygon {:points "3,8 6,5 9,8" :fill "#654321"}]
+      [:rect {:x 4 :y 8 :width 4 :height 4 :fill "#8B6914"}]
+      [:rect {:x 5 :y 9 :width 1 :height 2 :fill "#333"}]
+      ;; House 2
+      [:polygon {:points "13,6 16,3 19,6" :fill "#654321"}]
+      [:rect {:x 14 :y 6 :width 4 :height 4 :fill "#8B6914"}]
+      [:rect {:x 15 :y 7 :width 1 :height 2 :fill "#333"}]
+      ;; House 3
+      [:polygon {:points "8,16 11,13 14,16" :fill "#654321"}]
+      [:rect {:x 9 :y 16 :width 4 :height 4 :fill "#8B6914"}]
+      [:rect {:x 10 :y 17 :width 1 :height 2 :fill "#333"}]]
+
    ;; Village pattern - large sparse houses
    [:pattern {:id "village-pattern" :width 30 :height 30 :patternUnits "userSpaceOnUse"}
     [:rect {:width 30 :height 30 :fill "#8B7355"}]
