@@ -4,7 +4,7 @@
                 [day8.re-frame/http-fx "0.2.4"]
                 [re-frisk "1.6.0"]]
 
- :dev-http {8080 "resources/public"}
+ :dev-http {8081 "resources/public"}
 
  :builds
  {:app {:target :browser
