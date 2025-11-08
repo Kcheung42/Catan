@@ -372,12 +372,6 @@
                           harbors)]
      (assoc-in db [:ui :custom-scenario-draft :harbors] updated-harbors))))
 
-(rf/reg-event-db
- :set-harbor-type-selection-mode
- [persist-db]
- (fn [db]
-   (assoc-in db [:ui :harbor-type-selection-mode] true)))
-
 ;; -- Scenario Persistence Events ---------------------------------------------
 
 (rf/reg-event-db
@@ -414,4 +408,7 @@
  :exit-custom-scenario-editor
  [persist-db]
  (fn [db _]
-   (assoc-in db [:ui :custom-scenario-editor-mode] false)))
+   (-> db
+       (assoc-in [:ui :custom-scenario-editor-mode] false)
+       (assoc-in [:ui :harbor-placement-coord] nil)
+       (assoc-in [:ui :editor-hex-selection-mode] false))))

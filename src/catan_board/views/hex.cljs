@@ -502,8 +502,7 @@
         harbor-types [:generic :wood :brick :wheat :sheep :ore]
         next-type    (let [current-idx (.indexOf harbor-types type)
                            next-idx    (mod (inc current-idx) (count harbor-types))]
-                       (nth harbor-types next-idx))
-        harbor-type-selection-mode? @(rf/subscribe [:harbor-type-selection-mode])]
+                       (nth harbor-types next-idx))]
 
     [:g {:key (str "harbor-" (first land-hex) "-" (second land-hex) "-" direction)}
      ;; Hexagonal harbor tile with rounded corners
@@ -518,7 +517,6 @@
        :on-click        (when editor-mode?
                           (fn [e]
                             (.stopPropagation e)
-                            (rf/dispatch [:set-harbor-type-selection-mode])
                             (rf/dispatch [:assign-harbor-type land-hex direction next-type])))}]
 
      ;; Trade ratio text

@@ -29,11 +29,6 @@
  (fn [db _]
    (get-in db [:ui :harbor-placement-coord])))
 
-(rf/reg-sub
- :harbor-type-selection-mode
- (fn [db _]
-   (get-in db [:ui :harbor-type-selection-mode])))
-
 ;; -- Editor Hexes Generation -------------------------------------------------
 
 (defn- get-hex-type
