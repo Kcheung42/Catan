@@ -2,7 +2,6 @@
   (:require
    [re-frame.core :as rf]
    [catan-board.views.hex :as hex-view]
-   [catan-board.scenarios.registry :as registry]
    [catan-board.custom-editor.events]
    [catan-board.custom-editor.subs]))
 
