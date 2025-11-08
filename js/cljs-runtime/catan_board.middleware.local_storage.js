@@ -1,9 +1,45 @@
 goog.provide('catan_board.middleware.local_storage');
 /**
+ * Check if localStorage is available
+ */
+catan_board.middleware.local_storage.has_local_storage_QMARK_ = (function catan_board$middleware$local_storage$has_local_storage_QMARK_(){
+return (typeof localStorage !== 'undefined');
+});
+/**
  * Helper that serializes and saves the given data to localStorage under a key.
  */
 catan_board.middleware.local_storage.save_to_local_storage_BANG_ = (function catan_board$middleware$local_storage$save_to_local_storage_BANG_(key,data){
+if(catan_board.middleware.local_storage.has_local_storage_QMARK_()){
 return localStorage.setItem(key,cljs.core.pr_str.cljs$core$IFn$_invoke$arity$variadic(cljs.core.prim_seq.cljs$core$IFn$_invoke$arity$2([data], 0)));
+} else {
+return null;
+}
+});
+/**
+ * Assoc `entry` to a value stored under `key` in localStorage.
+ * If the key does not exist or is not a map, creates a new map.
+ * Example:
+ *   (append-to-local-storage-array! "app-state" {:id 1 :data "foo"})
+ */
+catan_board.middleware.local_storage.assoc_to_local_storage_array_BANG_ = (function catan_board$middleware$local_storage$assoc_to_local_storage_array_BANG_(key,entry){
+if(catan_board.middleware.local_storage.has_local_storage_QMARK_()){
+var existing = (function (){var G__32183 = localStorage.getItem(key);
+if((G__32183 == null)){
+return null;
+} else {
+return cljs.reader.read_string.cljs$core$IFn$_invoke$arity$1(G__32183);
+}
+})();
+var current = ((cljs.core.map_QMARK_(existing))?existing:cljs.core.PersistentArrayMap.EMPTY);
+var new_data = cljs.core.merge.cljs$core$IFn$_invoke$arity$variadic(cljs.core.prim_seq.cljs$core$IFn$_invoke$arity$2([current,entry], 0));
+cljs.core.prn.cljs$core$IFn$_invoke$arity$variadic(cljs.core.prim_seq.cljs$core$IFn$_invoke$arity$2(["new-data:",new_data], 0));
+
+catan_board.middleware.local_storage.save_to_local_storage_BANG_(key,new_data);
+
+return new_data;
+} else {
+return null;
+}
 });
 /**
  * Appends `entry` to a vector stored under `key` in localStorage.
@@ -12,18 +48,22 @@ return localStorage.setItem(key,cljs.core.pr_str.cljs$core$IFn$_invoke$arity$var
  *   (append-to-local-storage-array! "app-state" {:id 1 :data "foo"})
  */
 catan_board.middleware.local_storage.append_to_local_storage_array_BANG_ = (function catan_board$middleware$local_storage$append_to_local_storage_array_BANG_(key,entry){
-var existing = (function (){var G__26216 = localStorage.getItem(key);
-if((G__26216 == null)){
+if(catan_board.middleware.local_storage.has_local_storage_QMARK_()){
+var existing = (function (){var G__32184 = localStorage.getItem(key);
+if((G__32184 == null)){
 return null;
 } else {
-return cljs.reader.read_string.cljs$core$IFn$_invoke$arity$1(G__26216);
+return cljs.reader.read_string.cljs$core$IFn$_invoke$arity$1(G__32184);
 }
 })();
-var current = ((cljs.core.vector_QMARK_(existing))?existing:((cljs.core.seq(existing))?existing:cljs.core.List.EMPTY));
+var current = ((cljs.core.seq(existing))?existing:cljs.core.List.EMPTY);
 var new_data = cljs.core.conj.cljs$core$IFn$_invoke$arity$2(cljs.core.take.cljs$core$IFn$_invoke$arity$2((20),current),entry);
-localStorage.setItem(key,cljs.core.pr_str.cljs$core$IFn$_invoke$arity$variadic(cljs.core.prim_seq.cljs$core$IFn$_invoke$arity$2([new_data], 0)));
+catan_board.middleware.local_storage.save_to_local_storage_BANG_(key,new_data);
 
 return new_data;
+} else {
+return null;
+}
 });
 /**
  * Removes and returns the first element of the vector stored under `key` in localStorage.
@@ -33,32 +73,90 @@ return new_data;
  *    :remaining <the updated vector>}
  */
 catan_board.middleware.local_storage.pop_first_from_local_storage_array_BANG_ = (function catan_board$middleware$local_storage$pop_first_from_local_storage_array_BANG_(key){
-var existing = (function (){var G__26227 = localStorage.getItem(key);
-if((G__26227 == null)){
+if(catan_board.middleware.local_storage.has_local_storage_QMARK_()){
+var existing = (function (){var G__32185 = localStorage.getItem(key);
+if((G__32185 == null)){
 return null;
 } else {
-return cljs.reader.read_string.cljs$core$IFn$_invoke$arity$1(G__26227);
+return cljs.reader.read_string.cljs$core$IFn$_invoke$arity$1(G__32185);
 }
 })();
 if(cljs.core.seq(existing)){
 var removed = cljs.core.first(existing);
 var remaining = cljs.core.rest(existing);
-localStorage.setItem(key,cljs.core.pr_str.cljs$core$IFn$_invoke$arity$variadic(cljs.core.prim_seq.cljs$core$IFn$_invoke$arity$2([remaining], 0)));
+catan_board.middleware.local_storage.save_to_local_storage_BANG_(key,remaining);
 
 return new cljs.core.PersistentArrayMap(null, 2, [new cljs.core.Keyword(null,"removed","removed",609626430),removed,new cljs.core.Keyword(null,"remaining","remaining",-138926777),remaining], null);
 } else {
-return new cljs.core.PersistentArrayMap(null, 2, [new cljs.core.Keyword(null,"removed","removed",609626430),null,new cljs.core.Keyword(null,"remaining","remaining",-138926777),((cljs.core.seq(existing))?existing:cljs.core.List.EMPTY)], null);
+return new cljs.core.PersistentArrayMap(null, 2, [new cljs.core.Keyword(null,"removed","removed",609626430),null,new cljs.core.Keyword(null,"remaining","remaining",-138926777),cljs.core.List.EMPTY], null);
+}
+} else {
+return new cljs.core.PersistentArrayMap(null, 2, [new cljs.core.Keyword(null,"removed","removed",609626430),null,new cljs.core.Keyword(null,"remaining","remaining",-138926777),cljs.core.List.EMPTY], null);
 }
 });
 /**
  * Loads data from localStorage (if any) and optionally extracts a value at the given path.
  * Example:
- *   (load-from-local-storage "app-state")                ;=> entire map
- *   (load-from-local-storage "app-state" [:settings])    ;=> just (:settings saved-db)
+ *   (load-latest-app-db-from-local-storage)                ;=> entire map
+ *   (load-latest-app-db-from-local-storage [:settings])    ;=> just (:settings saved-db)
+ */
+catan_board.middleware.local_storage.load_latest_app_db_from_local_storage = (function catan_board$middleware$local_storage$load_latest_app_db_from_local_storage(var_args){
+var G__32187 = arguments.length;
+switch (G__32187) {
+case 0:
+return catan_board.middleware.local_storage.load_latest_app_db_from_local_storage.cljs$core$IFn$_invoke$arity$0();
+
+break;
+case 1:
+return catan_board.middleware.local_storage.load_latest_app_db_from_local_storage.cljs$core$IFn$_invoke$arity$1((arguments[(0)]));
+
+break;
+default:
+throw (new Error(["Invalid arity: ",cljs.core.str.cljs$core$IFn$_invoke$arity$1(arguments.length)].join('')));
+
+}
+});
+
+(catan_board.middleware.local_storage.load_latest_app_db_from_local_storage.cljs$core$IFn$_invoke$arity$0 = (function (){
+if(catan_board.middleware.local_storage.has_local_storage_QMARK_()){
+var G__32188 = localStorage.getItem("app-db");
+var G__32188__$1 = (((G__32188 == null))?null:cljs.reader.read_string.cljs$core$IFn$_invoke$arity$1(G__32188));
+if((G__32188__$1 == null)){
+return null;
+} else {
+return cljs.core.first(G__32188__$1);
+}
+} else {
+return null;
+}
+}));
+
+(catan_board.middleware.local_storage.load_latest_app_db_from_local_storage.cljs$core$IFn$_invoke$arity$1 = (function (path){
+if(catan_board.middleware.local_storage.has_local_storage_QMARK_()){
+var G__32189 = localStorage.getItem("app-db");
+var G__32189__$1 = (((G__32189 == null))?null:cljs.reader.read_string.cljs$core$IFn$_invoke$arity$1(G__32189));
+var G__32189__$2 = (((G__32189__$1 == null))?null:cljs.core.first(G__32189__$1));
+if((G__32189__$2 == null)){
+return null;
+} else {
+return cljs.core.get_in.cljs$core$IFn$_invoke$arity$2(G__32189__$2,path);
+}
+} else {
+return null;
+}
+}));
+
+(catan_board.middleware.local_storage.load_latest_app_db_from_local_storage.cljs$lang$maxFixedArity = 1);
+
+/**
+ * Loads data from localStorage (if any) and optionally extracts a value at the given path.
+ * Example:
+ *   (load-from-local-storage "app-db")                ;=> entire map
+ *   (load-from-local-storage "app-db" [:settings])    ;=> just (:settings saved-db)
  */
 catan_board.middleware.local_storage.load_from_local_storage = (function catan_board$middleware$local_storage$load_from_local_storage(var_args){
-var G__26235 = arguments.length;
-switch (G__26235) {
+var G__32191 = arguments.length;
+switch (G__32191) {
 case 1:
 return catan_board.middleware.local_storage.load_from_local_storage.cljs$core$IFn$_invoke$arity$1((arguments[(0)]));
 
@@ -74,23 +172,29 @@ throw (new Error(["Invalid arity: ",cljs.core.str.cljs$core$IFn$_invoke$arity$1(
 });
 
 (catan_board.middleware.local_storage.load_from_local_storage.cljs$core$IFn$_invoke$arity$1 = (function (key){
-var G__26236 = localStorage.getItem(key);
-var G__26236__$1 = (((G__26236 == null))?null:cljs.reader.read_string.cljs$core$IFn$_invoke$arity$1(G__26236));
-if((G__26236__$1 == null)){
+if(catan_board.middleware.local_storage.has_local_storage_QMARK_()){
+var G__32192 = localStorage.getItem(key);
+if((G__32192 == null)){
 return null;
 } else {
-return cljs.core.first(G__26236__$1);
+return cljs.reader.read_string.cljs$core$IFn$_invoke$arity$1(G__32192);
+}
+} else {
+return null;
 }
 }));
 
 (catan_board.middleware.local_storage.load_from_local_storage.cljs$core$IFn$_invoke$arity$2 = (function (key,path){
-var G__26241 = localStorage.getItem(key);
-var G__26241__$1 = (((G__26241 == null))?null:cljs.reader.read_string.cljs$core$IFn$_invoke$arity$1(G__26241));
-var G__26241__$2 = (((G__26241__$1 == null))?null:cljs.core.first(G__26241__$1));
-if((G__26241__$2 == null)){
+if(catan_board.middleware.local_storage.has_local_storage_QMARK_()){
+var G__32193 = localStorage.getItem(key);
+var G__32193__$1 = (((G__32193 == null))?null:cljs.reader.read_string.cljs$core$IFn$_invoke$arity$1(G__32193));
+if((G__32193__$1 == null)){
 return null;
 } else {
-return cljs.core.get_in.cljs$core$IFn$_invoke$arity$2(G__26241__$2,path);
+return cljs.core.get_in.cljs$core$IFn$_invoke$arity$2(G__32193__$1,path);
+}
+} else {
+return null;
 }
 }));
 
@@ -100,15 +204,15 @@ return cljs.core.get_in.cljs$core$IFn$_invoke$arity$2(G__26241__$2,path);
  * Returns an interceptor that saves the whole db or a path of it to localStorage
  * after the event handler runs.
  */
-catan_board.middleware.local_storage.persist_db = (function catan_board$middleware$local_storage$persist_db(var_args){
-var G__26246 = arguments.length;
-switch (G__26246) {
+catan_board.middleware.local_storage.persist_db_after = (function catan_board$middleware$local_storage$persist_db_after(var_args){
+var G__32195 = arguments.length;
+switch (G__32195) {
 case 1:
-return catan_board.middleware.local_storage.persist_db.cljs$core$IFn$_invoke$arity$1((arguments[(0)]));
+return catan_board.middleware.local_storage.persist_db_after.cljs$core$IFn$_invoke$arity$1((arguments[(0)]));
 
 break;
 case 2:
-return catan_board.middleware.local_storage.persist_db.cljs$core$IFn$_invoke$arity$2((arguments[(0)]),(arguments[(1)]));
+return catan_board.middleware.local_storage.persist_db_after.cljs$core$IFn$_invoke$arity$2((arguments[(0)]),(arguments[(1)]));
 
 break;
 default:
@@ -117,21 +221,24 @@ throw (new Error(["Invalid arity: ",cljs.core.str.cljs$core$IFn$_invoke$arity$1(
 }
 });
 
-(catan_board.middleware.local_storage.persist_db.cljs$core$IFn$_invoke$arity$1 = (function (key){
-return catan_board.middleware.local_storage.persist_db.cljs$core$IFn$_invoke$arity$2(key,cljs.core.identity);
+(catan_board.middleware.local_storage.persist_db_after.cljs$core$IFn$_invoke$arity$1 = (function (key){
+return catan_board.middleware.local_storage.persist_db_after.cljs$core$IFn$_invoke$arity$2(key,cljs.core.identity);
 }));
 
-(catan_board.middleware.local_storage.persist_db.cljs$core$IFn$_invoke$arity$2 = (function (key,path_fn){
+(catan_board.middleware.local_storage.persist_db_after.cljs$core$IFn$_invoke$arity$2 = (function (key,path_fn){
 return re_frame.core.__GT_interceptor.cljs$core$IFn$_invoke$arity$variadic(cljs.core.prim_seq.cljs$core$IFn$_invoke$arity$2([new cljs.core.Keyword(null,"id","id",-1388402092),new cljs.core.Keyword(null,"persist-db","persist-db",-144176819),new cljs.core.Keyword(null,"after","after",594996914),(function (context){
-var new_db_26274 = cljs.core.get_in.cljs$core$IFn$_invoke$arity$2(context,new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null,"effects","effects",-282369292),new cljs.core.Keyword(null,"db","db",993250759)], null));
-var data_26275 = (path_fn.cljs$core$IFn$_invoke$arity$1 ? path_fn.cljs$core$IFn$_invoke$arity$1(new_db_26274) : path_fn.call(null,new_db_26274));
-catan_board.middleware.local_storage.append_to_local_storage_array_BANG_(key,data_26275);
+if(catan_board.middleware.local_storage.has_local_storage_QMARK_()){
+var new_db_32199 = cljs.core.get_in.cljs$core$IFn$_invoke$arity$2(context,new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null,"effects","effects",-282369292),new cljs.core.Keyword(null,"db","db",993250759)], null));
+var data_32200 = (path_fn.cljs$core$IFn$_invoke$arity$1 ? path_fn.cljs$core$IFn$_invoke$arity$1(new_db_32199) : path_fn.call(null,new_db_32199));
+catan_board.middleware.local_storage.append_to_local_storage_array_BANG_(key,data_32200);
+} else {
+}
 
 return context;
 })], 0));
 }));
 
-(catan_board.middleware.local_storage.persist_db.cljs$lang$maxFixedArity = 2);
+(catan_board.middleware.local_storage.persist_db_after.cljs$lang$maxFixedArity = 2);
 
 
 //# sourceMappingURL=catan_board.middleware.local_storage.js.map
