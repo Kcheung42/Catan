@@ -409,3 +409,9 @@
        (.writeText js/navigator.clipboard edn-string))
      ;; Return no db changes
      {:db db})))
+
+(rf/reg-event-db
+ :exit-custom-scenario-editor
+ [persist-db]
+ (fn [db _]
+   (assoc-in db [:ui :custom-scenario-editor-mode] false)))

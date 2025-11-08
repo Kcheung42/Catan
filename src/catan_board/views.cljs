@@ -12,11 +12,11 @@
    Dispatches :set-scenario when selection changes."
   []
   (let [available-scenarios @(rf/subscribe [:available-scenarios])
-        current-scenario @(rf/subscribe [:current-scenario])]
+        current-scenario    @(rf/subscribe [:current-scenario])]
     [:div.control-section
      [:h3 "Scenario"]
      [:select.scenario-dropdown
-      {:value (name current-scenario)
+      {:value     (name current-scenario)
        :on-change (fn [e]
                     (let [scenario-id (keyword (.. e -target -value))]
                       (rf/dispatch [:set-scenario scenario-id])))}
@@ -38,49 +38,49 @@
    [:div.form-group
     [:label "Scenario Name"]
     [:input.form-input
-     {:type "text"
-      :value (:name draft "")
+     {:type        "text"
+      :value       (:name draft "")
       :placeholder "e.g., Custom Fog Islands"
-      :on-change #(rf/dispatch [:update-scenario-name (.. % -target -value)])}]
+      :on-change   #(rf/dispatch [:update-scenario-name (.. % -target -value)])}]
     [:p.help-text "Give your scenario a unique name"]]
 
    ;; Player Count
    #_[:div.form-group
-    [:label "Player Count"]
-    [:select.form-select
-     {:value (str (:player-count draft 4))
-      :on-change #(rf/dispatch [:update-scenario-player-count (.. % -target -value)])}
-     [:option {:value "2"} "2 Players"]
-     [:option {:value "3"} "3 Players"]
-     [:option {:value "4"} "4 Players"]
-     [:option {:value "5"} "5 Players"]
-     [:option {:value "6"} "6 Players"]]
-    [:p.help-text "Number of players (2-6)"]]
+      [:label "Player Count"]
+      [:select.form-select
+       {:value     (str (:player-count draft 4))
+        :on-change #(rf/dispatch [:update-scenario-player-count (.. % -target -value)])}
+       [:option {:value "2"} "2 Players"]
+       [:option {:value "3"} "3 Players"]
+       [:option {:value "4"} "4 Players"]
+       [:option {:value "5"} "5 Players"]
+       [:option {:value "6"} "6 Players"]]
+      [:p.help-text "Number of players (2-6)"]]
 
    ;; Grid Pattern
    [:div.form-group
     [:label "Grid Pattern"]
     [:input.form-input
-     {:type "text"
-      :value (:grid-pattern draft "")
+     {:type        "text"
+      :value       (:grid-pattern draft "")
       :placeholder "e.g., 3-4-5-4-3"
-      :on-change #(rf/dispatch [:update-grid-pattern (.. % -target -value)])}]
+      :on-change   #(rf/dispatch [:update-grid-pattern (.. % -target -value)])}]
     [:p.help-text "Hex rows pattern (e.g., 3-4-5-4-3 for standard board)"]]])
 
 (defn resource-distribution-editor
   "Form section for editing resource distribution (face-up or fog)"
   [draft distribution-type]
-  (let [title (if (= distribution-type :face-up)
-                "Face-Up Resources"
-                "Face-Down (Fog) Resources")
+  (let [title            (if (= distribution-type :face-up)
+                           "Face-Up Resources"
+                           "Face-Down (Fog) Resources")
         distribution-key (if (= distribution-type :face-up)
                            :face-up-distribution
                            :fog-distribution)
-        event-key (if (= distribution-type :face-up)
-                    :update-face-up-resource
-                    :update-face-down-resource)
-        resources (get-in draft [distribution-key :resources] {})
-        resource-types [:water :desert :gold :wheat :brick :ore :sheep :wood :village]]
+        event-key        (if (= distribution-type :face-up)
+                           :update-face-up-resource
+                           :update-face-down-resource)
+        resources        (get-in draft [distribution-key :resources] {})
+        resource-types   [:water :desert :gold :wheat :brick :ore :sheep :wood :village]]
     [:div.control-section
      [:h3 title]
      [:div.resource-grid
@@ -89,9 +89,9 @@
         [:div.form-group.resource-input
          [:label (name resource-type)]
          [:input.form-input
-          {:type "number"
-           :min "0"
-           :value (str (get resources resource-type 0))
+          {:type      "number"
+           :min       "0"
+           :value     (str (get resources resource-type 0))
            :on-change #(rf/dispatch [event-key resource-type (.. % -target -value)])}]])]
      [:p.help-text
       (if (= distribution-type :face-up)
@@ -101,17 +101,17 @@
 (defn number-token-distribution-editor
   "Form section for editing number token distribution (face-up or fog)"
   [draft distribution-type]
-  (let [title (if (= distribution-type :face-up)
-                "Face-Up Number Tokens"
-                "Face-Down (Fog) Number Tokens")
+  (let [title            (if (= distribution-type :face-up)
+                           "Face-Up Number Tokens"
+                           "Face-Down (Fog) Number Tokens")
         distribution-key (if (= distribution-type :face-up)
                            :face-up-distribution
                            :fog-distribution)
-        event-key (if (= distribution-type :face-up)
-                    :update-face-up-number
-                    :update-face-down-number)
-        tokens (get-in draft [distribution-key :number-tokens] {})
-        token-numbers [2 3 4 5 6 8 9 10 11 12]]
+        event-key        (if (= distribution-type :face-up)
+                           :update-face-up-number
+                           :update-face-down-number)
+        tokens           (get-in draft [distribution-key :number-tokens] {})
+        token-numbers    [2 3 4 5 6 8 9 10 11 12]]
     [:div.control-section
      [:h3 title]
      [:div.number-grid
@@ -120,9 +120,9 @@
         [:div.form-group.number-input
          [:label (str number)]
          [:input.form-input
-          {:type "number"
-           :min "0"
-           :value (str (get tokens number 0))
+          {:type      "number"
+           :min       "0"
+           :value     (str (get tokens number 0))
            :on-change #(rf/dispatch [event-key number (.. % -target -value)])}]])]
      [:p.help-text
       (if (= distribution-type :face-up)
@@ -137,15 +137,15 @@
      [:h3 "Hex Type Selection"]
      [:div.hex-type-buttons
       [:button.btn-hex-type
-       {:class (when (= selection-mode :terrain) "active")
+       {:class    (when (= selection-mode :terrain) "active")
         :on-click #(rf/dispatch [:set-editor-hex-selection-mode :terrain])}
        "Terrain"]
       [:button.btn-hex-type
-       {:class (when (= selection-mode :water) "active")
+       {:class    (when (= selection-mode :water) "active")
         :on-click #(rf/dispatch [:set-editor-hex-selection-mode :water])}
        "Water"]
       [:button.btn-hex-type
-       {:class (when (= selection-mode :fog) "active")
+       {:class    (when (= selection-mode :fog) "active")
         :on-click #(rf/dispatch [:set-editor-hex-selection-mode :fog])}
        "Fog"]
       [:button.btn-hex-type
@@ -165,7 +165,7 @@
   "Form section for loading and managing custom scenarios"
   []
   (let [custom-scenarios @(rf/subscribe [:custom-scenarios-list])
-        draft @(rf/subscribe [:custom-scenario-draft])]
+        draft            @(rf/subscribe [:custom-scenario-draft])]
     [:div.control-section
      [:h3 "Manage Scenarios"]
      (if (seq custom-scenarios)
@@ -212,7 +212,10 @@
      "Reset to Defaults"]
     [:button.btn-secondary
      {:on-click #(rf/dispatch [:export-custom-scenario])}
-     "Export to Clipboard"]]
+     "Export to Clipboard"]
+    [:button.btn-secondary
+     {:on-click #(rf/dispatch [:exit-custom-scenario-editor])}
+     "Exit Custom Scenario Editor"]]
    (when (seq validation-errors)
      [:p.help-text.error "Fix validation errors before saving"])])
 
@@ -231,7 +234,7 @@
 
 (defn main-panel []
   (let [loading?             @(rf/subscribe [:loading?])
-        current-board-scale          @(rf/subscribe [:board-scale])
+        current-board-scale  @(rf/subscribe [:board-scale])
         tournament-mode?     @(rf/subscribe [:tournament-mode?])
         swap-number-mode?    @(rf/subscribe [:swap-number-mode?])
         developer-mode?      @(rf/subscribe [:developer-mode?])
@@ -260,49 +263,8 @@
         "×"]]
 
       [:div.sidebar-content
-       ;; Custom Scenario Editor Toggle
-       [:div.control-section
-        [:div.toggle-container
-         [:label.toggle-label
-          [:input {:type "checkbox"
-                   :checked editor-mode?
-                   :on-change #(rf/dispatch [:toggle-custom-scenario-editor])}]
-          [:span.toggle-text "Custom Scenario Editor"]]
-         [:p.help-text "Create and edit custom scenarios"]]]
-
        ;; Conditional rendering: either show editor form or normal controls
-       (if editor-mode?
-         ;; Custom Scenario Editor Form
-         [:div.editor-form
-          (when draft
-            [:div
-             [:div.toggle-container
-              [:label.toggle-label
-               [:input {:type      "checkbox"
-                        :checked   landscape-mode?
-                        :on-change #(rf/dispatch [:toggle-landscape-mode])}]
-               [:span.toggle-text "Landscape Mode"]]
-              [:p.help-text "Flip orientation to landscape"]]
-             [board-scale current-board-scale]
-             [scenario-metadata-editor draft]
-             [resource-distribution-editor draft :face-up]
-             [number-token-distribution-editor draft :face-up]
-             [resource-distribution-editor draft :fog]
-             [number-token-distribution-editor draft :fog]
-             [hex-type-selection-editor]
-             [scenario-management-editor]
-             [editor-action-buttons validation-errors]])
-
-          ;; Validation errors display
-          (when (seq validation-errors)
-            [:div.control-section
-             [:div.validation-errors
-              [:h4 "Validation Errors:"]
-              [:ul
-               (for [[field error] validation-errors]
-                 ^{:key field}
-                 [:li error])]]])]
-
+       (if (not editor-mode?)
          ;; Normal Controls (when not in editor mode)
          [:div
           ;; Scenario Selection
@@ -314,18 +276,19 @@
            [:button.btn-primary
             {:on-click #(rf/dispatch [:generate-board])}
             (if loading? "Generating..." "Generate New Board")]
+
            [:div.toggle-container
             [:label.toggle-label
-             [:input {:type "checkbox"
-                      :checked tournament-mode?
+             [:input {:type      "checkbox"
+                      :checked   tournament-mode?
                       :on-change #(rf/dispatch [:toggle-tournament-mode])}]
              [:span.toggle-text "Tournament Mode"]]
             [:p.help-text "Prevents adjacent red numbers (6 & 8)"]]
 
            [:div.toggle-container
             [:label.toggle-label
-             [:input {:type "checkbox"
-                      :checked random-harbor-mode?
+             [:input {:type      "checkbox"
+                      :checked   random-harbor-mode?
                       :on-change #(rf/dispatch [:toggle-random-harbor-mode])}]
              [:span.toggle-text "Random Harbor Mode"]]
             [:p.help-text "Randomize harbor types"]]]
@@ -343,16 +306,16 @@
 
            [:div.toggle-container
             [:label.toggle-label
-             [:input {:type "checkbox"
-                      :checked landscape-mode?
+             [:input {:type      "checkbox"
+                      :checked   landscape-mode?
                       :on-change #(rf/dispatch [:toggle-landscape-mode])}]
              [:span.toggle-text "Landscape Mode"]]
             [:p.help-text "Flip orientation to landscape"]]
 
            [:div.toggle-container
             [:label.toggle-label
-             [:input {:type "checkbox"
-                      :checked swap-number-mode?
+             [:input {:type      "checkbox"
+                      :checked   swap-number-mode?
                       :on-change #(rf/dispatch [:toggle-swap-number-mode])}]
              [:span.toggle-text "Swap Number Mode"]]
             [:p.help-text "Click tokens to swap their numbers"]]]
@@ -360,31 +323,72 @@
           ;; Board Scale
           [board-scale current-board-scale]
 
-          [:div.toggle-container
-           [:label.toggle-label
-            [:input {:type "checkbox"
-                     :checked developer-mode?
-                     :on-change #(rf/dispatch [:toggle-developer-mode])}]
-            [:span.toggle-text "Developer Mode"]]
-           [:p.help-text "Show hex coordinates for debugging"]]])]]
+          [:div.control-section
+           [:h3 "Developers"]
+           [:div.toggle-container
+            [:label.toggle-label
+             [:input {:type      "checkbox"
+                      :checked   developer-mode?
+                      :on-change #(rf/dispatch [:toggle-developer-mode])}]
+             [:span.toggle-text "Developer Mode"]]
+            [:p.help-text "Show hex coordinates for debugg ing"]]
+
+           [:div.toggle-container
+            [:label.toggle-label
+             [:input {:type      "checkbox"
+                      :checked   editor-mode?
+                      :on-change #(rf/dispatch [:toggle-custom-scenario-editor])}]
+             [:span.toggle-text "Custom Scenario Editor"]]
+            [:p.help-text "Create and edit custom scenarios"]]]]
+         ;; else
+         ;; Custom Scenario Editor Form
+         [:div.editor-form
+          (when draft
+            [:div
+             [:div.toggle-container
+              [:label.toggle-label
+               [:input {:type      "checkbox"
+                        :checked   landscape-mode?
+                        :on-change #(rf/dispatch [:toggle-landscape-mode])}]
+               [:span.toggle-text "Landscape Mode"]]
+              [:p.help-text "Flip orientation to landscape"]]
+             [board-scale current-board-scale]
+             [scenario-management-editor]
+             [scenario-metadata-editor draft]
+             [resource-distribution-editor draft :face-up]
+             [number-token-distribution-editor draft :face-up]
+             [resource-distribution-editor draft :fog]
+             [number-token-distribution-editor draft :fog]
+             [hex-type-selection-editor]
+             [editor-action-buttons validation-errors]])
+
+          ;; Validation errors display
+          (when (seq validation-errors)
+            [:div.control-section
+             [:div.validation-errors
+              [:h4 "Validation Errors:"]
+              [:ul
+               (for [[field error] validation-errors]
+                 ^{:key field}
+                 [:li error])]]])])]]
 
      ;; Toggle button (when sidebar is closed)
      [:button.sidebar-toggle
       {:on-click #(rf/dispatch [:toggle-info-panel])
-       :class (when sidebar-open? "hidden")}
+       :class    (when sidebar-open? "hidden")}
       "☰"]
 
      ;; Board container
      [:div.board-container
-      [:div {:style {:transform (str "scale(" (/ current-board-scale 100) ")")
+      [:div {:style {:transform        (str "scale(" (/ current-board-scale 100) ")")
                      :transform-origin "center center"}}
        (if (seq hexes)
          [hex-view/hex-grid
-          {:scenario current-scenario
-           :hexes hexes
-           :harbors harbors
-           :swap-number-mode? swap-number-mode?
+          {:scenario             current-scenario
+           :hexes                hexes
+           :harbors              harbors
+           :swap-number-mode?    swap-number-mode?
            :selected-token-coord selected-token-coord
-           :developer-mode? developer-mode?
-           :fog-state fog-state}]
+           :developer-mode?      developer-mode?
+           :fog-state            fog-state}]
          [:p "Loading board... (" (count hexes) " hexes)"])]]]))
