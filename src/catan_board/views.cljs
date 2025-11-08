@@ -79,7 +79,7 @@
                            :update-face-up-resource
                            :update-face-down-resource)
         resources        (get-in draft [distribution-key :resources] {})
-        resource-types   [:water :desert :gold :wheat :brick :ore :sheep :wood :village]]
+        resource-types   [:desert :gold :wheat :brick :ore :sheep :wood]]
     [:div.control-section
      [:h3 title]
      [:div.resource-grid
