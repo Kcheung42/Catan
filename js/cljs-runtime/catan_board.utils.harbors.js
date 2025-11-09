@@ -18,27 +18,27 @@ catan_board.utils.harbors.standard_harbor_positions = new cljs.core.PersistentVe
  * Creates a shuffled deck of harbor types based on standard distribution
  */
 catan_board.utils.harbors.create_harbor_deck = (function catan_board$utils$harbors$create_harbor_deck(){
-var deck = cljs.core.flatten((function (){var iter__5480__auto__ = (function catan_board$utils$harbors$create_harbor_deck_$_iter__31767(s__31768){
+var deck = cljs.core.flatten((function (){var iter__5480__auto__ = (function catan_board$utils$harbors$create_harbor_deck_$_iter__33816(s__33817){
 return (new cljs.core.LazySeq(null,(function (){
-var s__31768__$1 = s__31768;
+var s__33817__$1 = s__33817;
 while(true){
-var temp__5804__auto__ = cljs.core.seq(s__31768__$1);
+var temp__5804__auto__ = cljs.core.seq(s__33817__$1);
 if(temp__5804__auto__){
-var s__31768__$2 = temp__5804__auto__;
-if(cljs.core.chunked_seq_QMARK_(s__31768__$2)){
-var c__5478__auto__ = cljs.core.chunk_first(s__31768__$2);
+var s__33817__$2 = temp__5804__auto__;
+if(cljs.core.chunked_seq_QMARK_(s__33817__$2)){
+var c__5478__auto__ = cljs.core.chunk_first(s__33817__$2);
 var size__5479__auto__ = cljs.core.count(c__5478__auto__);
-var b__31770 = cljs.core.chunk_buffer(size__5479__auto__);
-if((function (){var i__31769 = (0);
+var b__33819 = cljs.core.chunk_buffer(size__5479__auto__);
+if((function (){var i__33818 = (0);
 while(true){
-if((i__31769 < size__5479__auto__)){
-var vec__31775 = cljs.core._nth(c__5478__auto__,i__31769);
-var harbor_type = cljs.core.nth.cljs$core$IFn$_invoke$arity$3(vec__31775,(0),null);
-var count = cljs.core.nth.cljs$core$IFn$_invoke$arity$3(vec__31775,(1),null);
-cljs.core.chunk_append(b__31770,cljs.core.repeat.cljs$core$IFn$_invoke$arity$2(count,harbor_type));
+if((i__33818 < size__5479__auto__)){
+var vec__33822 = cljs.core._nth(c__5478__auto__,i__33818);
+var harbor_type = cljs.core.nth.cljs$core$IFn$_invoke$arity$3(vec__33822,(0),null);
+var count = cljs.core.nth.cljs$core$IFn$_invoke$arity$3(vec__33822,(1),null);
+cljs.core.chunk_append(b__33819,cljs.core.repeat.cljs$core$IFn$_invoke$arity$2(count,harbor_type));
 
-var G__31794 = (i__31769 + (1));
-i__31769 = G__31794;
+var G__33846 = (i__33818 + (1));
+i__33818 = G__33846;
 continue;
 } else {
 return true;
@@ -46,15 +46,15 @@ return true;
 break;
 }
 })()){
-return cljs.core.chunk_cons(cljs.core.chunk(b__31770),catan_board$utils$harbors$create_harbor_deck_$_iter__31767(cljs.core.chunk_rest(s__31768__$2)));
+return cljs.core.chunk_cons(cljs.core.chunk(b__33819),catan_board$utils$harbors$create_harbor_deck_$_iter__33816(cljs.core.chunk_rest(s__33817__$2)));
 } else {
-return cljs.core.chunk_cons(cljs.core.chunk(b__31770),null);
+return cljs.core.chunk_cons(cljs.core.chunk(b__33819),null);
 }
 } else {
-var vec__31780 = cljs.core.first(s__31768__$2);
-var harbor_type = cljs.core.nth.cljs$core$IFn$_invoke$arity$3(vec__31780,(0),null);
-var count = cljs.core.nth.cljs$core$IFn$_invoke$arity$3(vec__31780,(1),null);
-return cljs.core.cons(cljs.core.repeat.cljs$core$IFn$_invoke$arity$2(count,harbor_type),catan_board$utils$harbors$create_harbor_deck_$_iter__31767(cljs.core.rest(s__31768__$2)));
+var vec__33831 = cljs.core.first(s__33817__$2);
+var harbor_type = cljs.core.nth.cljs$core$IFn$_invoke$arity$3(vec__33831,(0),null);
+var count = cljs.core.nth.cljs$core$IFn$_invoke$arity$3(vec__33831,(1),null);
+return cljs.core.cons(cljs.core.repeat.cljs$core$IFn$_invoke$arity$2(count,harbor_type),catan_board$utils$harbors$create_harbor_deck_$_iter__33816(cljs.core.rest(s__33817__$2)));
 }
 } else {
 return null;
