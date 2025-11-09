@@ -16,7 +16,7 @@
 (def scale-config
   "Configuration for board scale settings"
   {:min 100
-   :max 500
+   :max 1000
    :default 100
    :step 25})
 
