@@ -148,7 +148,7 @@
 
    ;; Village pattern - large sparse houses
    [:pattern {:id "village-pattern" :width 30 :height 30 :patternUnits "userSpaceOnUse"}
-    [:rect {:width 30 :height 30 :fill "#8B7355"}]
+    [:rect {:width 30 :height 30 :fill "#d4c4a0"}]
     ;; Large house - centered
     [:polygon {:points "5,15 15,5 25,15" :fill "#654321"}]
     [:rect {:x 7 :y 15 :width 16 :height 14 :fill "#8B6914"}]
