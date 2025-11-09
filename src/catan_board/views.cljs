@@ -354,11 +354,11 @@
              [board-scale current-board-scale]
              [scenario-management-editor]
              [scenario-metadata-editor draft]
+             [hex-type-selection-editor]
              [resource-distribution-editor draft :face-up]
              [number-token-distribution-editor draft :face-up]
              [resource-distribution-editor draft :fog]
              [number-token-distribution-editor draft :fog]
-             [hex-type-selection-editor]
              [editor-action-buttons validation-errors]])
 
           ;; Validation errors display

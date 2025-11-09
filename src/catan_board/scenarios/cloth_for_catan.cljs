@@ -1,7 +1,7 @@
 (ns catan-board.scenarios.cloth-for-catan
   (:require [catan-board.utils.hex :as hex]))
 
-(def cloth-for-catan-scenario
+(def config
   "Complete configuration for the Cloth for Catan scenario"
   {:id           :cloth-for-catan
    :name         "Cloth for Catan"

@@ -9,6 +9,8 @@
    [catan-board.middleware.local-storage :as local-storage]
    [catan-board.scenarios.cloth-for-catan :as cloth-for-catan]
    [catan-board.scenarios.heading-for-new-shores-3p :as heading-for-new-shores-3p]
+   [catan-board.scenarios.heading-for-new-shores-4p :as heading-for-new-shores-4p]
+
 
    ))
 
@@ -20,6 +22,7 @@
    :fog-islands-3p            fog-islands-3p/config
    :fog-islands-4p            fog-islands-4p/config
    :heading-for-new-shores-3p heading-for-new-shores-3p/config
+   :heading-for-new-shores-4p heading-for-new-shores-4p/config
    ;; :cloth-for-catan cloth-for-catan/cloth-for-catan-scenario
    })
 
