@@ -49,8 +49,11 @@
      [{:id :base-game :name 'Base Game (4-player)' :player-count 4}
       {:id :fog-islands-3p :name 'Fog Islands (3-player)' :player-count 3}]"
   []
-  (mapv (fn [[id config]]
-          {:id           id
-           :name         (:name config)
-           :player-count (:player-count config)})
-        (concat scenarios (local-storage/load-from-local-storage :custom-scenarios))))
+  (sort-by
+   (juxt :name #(not (:custom-scenario? %)))
+   (mapv (fn [[id config]]
+           {:id               id
+            :name             (:name config)
+            :player-count     (:player-count config)
+            :custom-scenario? (:custom-scenario? config)})
+         (concat scenarios (local-storage/load-from-local-storage :custom-scenarios)))))

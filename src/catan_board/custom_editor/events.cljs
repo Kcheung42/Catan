@@ -15,12 +15,12 @@
 
 (def default-draft
   "Default draft structure with base game defaults"
-  {:id            nil
-   :name          ""
-   :player-count  4
-   :grid-pattern  "3-4-5-4-3"
-   :hex-types     {:water #{} :terrain #{} :fog #{} :village #{}}
-   :harbors       []
+  {:id               nil
+   :name             ""
+   :player-count     4
+   :grid-pattern     "3-4-5-4-3"
+   :hex-types        {:water #{} :terrain #{} :fog #{} :village #{}}
+   :harbors          []
    :face-up-distribution
    {:resources     {:water  0
                     :desert 0
@@ -60,7 +60,8 @@
                     10 0
                     11 0
                     12 0}
-    :assignment    :on-reveal}})
+    :assignment    :on-reveal}
+   :custom-scenario? true})
 
 ;; -- Helper Functions --------------------------------------------------------
 
@@ -70,11 +71,11 @@
    Returns the type keyword (:water/:terrain/:fog/:village) or nil if not found."
   [hex-types coord]
   (cond
-    (contains? (:water hex-types) coord) :water
-    (contains? (:fog hex-types) coord) :fog
+    (contains? (:water hex-types) coord)   :water
+    (contains? (:fog hex-types) coord)     :fog
     (contains? (:village hex-types) coord) :village
     (contains? (:terrain hex-types) coord) :terrain
-    :else nil))
+    :else                                  nil))
 
 (defn- add-hex-to-type
   "Adds a coordinate to the appropriate type set in hex-types.
@@ -82,9 +83,9 @@
   [hex-types coord new-type]
   (let [;; Remove from all sets first
         cleaned (reduce (fn [acc type-key]
-                         (update acc type-key disj coord))
-                       hex-types
-                       [:water :fog :village :terrain])]
+                          (update acc type-key disj coord))
+                        hex-types
+                        [:water :fog :village :terrain])]
     ;; Add to new type set
     (update cleaned new-type (fn [s] (conj (or s #{}) coord)))))
 
@@ -92,21 +93,21 @@
   "Removes a coordinate from all type sets in hex-types."
   [hex-types coord]
   (reduce (fn [acc type-key]
-           (update acc type-key disj coord))
-         hex-types
-         [:water :fog :village :terrain]))
+            (update acc type-key disj coord))
+          hex-types
+          [:water :fog :village :terrain]))
 
 (defn- generate-scenario-id
   "Generate a kebab-case keyword ID from a scenario name.
    Handles duplicates by appending a number."
   [name]
-  (let [base-id (-> name
-                    str/lower-case
-                    (str/replace #"[^a-z0-9\s-]" "")
-                    (str/replace #"\s+" "-")
-                    keyword)
+  (let [base-id            (-> name
+                               str/lower-case
+                               (str/replace #"[^a-z0-9\s-]" "")
+                               (str/replace #"\s+" "-")
+                               keyword)
         existing-scenarios (local-storage/load-from-local-storage :custom-scenarios)
-        existing-ids (set (keys existing-scenarios))]
+        existing-ids       (set (keys existing-scenarios))]
     (if (contains? existing-ids base-id)
       ;; Find next available ID with number suffix
       (loop [n 2]
@@ -120,14 +121,13 @@
   "Count the number of terrain hexes (excludes water, fog, and village) from hex-types map.
    hex-types structure: {:water #{coords} :terrain #{coords} :fog #{coords} :village #{coords}}"
   [hex-types]
-  (+ (count (:terrain hex-types))
-     (count (:village hex-types))))
+  (count (:terrain hex-types)))
 
 (defn- validate-draft
   "Validate a scenario draft and return a map of validation errors.
    Returns empty map if valid."
   [draft]
-  (let [errors {}
+  (let [errors                                          {}
         {:keys [name player-count grid-pattern hex-types
                 face-up-distribution fog-distribution]} draft
 
@@ -154,7 +154,7 @@
 
         ;; Resource distribution validation (face-up only for now)
         face-up-resources (:resources face-up-distribution)
-        total-resources (reduce + (vals face-up-resources))
+        total-resources   (reduce + (vals face-up-resources))
 
         ;; For validation, we need to match terrain count (excluding water and fog)
         ;; Desert doesn't get a number token but is still a hex
@@ -167,10 +167,11 @@
                  errors)
 
         ;; Number token validation
-        face-up-tokens (:number-tokens face-up-distribution)
-        total-tokens (reduce + (vals face-up-tokens))
-        desert-count (get face-up-resources :desert 0)
-        expected-tokens (- terrain-count desert-count)
+        face-up-tokens  (:number-tokens face-up-distribution)
+        total-tokens    (reduce + (vals face-up-tokens))
+        desert-count    (get face-up-resources :desert 0)
+        village-count   (get face-up-resources :village 0)
+        expected-tokens (- terrain-count desert-count village-count)
 
         errors (if (and (> terrain-count 0)
                         (not= total-tokens expected-tokens))
@@ -192,12 +193,12 @@
    - Draft has no ID (never saved)
    - Draft differs from the saved scenario in local storage"
   [db]
-  (let [draft (get-in db [:ui :custom-scenario-draft])
+  (let [draft    (get-in db [:ui :custom-scenario-draft])
         draft-id (:id draft)]
     (if draft-id
       ;; Draft has been saved before - compare with saved version
       (let [custom-scenarios (local-storage/load-from-local-storage :custom-scenarios)
-            saved-version (get custom-scenarios draft-id)]
+            saved-version    (get custom-scenarios draft-id)]
         (if saved-version
           (drafts-are-different? draft saved-version)
           ;; Saved version not found - treat as unsaved changes
@@ -212,11 +213,14 @@
  [persist-db]
  (fn [db _]
    (let [editor-mode? (get-in db [:ui :custom-scenario-editor-mode])]
-     (-> db
-         (assoc-in [:ui :custom-scenario-editor-mode] (not editor-mode?))
-         ;; Initialize draft with defaults when entering editor mode
-         (assoc-in [:ui :custom-scenario-draft]
-                   (if editor-mode? nil default-draft))))))
+     (cond-> db
+       :always (assoc-in [:ui :custom-scenario-editor-mode] (not editor-mode?))
+       ;; Initialize draft with defaults when entering editor mode
+       :always (assoc-in [:ui :custom-scenario-draft]
+                                    (if editor-mode? nil default-draft))
+       ;; (not editor-mode?) (assoc :board nil)
+       ;; (not editor-mode?) (assoc :scenario nil)
+       ))))
 
 (rf/reg-event-db
  :reset-custom-scenario-draft
@@ -236,7 +240,7 @@
      db
      ;; No unsaved changes or forced load - proceed
      (let [custom-scenarios (local-storage/load-from-local-storage :custom-scenarios)
-           scenario-config (get custom-scenarios scenario-id)]
+           scenario-config  (get custom-scenarios scenario-id)]
        (if scenario-config
          (assoc-in db [:ui :custom-scenario-draft] scenario-config)
          db)))))
@@ -297,8 +301,8 @@
  [persist-db]
  (fn [db [_ mode]]
    (cond-> db
-       :always (assoc-in [:ui :editor-hex-selection-mode] mode)
-       (not= mode :harbor) (assoc-in [:ui :harbor-placement-coord] nil))))
+     :always             (assoc-in [:ui :editor-hex-selection-mode] mode)
+     (not= mode :harbor) (assoc-in [:ui :harbor-placement-coord] nil))))
 
 (rf/reg-event-db
  :assign-hex-type
@@ -336,9 +340,9 @@
  :set-harbor-direction
  [persist-db]
  (fn [db [_ coord direction]]
-   (let [new-harbor {:land-hex  coord
-                     :direction direction
-                     :type      :generic}
+   (let [new-harbor      {:land-hex  coord
+                          :direction direction
+                          :type      :generic}
          current-harbors (get-in db [:ui :custom-scenario-draft :harbors] [])]
      (-> db
          (assoc-in [:ui :custom-scenario-draft :harbors]
@@ -350,7 +354,7 @@
  :assign-harbor-type
  [persist-db]
  (fn [db [_ land-hex direction new-type]]
-   (let [harbors (get-in db [:ui :custom-scenario-draft :harbors] [])
+   (let [harbors         (get-in db [:ui :custom-scenario-draft :harbors] [])
          updated-harbors (mapv
                           (fn [harbor]
                             (if (and (= (:land-hex harbor) land-hex)
@@ -364,7 +368,7 @@
  :remove-harbor
  [persist-db]
  (fn [db [_ land-hex direction]]
-   (let [harbors (get-in db [:ui :custom-scenario-draft :harbors] [])
+   (let [harbors         (get-in db [:ui :custom-scenario-draft :harbors] [])
          updated-harbors (filterv
                           (fn [harbor]
                             (not (and (= (:land-hex harbor) land-hex)
@@ -378,11 +382,11 @@
  :save-custom-scenario
  [persist-db]
  (fn [db _]
-   (let [draft (get-in db [:ui :custom-scenario-draft])
+   (let [draft             (get-in db [:ui :custom-scenario-draft])
          validation-errors (validate-draft draft)]
      (if (empty? validation-errors)
        ;; Valid scenario - generate ID and save
-       (let [scenario-id (or (:id draft) (generate-scenario-id (:name draft)))
+       (let [scenario-id      (or (:id draft) (generate-scenario-id (:name draft)))
              scenario-to-save (assoc draft :id scenario-id)]
          ;; Save to local storage
          (local-storage/assoc-to-local-storage-array!
@@ -396,8 +400,10 @@
 (rf/reg-event-fx
  :export-custom-scenario
  (fn [{:keys [db]} _]
-   (let [draft (get-in db [:ui :custom-scenario-draft])
-         edn-string (pr-str draft)]
+   (let [draft              (get-in db [:ui :custom-scenario-draft])
+         scenario-id        (or (:id draft) (generate-scenario-id (:name draft)))
+         scenario-to-export (assoc draft :id scenario-id)
+         edn-string         (pr-str scenario-to-export)]
      ;; Copy to clipboard
      (when (and js/navigator.clipboard (.-writeText js/navigator.clipboard))
        (.writeText js/navigator.clipboard edn-string))

@@ -29,6 +29,12 @@
  (fn [db _]
    (get-in db [:ui :harbor-placement-coord])))
 
+(rf/reg-sub
+ :custom-scenario-grid-pattern
+ :<- [:custom-scenario-draft]
+ (fn [db _]
+   (:grid-pattern db "")))
+
 ;; -- Editor Hexes Generation -------------------------------------------------
 
 (defn- get-hex-type
@@ -37,11 +43,11 @@
    Returns the type keyword (:water/:terrain/:fog/:village) or nil if not found."
   [hex-types coord]
   (cond
-    (contains? (:water hex-types) coord) :water
-    (contains? (:fog hex-types) coord) :fog
+    (contains? (:water hex-types) coord)   :water
+    (contains? (:fog hex-types) coord)     :fog
     (contains? (:village hex-types) coord) :village
     (contains? (:terrain hex-types) coord) :terrain
-    :else nil))
+    :else                                  nil))
 
 (rf/reg-sub
  :editor-hexes
@@ -49,16 +55,16 @@
  (fn [draft _]
    (when draft
      (let [grid-pattern (:grid-pattern draft)
-           hex-types (:hex-types draft)]
+           hex-types    (:hex-types draft)]
        (if (and grid-pattern (not (clojure.string/blank? grid-pattern)))
          ;; Generate hex coordinates from grid pattern
          (let [coords (hex-utils/generate-grid-from-pattern grid-pattern)]
            ;; Create hex data structures with assigned types from hex-types map
            (mapv (fn [coord]
-                   {:coord coord
-                    :type (or (get-hex-type hex-types coord) :unassigned)
+                   {:coord    coord
+                    :type     (or (get-hex-type hex-types coord) :unassigned)
                     :resource nil
-                    :number nil})
+                    :number   nil})
                  coords))
          [])))))
 
@@ -73,7 +79,7 @@
      ;; We need to access the private function, so we'll duplicate the logic here
      (let [{:keys [name player-count grid-pattern hex-types
                    face-up-distribution fog-distribution]} draft
-           errors {}
+           errors                                          {}
 
            ;; Name validation
            errors (if (clojure.string/blank? name)
@@ -94,12 +100,11 @@
                     errors)
 
            ;; Count terrain hexes (including village hexes which also need resources/numbers)
-           terrain-count (+ (count (:terrain hex-types))
-                           (count (:village hex-types)))
+           terrain-count (count (:terrain hex-types))
 
            ;; Resource distribution validation
            face-up-resources (:resources face-up-distribution)
-           total-resources (reduce + (vals face-up-resources))
+           total-resources   (reduce + (vals face-up-resources))
 
            errors (if (and (> terrain-count 0)
                            (not= total-resources terrain-count))
@@ -110,10 +115,11 @@
                     errors)
 
            ;; Number token validation
-           face-up-tokens (:number-tokens face-up-distribution)
-           total-tokens (reduce + (vals face-up-tokens))
-           desert-count (get face-up-resources :desert 0)
-           expected-tokens (- terrain-count desert-count)
+           face-up-tokens  (:number-tokens face-up-distribution)
+           total-tokens    (reduce + (vals face-up-tokens))
+           desert-count    (get face-up-resources :desert 0)
+           village-count   (get face-up-resources :village 0)
+           expected-tokens (- terrain-count desert-count village-count)
 
            errors (if (and (> terrain-count 0)
                            (not= total-tokens expected-tokens))

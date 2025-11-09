@@ -19,10 +19,13 @@
        :on-change (fn [e]
                     (let [scenario-id (keyword (.. e -target -value))]
                       (rf/dispatch [:set-scenario scenario-id])))}
-      (for [scenario available-scenarios]
+      (for [scenario available-scenarios
+            :let [id-str (name (:id scenario))]]
         ^{:key (:id scenario)}
-        [:option {:value (name (:id scenario))}
-         (:name scenario)])]
+        [:option {:value id-str}
+         (if (:custom-scenario? scenario)
+           (str (:name scenario) " (custom)")
+           (:name scenario))])]
      [:p.help-text (str "Currently playing: "
                         (:name (first (filter #(= (:id %) current-scenario)
                                               available-scenarios))))]]))
