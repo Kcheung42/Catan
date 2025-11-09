@@ -17,11 +17,11 @@
    Returns the type keyword (:water/:terrain/:fog/:village) or nil if not found."
   [hex-types coord]
   (cond
-    (contains? (:water hex-types) coord) :water
-    (contains? (:fog hex-types) coord) :fog
+    (contains? (:water hex-types) coord)   :water
+    (contains? (:fog hex-types) coord)     :fog
     (contains? (:village hex-types) coord) :village
     (contains? (:terrain hex-types) coord) :terrain
-    :else nil))
+    :else                                  nil))
 
 ;; -- SVG Patterns ------------------------------------------------------------
 
@@ -187,10 +187,10 @@
         ;; Get fill - use pattern if available, otherwise solid color
         fill             (cond
                            (or (and is-fog?
-                                 (not is-revealed?))
+                                    (not is-revealed?))
                                editor-mode?) "#949494" ; Light gray for unrevealed fog
-                           display-resource         (str "url(#" (name display-resource) "-pattern)")
-                           :else                    (resources/get-resource-color display-resource))
+                           display-resource  (str "url(#" (name display-resource) "-pattern)")
+                           :else             (resources/get-resource-color display-resource))
 
         ;; Check if this token is selected
         is-selected? (= coord selected-token-coord)
@@ -308,7 +308,7 @@
         {:x                 cx
          :y                 cy
          :text-anchor       "middle"
-         :transform (when landscape-mode? (str "rotate(" -90 " " cx " " cy ")"))
+         :transform         (when landscape-mode? (str "rotate(" -90 " " cx " " cy ")"))
          :dominant-baseline "middle"
          :font-size         14
          :font-weight       "bold"
@@ -608,7 +608,6 @@
   [{:keys [scenario hexes harbors swap-number-mode? selected-token-coord developer-mode?
            fog-state]}]
   (let [scenario-config        (registry/get-scenario scenario)
-        grid-pattern           (:grid-pattern scenario-config)
         hex-size               db/hex-size
         ;; Calculate SVG viewBox to center the board
         ;; The grid spans from -2 to 2 in both q and r
@@ -624,19 +623,20 @@
         display-harbors (if editor-mode?
                           (get draft :harbors [])
                           harbors)
-
-        padding     (* hex-size 2)
+        grid-pattern    (if editor-mode? @(rf/subscribe [:custom-scenario-grid-pattern])
+                            (:grid-pattern scenario-config))
+        padding         (* hex-size 2)
         [center-x
-         center-y]  (compute-original-center grid-pattern all-pixels padding)
-        min-x       (apply min (map (if landscape-mode? second first) all-pixels))
-        max-x       (apply max (map (if landscape-mode? second first) all-pixels))
-        min-y       (apply min (map (if landscape-mode? first second) all-pixels))
-        max-y       (apply max (map (if landscape-mode? first second) all-pixels))
+         center-y]      (compute-original-center grid-pattern all-pixels padding)
+        min-x           (apply min (map (if landscape-mode? second first) all-pixels))
+        max-x           (apply max (map (if landscape-mode? second first) all-pixels))
+        min-y           (apply min (map (if landscape-mode? first second) all-pixels))
+        max-y           (apply max (map (if landscape-mode? first second) all-pixels))
         ;; Add padding
-        view-x      (- min-x padding)
-        view-y      (- min-y padding)
-        view-width  (+ (- max-x min-x) (* padding 2))
-        view-height (+ (- max-y min-y) (* padding 2))]
+        view-x          (- min-x padding)
+        view-y          (- min-y padding)
+        view-width      (+ (- max-x min-x) (* padding 2))
+        view-height     (+ (- max-y min-y) (* padding 2))]
     [:svg
      {:viewBox  (str view-x " " view-y " " view-width " " view-height)
       :width    "100%"
