@@ -4,7 +4,7 @@
    with reveal mechanics for fog-covered terrain"
   (:require [catan-board.utils.hex :as hex]))
 
-(def base-game-6p
+(def config
   {:id           :base-game-6p
    :name         "Base Game (6-player)"
    :player-count 6

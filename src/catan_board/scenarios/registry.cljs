@@ -7,15 +7,19 @@
    [catan-board.scenarios.base-game-6p :as base-game-6p]
    [catan-board.scenarios.base-game-4p :as base-game-4p]
    [catan-board.middleware.local-storage :as local-storage]
-   [catan-board.scenarios.cloth-for-catan :as cloth-for-catan]))
+   [catan-board.scenarios.cloth-for-catan :as cloth-for-catan]
+   [catan-board.scenarios.heading-for-new-shores-3p :as heading-for-new-shores-3p]
+
+   ))
 
 ;; Central scenario registry
 (def scenarios
   "Map of scenario IDs to their configuration data."
-  {:base-game       base-game-4p/base-game-4p
-   :base-game-6p    base-game-6p/base-game-6p
-   :fog-islands-3p  fog-islands-3p/fog-islands-3p-scenario
-   :fog-islands-4p  fog-islands-4p/fog-islands-4p-scenario
+  {:base-game                 base-game-4p/config
+   :base-game-6p              base-game-6p/config
+   :fog-islands-3p            fog-islands-3p/config
+   :fog-islands-4p            fog-islands-4p/config
+   :heading-for-new-shores-3p heading-for-new-shores-3p/config
    ;; :cloth-for-catan cloth-for-catan/cloth-for-catan-scenario
    })
 

@@ -4,7 +4,7 @@
    with reveal mechanics for fog-covered terrain"
   (:require [catan-board.utils.hex :as hex]))
 
-(def fog-islands-3p-scenario
+(def config
   "Complete configuration for the Fog Islands 3-Player scenario.
 
    Layout:

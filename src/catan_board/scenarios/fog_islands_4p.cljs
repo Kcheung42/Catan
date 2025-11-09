@@ -4,7 +4,7 @@
    with reveal mechanics for fog-covered terrain"
   (:require [catan-board.utils.hex :as hex]))
 
-(def fog-islands-4p-scenario
+(def config
   "Complete configuration for the Fog Islands 4-Player scenario"
   {:id           :fog-islands-4p
    :name         "Fog Islands (4-player)"
