@@ -69,14 +69,14 @@ return null;
 })], 0));
 re_frame.core.reg_sub.cljs$core$IFn$_invoke$arity$variadic(new cljs.core.Keyword(null,"custom-scenario-validation-errors","custom-scenario-validation-errors",378706080),cljs.core.prim_seq.cljs$core$IFn$_invoke$arity$2([new cljs.core.Keyword(null,"<-","<-",760412998),new cljs.core.PersistentVector(null, 1, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null,"custom-scenario-draft","custom-scenario-draft",-1075652714)], null),(function (draft,_){
 if(cljs.core.truth_(draft)){
-var map__33847 = draft;
-var map__33847__$1 = cljs.core.__destructure_map(map__33847);
-var name = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__33847__$1,new cljs.core.Keyword(null,"name","name",1843675177));
-var player_count = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__33847__$1,new cljs.core.Keyword(null,"player-count","player-count",-1323180409));
-var grid_pattern = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__33847__$1,new cljs.core.Keyword(null,"grid-pattern","grid-pattern",-1763214640));
-var hex_types = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__33847__$1,new cljs.core.Keyword(null,"hex-types","hex-types",-1144901913));
-var face_up_distribution = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__33847__$1,new cljs.core.Keyword(null,"face-up-distribution","face-up-distribution",1522439387));
-var fog_distribution = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__33847__$1,new cljs.core.Keyword(null,"fog-distribution","fog-distribution",792585602));
+var map__35414 = draft;
+var map__35414__$1 = cljs.core.__destructure_map(map__35414);
+var name = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__35414__$1,new cljs.core.Keyword(null,"name","name",1843675177));
+var player_count = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__35414__$1,new cljs.core.Keyword(null,"player-count","player-count",-1323180409));
+var grid_pattern = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__35414__$1,new cljs.core.Keyword(null,"grid-pattern","grid-pattern",-1763214640));
+var hex_types = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__35414__$1,new cljs.core.Keyword(null,"hex-types","hex-types",-1144901913));
+var face_up_distribution = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__35414__$1,new cljs.core.Keyword(null,"face-up-distribution","face-up-distribution",1522439387));
+var fog_distribution = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__35414__$1,new cljs.core.Keyword(null,"fog-distribution","fog-distribution",792585602));
 var errors = cljs.core.PersistentArrayMap.EMPTY;
 var errors__$1 = ((clojure.string.blank_QMARK_(name))?cljs.core.assoc.cljs$core$IFn$_invoke$arity$3(errors,new cljs.core.Keyword(null,"name","name",1843675177),"Scenario name is required"):errors);
 var errors__$2 = (((((!(typeof player_count === 'number'))) || ((((player_count < (2))) || ((player_count > (6)))))))?cljs.core.assoc.cljs$core$IFn$_invoke$arity$3(errors__$1,new cljs.core.Keyword(null,"player-count","player-count",-1323180409),"Player count must be between 2 and 6"):errors__$1);
