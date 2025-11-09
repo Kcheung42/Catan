@@ -16,15 +16,15 @@
 
 ## Phase 2: Setup Customization
 
-7. [ ] **Manual Resource Placement Mode** - Add interactive mode where users can click each hex to cycle through resource types, allowing full custom board design with visual feedback and resource count validation. `M`
+7. [x] **Manual Resource Placement Mode** - Add interactive mode where users can click each hex to cycle through resource types, allowing full custom board design with visual feedback and resource count validation. `M`
 
-8. [ ] **Manual Number Placement Mode** - Implement interface for manually assigning number tokens to resource hexes with drag-and-drop or click-to-assign interaction, preventing placement on desert tile. `M`
+8. [x] **Manual Number Placement Mode** - Implement interface for manually assigning number tokens to resource hexes with drag-and-drop or click-to-assign interaction, preventing placement on desert tile. `M`
 
-9. [ ] **Board Validation System** - Create validation rules to check official Catan constraints (correct resource distribution, correct number distribution, no adjacent red numbers, numbers not on desert) with visual warnings for violations. `M`
+9. [x] **Board Validation System** - Create validation rules to check official Catan constraints (correct resource distribution, correct number distribution, no adjacent red numbers, numbers not on desert) with visual warnings for violations. `M`
 
-10. [ ] **Setup Mode Toggle** - Add UI to switch between "Random" and "Manual" setup modes for both resources and numbers independently, with clear visual distinction between modes. `S`
+10. [x] **Setup Mode Toggle** - Add UI to switch between "Random" and "Manual" setup modes for both resources and numbers independently, with clear visual distinction between modes. `S`
 
-11. [ ] **Board Reset and Undo** - Implement reset button to clear manual placements, undo functionality for manual placement mistakes, and quick-switch between saved states during setup. `S`
+11. [.] **Board Reset and Undo** - Implement reset button to clear manual placements, undo functionality for manual placement mistakes, and quick-switch between saved states during setup. `S`
 
 ## Phase 3: Projector Optimization
 
@@ -40,15 +40,15 @@
 
 ## Phase 4: Configuration Management
 
-17. [ ] **Save Board Configurations** - Implement local storage system to save board layouts with user-provided names and descriptions, storing resource positions, number positions, and display settings. `M`
+17. [x] **Save Board Configurations** - Implement local storage system to save board layouts with user-provided names and descriptions, storing resource positions, number positions, and display settings. `M`
 
-18. [ ] **Load Saved Boards** - Create board library UI showing thumbnails of saved boards with quick-load functionality, search/filter by name, and delete option for unwanted saves. `S`
+18. [x] **Load Saved Boards** - Create board library UI showing thumbnails of saved boards with quick-load functionality, search/filter by name, and delete option for unwanted saves. `S`
 
-19. [ ] **Export/Import Board Layouts** - Add JSON export functionality for sharing board configurations via file download, and import functionality to load configurations from JSON files shared by other users. `M`
+19. [x] **Export/Import Board Layouts** - Add JSON export functionality for sharing board configurations via file download, and import functionality to load configurations from JSON files shared by other users. `M`
 
-20. [ ] **Board Preview Generation** - Generate small thumbnail previews of saved boards for quick visual identification in the board library, rendered as mini versions of the full board. `S`
+20. [x] **Board Preview Generation** - Generate small thumbnail previews of saved boards for quick visual identification in the board library, rendered as mini versions of the full board. `S`
 
-21. [ ] **Board History and Favorites** - Track recently generated/loaded boards (last 10) for quick access, and allow marking favorite configurations with star/favorite button for easy retrieval. `S`
+21. [x] **Board History and Favorites** - Track recently generated/loaded boards (last 10) for quick access, and allow marking favorite configurations with star/favorite button for easy retrieval. `S`
 
 ## Notes
 
