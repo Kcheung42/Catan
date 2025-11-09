@@ -10,7 +10,7 @@ catan_board.utils.resources.resource_colors = new cljs.core.PersistentArrayMap(n
 /**
  * Color mapping for each resource type (optimized for projector display)
  */
-catan_board.utils.resources.editor_hex_type_colors = new cljs.core.PersistentArrayMap(null, 3, [new cljs.core.Keyword(null,"terrain","terrain",704966005),"#000000",new cljs.core.Keyword(null,"water","water",-824098213),"#4A90E2",new cljs.core.Keyword(null,"village","village",-950412200),"#e8c547"], null);
+catan_board.utils.resources.editor_hex_type_colors = new cljs.core.PersistentArrayMap(null, 3, [new cljs.core.Keyword(null,"terrain","terrain",704966005),"#000000",new cljs.core.Keyword(null,"water","water",-824098213),"#4A90E2",new cljs.core.Keyword(null,"village","village",-950412200),"#8B6914"], null);
 /**
  * Standard Catan resource distribution (19 total hexes)
  */
@@ -19,27 +19,27 @@ catan_board.utils.resources.standard_distribution = new cljs.core.PersistentArra
  * Creates a shuffled deck of resources based on standard distribution
  */
 catan_board.utils.resources.create_resource_deck = (function catan_board$utils$resources$create_resource_deck(){
-var deck = cljs.core.flatten((function (){var iter__5480__auto__ = (function catan_board$utils$resources$create_resource_deck_$_iter__28308(s__28309){
+var deck = cljs.core.flatten((function (){var iter__5480__auto__ = (function catan_board$utils$resources$create_resource_deck_$_iter__30459(s__30460){
 return (new cljs.core.LazySeq(null,(function (){
-var s__28309__$1 = s__28309;
+var s__30460__$1 = s__30460;
 while(true){
-var temp__5804__auto__ = cljs.core.seq(s__28309__$1);
+var temp__5804__auto__ = cljs.core.seq(s__30460__$1);
 if(temp__5804__auto__){
-var s__28309__$2 = temp__5804__auto__;
-if(cljs.core.chunked_seq_QMARK_(s__28309__$2)){
-var c__5478__auto__ = cljs.core.chunk_first(s__28309__$2);
+var s__30460__$2 = temp__5804__auto__;
+if(cljs.core.chunked_seq_QMARK_(s__30460__$2)){
+var c__5478__auto__ = cljs.core.chunk_first(s__30460__$2);
 var size__5479__auto__ = cljs.core.count(c__5478__auto__);
-var b__28311 = cljs.core.chunk_buffer(size__5479__auto__);
-if((function (){var i__28310 = (0);
+var b__30462 = cljs.core.chunk_buffer(size__5479__auto__);
+if((function (){var i__30461 = (0);
 while(true){
-if((i__28310 < size__5479__auto__)){
-var vec__28312 = cljs.core._nth(c__5478__auto__,i__28310);
-var resource = cljs.core.nth.cljs$core$IFn$_invoke$arity$3(vec__28312,(0),null);
-var count = cljs.core.nth.cljs$core$IFn$_invoke$arity$3(vec__28312,(1),null);
-cljs.core.chunk_append(b__28311,cljs.core.repeat.cljs$core$IFn$_invoke$arity$2(count,resource));
+if((i__30461 < size__5479__auto__)){
+var vec__30463 = cljs.core._nth(c__5478__auto__,i__30461);
+var resource = cljs.core.nth.cljs$core$IFn$_invoke$arity$3(vec__30463,(0),null);
+var count = cljs.core.nth.cljs$core$IFn$_invoke$arity$3(vec__30463,(1),null);
+cljs.core.chunk_append(b__30462,cljs.core.repeat.cljs$core$IFn$_invoke$arity$2(count,resource));
 
-var G__28318 = (i__28310 + (1));
-i__28310 = G__28318;
+var G__30469 = (i__30461 + (1));
+i__30461 = G__30469;
 continue;
 } else {
 return true;
@@ -47,15 +47,15 @@ return true;
 break;
 }
 })()){
-return cljs.core.chunk_cons(cljs.core.chunk(b__28311),catan_board$utils$resources$create_resource_deck_$_iter__28308(cljs.core.chunk_rest(s__28309__$2)));
+return cljs.core.chunk_cons(cljs.core.chunk(b__30462),catan_board$utils$resources$create_resource_deck_$_iter__30459(cljs.core.chunk_rest(s__30460__$2)));
 } else {
-return cljs.core.chunk_cons(cljs.core.chunk(b__28311),null);
+return cljs.core.chunk_cons(cljs.core.chunk(b__30462),null);
 }
 } else {
-var vec__28315 = cljs.core.first(s__28309__$2);
-var resource = cljs.core.nth.cljs$core$IFn$_invoke$arity$3(vec__28315,(0),null);
-var count = cljs.core.nth.cljs$core$IFn$_invoke$arity$3(vec__28315,(1),null);
-return cljs.core.cons(cljs.core.repeat.cljs$core$IFn$_invoke$arity$2(count,resource),catan_board$utils$resources$create_resource_deck_$_iter__28308(cljs.core.rest(s__28309__$2)));
+var vec__30466 = cljs.core.first(s__30460__$2);
+var resource = cljs.core.nth.cljs$core$IFn$_invoke$arity$3(vec__30466,(0),null);
+var count = cljs.core.nth.cljs$core$IFn$_invoke$arity$3(vec__30466,(1),null);
+return cljs.core.cons(cljs.core.repeat.cljs$core$IFn$_invoke$arity$2(count,resource),catan_board$utils$resources$create_resource_deck_$_iter__30459(cljs.core.rest(s__30460__$2)));
 }
 } else {
 return null;

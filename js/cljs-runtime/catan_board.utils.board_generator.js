@@ -2,18 +2,18 @@ goog.provide('catan_board.utils.board_generator');
 /**
  * Returns the axial coordinates of all neighbors of a hex at [q r]
  */
-catan_board.utils.board_generator.hex_neighbors = (function catan_board$utils$board_generator$hex_neighbors(p__28319){
-var vec__28320 = p__28319;
-var q = cljs.core.nth.cljs$core$IFn$_invoke$arity$3(vec__28320,(0),null);
-var r = cljs.core.nth.cljs$core$IFn$_invoke$arity$3(vec__28320,(1),null);
+catan_board.utils.board_generator.hex_neighbors = (function catan_board$utils$board_generator$hex_neighbors(p__30470){
+var vec__30471 = p__30470;
+var q = cljs.core.nth.cljs$core$IFn$_invoke$arity$3(vec__30471,(0),null);
+var r = cljs.core.nth.cljs$core$IFn$_invoke$arity$3(vec__30471,(1),null);
 return new cljs.core.PersistentVector(null, 6, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [(q + (1)),r], null),new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [(q - (1)),r], null),new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [q,(r + (1))], null),new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [q,(r - (1))], null),new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [(q + (1)),(r - (1))], null),new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [(q - (1)),(r + (1))], null)], null);
 });
 /**
  * Checks if any two hexes with red numbers (6 or 8) are adjacent
  */
 catan_board.utils.board_generator.has_adjacent_red_numbers_QMARK_ = (function catan_board$utils$board_generator$has_adjacent_red_numbers_QMARK_(hexes){
-var red_hexes = cljs.core.filter.cljs$core$IFn$_invoke$arity$2((function (p1__28323_SHARP_){
-return catan_board.utils.numbers.is_red_number_QMARK_(new cljs.core.Keyword(null,"number","number",1570378438).cljs$core$IFn$_invoke$arity$1(p1__28323_SHARP_));
+var red_hexes = cljs.core.filter.cljs$core$IFn$_invoke$arity$2((function (p1__30474_SHARP_){
+return catan_board.utils.numbers.is_red_number_QMARK_(new cljs.core.Keyword(null,"number","number",1570378438).cljs$core$IFn$_invoke$arity$1(p1__30474_SHARP_));
 }),hexes);
 var red_coords = cljs.core.set(cljs.core.map.cljs$core$IFn$_invoke$arity$2(new cljs.core.Keyword(null,"coord","coord",-1453656639),red_hexes));
 return cljs.core.some((function (hex){
@@ -63,15 +63,15 @@ var new_board = catan_board.utils.scenario_generator.generate_scenario_board(sce
 var hexes = new cljs.core.Keyword(null,"hexes","hexes",-1419989846).cljs$core$IFn$_invoke$arity$1(new_board);
 if(((cljs.core.not(tournament_mode_QMARK_)) || (cljs.core.not(catan_board.utils.board_generator.has_adjacent_red_numbers_QMARK_(hexes))))){
 return cljs.core.update.cljs$core$IFn$_invoke$arity$3(new_board,new cljs.core.Keyword(null,"metadata","metadata",1799301597),((function (attempts,max_attempts,new_board,hexes){
-return (function (p1__28324_SHARP_){
-return cljs.core.merge.cljs$core$IFn$_invoke$arity$variadic(cljs.core.prim_seq.cljs$core$IFn$_invoke$arity$2([p1__28324_SHARP_,new cljs.core.PersistentArrayMap(null, 2, [new cljs.core.Keyword(null,"tournament-mode","tournament-mode",1600337077),tournament_mode_QMARK_,new cljs.core.Keyword(null,"attempts","attempts",1024246729),(attempts + (1))], null)], 0));
+return (function (p1__30475_SHARP_){
+return cljs.core.merge.cljs$core$IFn$_invoke$arity$variadic(cljs.core.prim_seq.cljs$core$IFn$_invoke$arity$2([p1__30475_SHARP_,new cljs.core.PersistentArrayMap(null, 2, [new cljs.core.Keyword(null,"tournament-mode","tournament-mode",1600337077),tournament_mode_QMARK_,new cljs.core.Keyword(null,"attempts","attempts",1024246729),(attempts + (1))], null)], 0));
 });})(attempts,max_attempts,new_board,hexes))
 );
 } else {
-var G__28329 = (attempts + (1));
-var G__28330 = max_attempts;
-attempts = G__28329;
-max_attempts = G__28330;
+var G__30480 = (attempts + (1));
+var G__30481 = max_attempts;
+attempts = G__30480;
+max_attempts = G__30481;
 continue;
 }
 }
