@@ -109,6 +109,14 @@
                  [q r])]
     (vec coords)))
 
+(defn parse-pattern-str
+  "Returns a sequence of column sizes given a column pattern string like '5-6-7-8-7-6-5'"
+  [pattern]
+  (->> (clojure.string/split pattern "-")
+       (remove empty?)
+       (map js/parseInt)
+       (into [])))
+
 (defn generate-grid-from-pattern
   "Generates a hex grid from a column pattern string like '5-6-7-8-7-6-5'.
    Returns a vector of axial coordinates [q r] centered on the origin.
@@ -119,11 +127,8 @@
 
    Example: '5-6-7-8-7-6-5' generates the Fog Islands 44-hex grid.
             '3-4-5-4-3' generates the standard Catan 19-hex grid."
-  [pattern]
-  (let [col-sizes        (->> (clojure.string/split pattern "-")
-                              (map js/parseInt)
-                              (remove nil?)
-                              (into []))
+  [grid-pattern]
+  (let [col-sizes        (parse-pattern-str grid-pattern)
         num-cols         (count col-sizes)
         max-size         (apply max col-sizes)
         max-radius       (quot max-size 2)

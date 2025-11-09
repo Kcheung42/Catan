@@ -582,7 +582,7 @@
 (defn- compute-original-center
   "Returns the center [x y] among all pixels"
   [grid-pattern all-pixels padding]
-  (let [col-sizes        (mapv js/parseInt (clojure.string/split grid-pattern #"-"))
+  (let [col-sizes        (hex-utils/parse-pattern-str grid-pattern)
         num-cols         (count col-sizes)
         middle-col-index (quot num-cols 2)
         middle-col-value (nth col-sizes middle-col-index)
