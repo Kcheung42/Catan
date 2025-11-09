@@ -17,6 +17,12 @@
    :ore    "#7c7c7c"   ; Gray (mountains)
    :desert "#d4c4a0"}) ; Tan/beige (desert)
 
+(def editor-hex-type-colors
+  "Color mapping for each resource type (optimized for projector display)"
+  {:terrain   "#000000"
+   :water  "#4A90E2"
+   :village  "#e8c547"})
+
 ;; -- Resource Distribution ---------------------------------------------------
 
 (def standard-distribution
@@ -40,3 +46,9 @@
   "Returns the color for a given resource type"
   [resource]
   (get resource-colors resource "#d4c4a0"))
+
+
+(defn get-editor-hex-type-color
+  "Returns the color for a given resource type"
+  [resource]
+  (get editor-hex-type-colors resource "#949494"))

@@ -177,20 +177,24 @@
         ;; If fog and revealed, use the revealed terrain/number
         ;; If fog and not revealed, show fog hex
         ;; Otherwise, use the hex's own resource/number
-        display-resource (if is-revealed?
-                           (:terrain fog-info)
-                           resource)
-        display-number   (if is-revealed?
-                           (:number fog-info)
-                           number)
-        editor-mode?     @(rf/subscribe [:custom-scenario-editor-mode?])
+        display-resource     (if is-revealed?
+                               (:terrain fog-info)
+                               resource)
+        display-number       (if is-revealed?
+                               (:number fog-info)
+                               number)
+        editor-mode?         @(rf/subscribe [:custom-scenario-editor-mode?])
+        ;; Editor mode subscriptions
+        draft                @(rf/subscribe [:custom-scenario-draft])
+        editor-assigned-type (when editor-mode? (get-hex-type (:hex-types draft) coord))
+
         ;; Get fill - use pattern if available, otherwise solid color
-        fill             (cond
-                           (or (and is-fog?
-                                    (not is-revealed?))
-                               editor-mode?) "#949494" ; Light gray for unrevealed fog
-                           display-resource  (str "url(#" (name display-resource) "-pattern)")
-                           :else             (resources/get-resource-color display-resource))
+        fill (cond
+               (and is-fog?
+                    (not is-revealed?)) "#949494" ; Light gray for unrevealed fog
+               editor-mode?             (resources/get-editor-hex-type-color editor-assigned-type)
+               display-resource         (str "url(#" (name display-resource) "-pattern)")
+               :else                    (resources/get-resource-color display-resource))
 
         ;; Check if this token is selected
         is-selected? (= coord selected-token-coord)
@@ -200,8 +204,6 @@
 
         ;; Editor mode subscriptions
         editor-selection-mode @(rf/subscribe [:editor-hex-selection-mode])
-        draft                 @(rf/subscribe [:custom-scenario-draft])
-        assigned-type         (when editor-mode? (get-hex-type (:hex-types draft) coord))
 
         ;; In editor mode, hex is clickable for type assignment
         is-editor-clickable? (and editor-mode? (not is-fog-clickable?))
@@ -303,7 +305,7 @@
         "🌵"])
 
      ;; Editor mode: Show hex type label
-     (when (and editor-mode? assigned-type)
+     (when (and editor-mode? editor-assigned-type)
        [:text
         {:x                 cx
          :y                 cy
@@ -313,10 +315,10 @@
          :font-size         14
          :font-weight       "bold"
          :fill              "#ffffff"}
-        (name assigned-type)])
+        (name editor-assigned-type)])
 
      ;; Editor mode: Clear button overlay on assigned hexes
-     (when (and editor-mode? assigned-type)
+     (when (and editor-mode? editor-assigned-type)
        (let [clear-x (if landscape-mode? (+ cx (* hex-size 0.4)) cx)
              clear-y (if landscape-mode? cy (+ cy (* hex-size 0.4)))]
          [:g {:on-click (fn [e]
