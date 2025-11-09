@@ -30,10 +30,10 @@ return cljs.core.get.cljs$core$IFn$_invoke$arity$2(catan_board.middleware.local_
  *    {:id :fog-islands-3p :name 'Fog Islands (3-player)' :player-count 3}]
  */
 catan_board.scenarios.registry.list_scenarios = (function catan_board$scenarios$registry$list_scenarios(){
-return cljs.core.mapv.cljs$core$IFn$_invoke$arity$2((function (p__24036){
-var vec__24037 = p__24036;
-var id = cljs.core.nth.cljs$core$IFn$_invoke$arity$3(vec__24037,(0),null);
-var config = cljs.core.nth.cljs$core$IFn$_invoke$arity$3(vec__24037,(1),null);
+return cljs.core.mapv.cljs$core$IFn$_invoke$arity$2((function (p__24044){
+var vec__24045 = p__24044;
+var id = cljs.core.nth.cljs$core$IFn$_invoke$arity$3(vec__24045,(0),null);
+var config = cljs.core.nth.cljs$core$IFn$_invoke$arity$3(vec__24045,(1),null);
 return new cljs.core.PersistentArrayMap(null, 3, [new cljs.core.Keyword(null,"id","id",-1388402092),id,new cljs.core.Keyword(null,"name","name",1843675177),new cljs.core.Keyword(null,"name","name",1843675177).cljs$core$IFn$_invoke$arity$1(config),new cljs.core.Keyword(null,"player-count","player-count",-1323180409),new cljs.core.Keyword(null,"player-count","player-count",-1323180409).cljs$core$IFn$_invoke$arity$1(config)], null);
 }),cljs.core.concat.cljs$core$IFn$_invoke$arity$2(catan_board.scenarios.registry.scenarios,catan_board.middleware.local_storage.load_from_local_storage.cljs$core$IFn$_invoke$arity$1(new cljs.core.Keyword(null,"custom-scenarios","custom-scenarios",1285667133))));
 });
