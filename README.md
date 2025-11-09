@@ -68,12 +68,12 @@ See `agent-os/product/roadmap.md` for the full development roadmap.
 
 **Phase 1 (Current)**: Core Board Display
 - ✓ Project setup
-- ⏳ Hex grid layout
-- ⏳ Resource tile rendering
-- ⏳ Number tokens
-- ⏳ Random generation
-- ⏳ Harbor display
-- ⏳ UI controls & scaling
+- ✓ Hex grid layout
+- ✓ Resource tile rendering
+- ✓ Number tokens
+- ✓ Random generation
+- ✓ Harbor display
+- ✓ UI controls & scaling
 
 ## License
 
