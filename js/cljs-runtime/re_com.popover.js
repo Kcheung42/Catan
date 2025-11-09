@@ -22,9 +22,9 @@ return new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMP
  */
 re_com.popover.calc_popover_pos = (function re_com$popover$calc_popover_pos(pop_orient,p_width,p_height,pop_offset,arrow_length,arrow_gap){
 var total_offset = (arrow_length + arrow_gap);
-var popover_left = (function (){var G__21074 = pop_orient;
-var G__21074__$1 = (((G__21074 instanceof cljs.core.Keyword))?G__21074.fqn:null);
-switch (G__21074__$1) {
+var popover_left = (function (){var G__21073 = pop_orient;
+var G__21073__$1 = (((G__21073 instanceof cljs.core.Keyword))?G__21073.fqn:null);
+switch (G__21073__$1) {
 case "left":
 return "initial";
 
@@ -45,7 +45,7 @@ return (p_width / (2));
 
 break;
 default:
-throw (new Error(["No matching clause: ",cljs.core.str.cljs$core$IFn$_invoke$arity$1(G__21074__$1)].join('')));
+throw (new Error(["No matching clause: ",cljs.core.str.cljs$core$IFn$_invoke$arity$1(G__21073__$1)].join('')));
 
 }
 })();
@@ -131,10 +131,10 @@ return new cljs.core.PersistentArrayMap(null, 4, [new cljs.core.Keyword(null,"le
  *   Taken from: https://github.com/Lambda-X/cljs-repl-web/blob/0.3.1/src/cljs/cljs_repl_web/views/utils.cljs#L52
  *   Thanks to @richiardiandrea and @tomek for this code
  */
-re_com.popover.calculate_optimal_position = (function re_com$popover$calculate_optimal_position(p__21080){
-var vec__21081 = p__21080;
-var x = cljs.core.nth.cljs$core$IFn$_invoke$arity$3(vec__21081,(0),null);
-var y = cljs.core.nth.cljs$core$IFn$_invoke$arity$3(vec__21081,(1),null);
+re_com.popover.calculate_optimal_position = (function re_com$popover$calculate_optimal_position(p__21082){
+var vec__21087 = p__21082;
+var x = cljs.core.nth.cljs$core$IFn$_invoke$arity$3(vec__21087,(0),null);
+var y = cljs.core.nth.cljs$core$IFn$_invoke$arity$3(vec__21087,(1),null);
 var w = window.innerWidth;
 var h = window.innerHeight;
 var h_threshold_left = cljs.core.quot(w,(3));
@@ -158,9 +158,9 @@ return new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMP
 re_com.popover.popover_arrow = (function re_com$popover$popover_arrow(orientation,pop_offset,arrow_length,arrow_width,grey_arrow_QMARK_,no_border_QMARK_,popover_color,popover_border_color){
 var half_arrow_width = (arrow_width / (2));
 var arrow_shape = new cljs.core.PersistentArrayMap(null, 4, [new cljs.core.Keyword(null,"left","left",-399115937),[re_com.popover.point((0),(0)),re_com.popover.point(arrow_length,half_arrow_width),re_com.popover.point((0),arrow_width)].join(''),new cljs.core.Keyword(null,"right","right",-452581833),[re_com.popover.point(arrow_length,(0)),re_com.popover.point((0),half_arrow_width),re_com.popover.point(arrow_length,arrow_width)].join(''),new cljs.core.Keyword(null,"above","above",-1286866470),[re_com.popover.point((0),(0)),re_com.popover.point(half_arrow_width,arrow_length),re_com.popover.point(arrow_width,(0))].join(''),new cljs.core.Keyword(null,"below","below",-926774883),[re_com.popover.point((0),arrow_length),re_com.popover.point(half_arrow_width,(0)),re_com.popover.point(arrow_width,arrow_length)].join('')], null);
-return new cljs.core.PersistentVector(null, 3, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null,"svg","svg",856789142),new cljs.core.PersistentArrayMap(null, 2, [new cljs.core.Keyword(null,"class","class",-2030961996),"popover-arrow",new cljs.core.Keyword(null,"style","style",-496642736),cljs.core.PersistentArrayMap.createAsIfByAssoc([new cljs.core.Keyword(null,"position","position",-2011731912),"absolute",(function (){var G__21084 = orientation;
-var G__21084__$1 = (((G__21084 instanceof cljs.core.Keyword))?G__21084.fqn:null);
-switch (G__21084__$1) {
+return new cljs.core.PersistentVector(null, 3, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null,"svg","svg",856789142),new cljs.core.PersistentArrayMap(null, 2, [new cljs.core.Keyword(null,"class","class",-2030961996),"popover-arrow",new cljs.core.Keyword(null,"style","style",-496642736),cljs.core.PersistentArrayMap.createAsIfByAssoc([new cljs.core.Keyword(null,"position","position",-2011731912),"absolute",(function (){var G__21099 = orientation;
+var G__21099__$1 = (((G__21099 instanceof cljs.core.Keyword))?G__21099.fqn:null);
+switch (G__21099__$1) {
 case "left":
 return new cljs.core.Keyword(null,"right","right",-452581833);
 
@@ -178,12 +178,12 @@ return new cljs.core.Keyword(null,"top","top",-1856271961);
 
 break;
 default:
-throw (new Error(["No matching clause: ",cljs.core.str.cljs$core$IFn$_invoke$arity$1(G__21084__$1)].join('')));
+throw (new Error(["No matching clause: ",cljs.core.str.cljs$core$IFn$_invoke$arity$1(G__21099__$1)].join('')));
 
 }
-})(),re_com.util.px.cljs$core$IFn$_invoke$arity$variadic(arrow_length,cljs.core.prim_seq.cljs$core$IFn$_invoke$arity$2([new cljs.core.Keyword(null,"negative","negative",-1562068438)], 0)),(function (){var G__21085 = orientation;
-var G__21085__$1 = (((G__21085 instanceof cljs.core.Keyword))?G__21085.fqn:null);
-switch (G__21085__$1) {
+})(),re_com.util.px.cljs$core$IFn$_invoke$arity$variadic(arrow_length,cljs.core.prim_seq.cljs$core$IFn$_invoke$arity$2([new cljs.core.Keyword(null,"negative","negative",-1562068438)], 0)),(function (){var G__21100 = orientation;
+var G__21100__$1 = (((G__21100 instanceof cljs.core.Keyword))?G__21100.fqn:null);
+switch (G__21100__$1) {
 case "left":
 case "right":
 return new cljs.core.Keyword(null,"top","top",-1856271961);
@@ -195,12 +195,12 @@ return new cljs.core.Keyword(null,"left","left",-399115937);
 
 break;
 default:
-throw (new Error(["No matching clause: ",cljs.core.str.cljs$core$IFn$_invoke$arity$1(G__21085__$1)].join('')));
+throw (new Error(["No matching clause: ",cljs.core.str.cljs$core$IFn$_invoke$arity$1(G__21100__$1)].join('')));
 
 }
-})(),(((pop_offset == null))?"50%":re_com.util.px(pop_offset)),(function (){var G__21086 = orientation;
-var G__21086__$1 = (((G__21086 instanceof cljs.core.Keyword))?G__21086.fqn:null);
-switch (G__21086__$1) {
+})(),(((pop_offset == null))?"50%":re_com.util.px(pop_offset)),(function (){var G__21101 = orientation;
+var G__21101__$1 = (((G__21101 instanceof cljs.core.Keyword))?G__21101.fqn:null);
+switch (G__21101__$1) {
 case "left":
 case "right":
 return new cljs.core.Keyword(null,"margin-top","margin-top",392161226);
@@ -212,12 +212,12 @@ return new cljs.core.Keyword(null,"margin-left","margin-left",2015598377);
 
 break;
 default:
-throw (new Error(["No matching clause: ",cljs.core.str.cljs$core$IFn$_invoke$arity$1(G__21086__$1)].join('')));
+throw (new Error(["No matching clause: ",cljs.core.str.cljs$core$IFn$_invoke$arity$1(G__21101__$1)].join('')));
 
 }
-})(),re_com.util.px.cljs$core$IFn$_invoke$arity$variadic(half_arrow_width,cljs.core.prim_seq.cljs$core$IFn$_invoke$arity$2([new cljs.core.Keyword(null,"negative","negative",-1562068438)], 0)),new cljs.core.Keyword(null,"width","width",-384071477),re_com.util.px((function (){var G__21087 = orientation;
-var G__21087__$1 = (((G__21087 instanceof cljs.core.Keyword))?G__21087.fqn:null);
-switch (G__21087__$1) {
+})(),re_com.util.px.cljs$core$IFn$_invoke$arity$variadic(half_arrow_width,cljs.core.prim_seq.cljs$core$IFn$_invoke$arity$2([new cljs.core.Keyword(null,"negative","negative",-1562068438)], 0)),new cljs.core.Keyword(null,"width","width",-384071477),re_com.util.px((function (){var G__21102 = orientation;
+var G__21102__$1 = (((G__21102 instanceof cljs.core.Keyword))?G__21102.fqn:null);
+switch (G__21102__$1) {
 case "left":
 case "right":
 return arrow_length;
@@ -229,12 +229,12 @@ return arrow_width;
 
 break;
 default:
-throw (new Error(["No matching clause: ",cljs.core.str.cljs$core$IFn$_invoke$arity$1(G__21087__$1)].join('')));
+throw (new Error(["No matching clause: ",cljs.core.str.cljs$core$IFn$_invoke$arity$1(G__21102__$1)].join('')));
 
 }
-})()),new cljs.core.Keyword(null,"height","height",1025178622),re_com.util.px((function (){var G__21088 = orientation;
-var G__21088__$1 = (((G__21088 instanceof cljs.core.Keyword))?G__21088.fqn:null);
-switch (G__21088__$1) {
+})()),new cljs.core.Keyword(null,"height","height",1025178622),re_com.util.px((function (){var G__21103 = orientation;
+var G__21103__$1 = (((G__21103 instanceof cljs.core.Keyword))?G__21103.fqn:null);
+switch (G__21103__$1) {
 case "left":
 case "right":
 return arrow_width;
@@ -246,7 +246,7 @@ return arrow_length;
 
 break;
 default:
-throw (new Error(["No matching clause: ",cljs.core.str.cljs$core$IFn$_invoke$arity$1(G__21088__$1)].join('')));
+throw (new Error(["No matching clause: ",cljs.core.str.cljs$core$IFn$_invoke$arity$1(G__21103__$1)].join('')));
 
 }
 })())])], null),new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null,"polyline","polyline",-1731551044),new cljs.core.PersistentArrayMap(null, 2, [new cljs.core.Keyword(null,"points","points",-1486596883),(arrow_shape.cljs$core$IFn$_invoke$arity$1 ? arrow_shape.cljs$core$IFn$_invoke$arity$1(orientation) : arrow_shape.call(null,orientation)),new cljs.core.Keyword(null,"style","style",-496642736),new cljs.core.PersistentArrayMap(null, 3, [new cljs.core.Keyword(null,"fill","fill",883462889),(cljs.core.truth_(popover_color)?popover_color:(cljs.core.truth_(grey_arrow_QMARK_)?"#f7f7f7":"white")),new cljs.core.Keyword(null,"stroke","stroke",1741823555),(function (){var or__5002__auto__ = popover_border_color;
@@ -267,14 +267,14 @@ re_com.popover.backdrop_args_desc = new cljs.core.PersistentVector(null, 2, 5, c
  */
 re_com.popover.backdrop = (function re_com$popover$backdrop(var_args){
 var args__5732__auto__ = [];
-var len__5726__auto___21206 = arguments.length;
-var i__5727__auto___21207 = (0);
+var len__5726__auto___21201 = arguments.length;
+var i__5727__auto___21202 = (0);
 while(true){
-if((i__5727__auto___21207 < len__5726__auto___21206)){
-args__5732__auto__.push((arguments[i__5727__auto___21207]));
+if((i__5727__auto___21202 < len__5726__auto___21201)){
+args__5732__auto__.push((arguments[i__5727__auto___21202]));
 
-var G__21208 = (i__5727__auto___21207 + (1));
-i__5727__auto___21207 = G__21208;
+var G__21203 = (i__5727__auto___21202 + (1));
+i__5727__auto___21202 = G__21203;
 continue;
 } else {
 }
@@ -285,8 +285,8 @@ var argseq__5733__auto__ = ((((0) < args__5732__auto__.length))?(new cljs.core.I
 return re_com.popover.backdrop.cljs$core$IFn$_invoke$arity$variadic(argseq__5733__auto__);
 });
 
-(re_com.popover.backdrop.cljs$core$IFn$_invoke$arity$variadic = (function (p__21109){
-var map__21110 = p__21109;
+(re_com.popover.backdrop.cljs$core$IFn$_invoke$arity$variadic = (function (p__21108){
+var map__21110 = p__21108;
 var map__21110__$1 = cljs.core.__destructure_map(map__21110);
 var args = map__21110__$1;
 var opacity = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__21110__$1,new cljs.core.Keyword(null,"opacity","opacity",397153780));
@@ -312,9 +312,9 @@ return null;
 (re_com.popover.backdrop.cljs$lang$maxFixedArity = (0));
 
 /** @this {Function} */
-(re_com.popover.backdrop.cljs$lang$applyTo = (function (seq21099){
+(re_com.popover.backdrop.cljs$lang$applyTo = (function (seq21104){
 var self__5712__auto__ = this;
-return self__5712__auto__.cljs$core$IFn$_invoke$arity$variadic(cljs.core.seq(seq21099));
+return self__5712__auto__.cljs$core$IFn$_invoke$arity$variadic(cljs.core.seq(seq21104));
 }));
 
 re_com.popover.popover_title_args_desc = new cljs.core.PersistentVector(null, 4, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.PersistentArrayMap(null, 4, [new cljs.core.Keyword(null,"name","name",1843675177),new cljs.core.Keyword(null,"showing?","showing?",2094921488),new cljs.core.Keyword(null,"required","required",1807647006),true,new cljs.core.Keyword(null,"type","type",1174270348),"boolean atom",new cljs.core.Keyword(null,"description","description",-1428560544),"an atom. When the value is true, the popover shows."], null),new cljs.core.PersistentArrayMap(null, 5, [new cljs.core.Keyword(null,"name","name",1843675177),new cljs.core.Keyword(null,"title","title",636505583),new cljs.core.Keyword(null,"required","required",1807647006),false,new cljs.core.Keyword(null,"type","type",1174270348),"string | hiccup",new cljs.core.Keyword(null,"validate-fn","validate-fn",1430169944),re_com.validate.string_or_hiccup_QMARK_,new cljs.core.Keyword(null,"description","description",-1428560544),"describes the title of the popover. Default font size is 18px to make it stand out"], null),new cljs.core.PersistentArrayMap(null, 5, [new cljs.core.Keyword(null,"name","name",1843675177),new cljs.core.Keyword(null,"close-button?","close-button?",-1030817687),new cljs.core.Keyword(null,"required","required",1807647006),false,new cljs.core.Keyword(null,"default","default",-1987822328),true,new cljs.core.Keyword(null,"type","type",1174270348),"boolean",new cljs.core.Keyword(null,"description","description",-1428560544),"when true, displays the close button"], null),new cljs.core.PersistentArrayMap(null, 5, [new cljs.core.Keyword(null,"name","name",1843675177),new cljs.core.Keyword(null,"close-callback","close-callback",651188974),new cljs.core.Keyword(null,"required","required",1807647006),false,new cljs.core.Keyword(null,"type","type",1174270348),"-> nil",new cljs.core.Keyword(null,"validate-fn","validate-fn",1430169944),cljs.core.fn_QMARK_,new cljs.core.Keyword(null,"description","description",-1428560544),new cljs.core.PersistentVector(null, 6, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null,"span","span",1394872991),"a function which takes no params and returns nothing. Called when the close button is pressed. Not required if ",new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null,"code","code",1586293142),":showing?"], null)," atom passed in OR ",new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null,"code","code",1586293142),":close-button?"], null)," is set to false"], null)], null)], null);
@@ -323,14 +323,14 @@ re_com.popover.popover_title_args_desc = new cljs.core.PersistentVector(null, 4,
  */
 re_com.popover.popover_title = (function re_com$popover$popover_title(var_args){
 var args__5732__auto__ = [];
-var len__5726__auto___21209 = arguments.length;
-var i__5727__auto___21210 = (0);
+var len__5726__auto___21206 = arguments.length;
+var i__5727__auto___21207 = (0);
 while(true){
-if((i__5727__auto___21210 < len__5726__auto___21209)){
-args__5732__auto__.push((arguments[i__5727__auto___21210]));
+if((i__5727__auto___21207 < len__5726__auto___21206)){
+args__5732__auto__.push((arguments[i__5727__auto___21207]));
 
-var G__21211 = (i__5727__auto___21210 + (1));
-i__5727__auto___21210 = G__21211;
+var G__21208 = (i__5727__auto___21207 + (1));
+i__5727__auto___21207 = G__21208;
 continue;
 } else {
 }
@@ -341,14 +341,14 @@ var argseq__5733__auto__ = ((((0) < args__5732__auto__.length))?(new cljs.core.I
 return re_com.popover.popover_title.cljs$core$IFn$_invoke$arity$variadic(argseq__5733__auto__);
 });
 
-(re_com.popover.popover_title.cljs$core$IFn$_invoke$arity$variadic = (function (p__21119){
-var map__21120 = p__21119;
-var map__21120__$1 = cljs.core.__destructure_map(map__21120);
-var args = map__21120__$1;
-var showing_QMARK_ = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__21120__$1,new cljs.core.Keyword(null,"showing?","showing?",2094921488));
-var title = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__21120__$1,new cljs.core.Keyword(null,"title","title",636505583));
-var close_button_QMARK_ = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__21120__$1,new cljs.core.Keyword(null,"close-button?","close-button?",-1030817687));
-var close_callback = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__21120__$1,new cljs.core.Keyword(null,"close-callback","close-callback",651188974));
+(re_com.popover.popover_title.cljs$core$IFn$_invoke$arity$variadic = (function (p__21134){
+var map__21135 = p__21134;
+var map__21135__$1 = cljs.core.__destructure_map(map__21135);
+var args = map__21135__$1;
+var showing_QMARK_ = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__21135__$1,new cljs.core.Keyword(null,"showing?","showing?",2094921488));
+var title = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__21135__$1,new cljs.core.Keyword(null,"title","title",636505583));
+var close_button_QMARK_ = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__21135__$1,new cljs.core.Keyword(null,"close-button?","close-button?",-1030817687));
+var close_callback = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__21135__$1,new cljs.core.Keyword(null,"close-callback","close-callback",651188974));
 if((((!(goog.DEBUG)))?true:re_com.validate.validate_args.cljs$core$IFn$_invoke$arity$variadic(re_com.validate.extract_arg_data(re_com.popover.popover_title_args_desc),args,cljs.core.prim_seq.cljs$core$IFn$_invoke$arity$2(["popover-title"], 0)))){
 } else {
 throw (new Error("Assert failed: (validate-args-macro popover-title-args-desc args \"popover-title\")"));
@@ -378,18 +378,18 @@ return cljs.core.reset_BANG_(showing_QMARK_,false);
 (re_com.popover.popover_title.cljs$lang$maxFixedArity = (0));
 
 /** @this {Function} */
-(re_com.popover.popover_title.cljs$lang$applyTo = (function (seq21118){
+(re_com.popover.popover_title.cljs$lang$applyTo = (function (seq21133){
 var self__5712__auto__ = this;
-return self__5712__auto__.cljs$core$IFn$_invoke$arity$variadic(cljs.core.seq(seq21118));
+return self__5712__auto__.cljs$core$IFn$_invoke$arity$variadic(cljs.core.seq(seq21133));
 }));
 
 re_com.popover.next_even_integer = (function re_com$popover$next_even_integer(num){
 return ((((num + (1)) / (2)) | (0)) * (2));
 });
 re_com.popover.calc_pop_offset = (function re_com$popover$calc_pop_offset(arrow_pos,position_offset,p_width,p_height){
-var G__21135 = arrow_pos;
-var G__21135__$1 = (((G__21135 instanceof cljs.core.Keyword))?G__21135.fqn:null);
-switch (G__21135__$1) {
+var G__21141 = arrow_pos;
+var G__21141__$1 = (((G__21141 instanceof cljs.core.Keyword))?G__21141.fqn:null);
+switch (G__21141__$1) {
 case "center":
 return null;
 
@@ -419,7 +419,7 @@ return p_height;
 
 break;
 default:
-throw (new Error(["No matching clause: ",cljs.core.str.cljs$core$IFn$_invoke$arity$1(G__21135__$1)].join('')));
+throw (new Error(["No matching clause: ",cljs.core.str.cljs$core$IFn$_invoke$arity$1(G__21141__$1)].join('')));
 
 }
 });
@@ -517,36 +517,36 @@ calc_metrics(cljs.core.deref(position));
 
 return cljs.core.reset_BANG_(ready_to_show_QMARK_,true);
 }),new cljs.core.Keyword(null,"reagent-render","reagent-render",-985383853),(function() { 
-var G__21222__delegate = function (p__21157){
-var map__21158 = p__21157;
-var map__21158__$1 = cljs.core.__destructure_map(map__21158);
-var args__$1 = map__21158__$1;
-var popover_border_color = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__21158__$1,new cljs.core.Keyword(null,"popover-border-color","popover-border-color",2142810267));
-var height = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__21158__$1,new cljs.core.Keyword(null,"height","height",1025178622));
-var tooltip_style_QMARK_ = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__21158__$1,new cljs.core.Keyword(null,"tooltip-style?","tooltip-style?",1188162527));
-var popover_color = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__21158__$1,new cljs.core.Keyword(null,"popover-color","popover-color",-2019049119));
-var children = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__21158__$1,new cljs.core.Keyword(null,"children","children",-940561982));
-var arrow_length = cljs.core.get.cljs$core$IFn$_invoke$arity$3(map__21158__$1,new cljs.core.Keyword(null,"arrow-length","arrow-length",934916707),(11));
-var position_offset__$1 = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__21158__$1,new cljs.core.Keyword(null,"position-offset","position-offset",1257061411));
-var margin_left = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__21158__$1,new cljs.core.Keyword(null,"margin-left","margin-left",2015598377));
-var arrow_width = cljs.core.get.cljs$core$IFn$_invoke$arity$3(map__21158__$1,new cljs.core.Keyword(null,"arrow-width","arrow-width",1926673833),(22));
-var margin_top = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__21158__$1,new cljs.core.Keyword(null,"margin-top","margin-top",392161226));
-var width = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__21158__$1,new cljs.core.Keyword(null,"width","width",-384071477));
-var title__$1 = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__21158__$1,new cljs.core.Keyword(null,"title","title",636505583));
-var arrow_gap = cljs.core.get.cljs$core$IFn$_invoke$arity$3(map__21158__$1,new cljs.core.Keyword(null,"arrow-gap","arrow-gap",1490206257),(-1));
-var padding = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__21158__$1,new cljs.core.Keyword(null,"padding","padding",1660304693));
-var position__$1 = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__21158__$1,new cljs.core.Keyword(null,"position","position",-2011731912));
+var G__21222__delegate = function (p__21156){
+var map__21157 = p__21156;
+var map__21157__$1 = cljs.core.__destructure_map(map__21157);
+var args__$1 = map__21157__$1;
+var popover_border_color = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__21157__$1,new cljs.core.Keyword(null,"popover-border-color","popover-border-color",2142810267));
+var height = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__21157__$1,new cljs.core.Keyword(null,"height","height",1025178622));
+var tooltip_style_QMARK_ = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__21157__$1,new cljs.core.Keyword(null,"tooltip-style?","tooltip-style?",1188162527));
+var popover_color = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__21157__$1,new cljs.core.Keyword(null,"popover-color","popover-color",-2019049119));
+var children = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__21157__$1,new cljs.core.Keyword(null,"children","children",-940561982));
+var arrow_length = cljs.core.get.cljs$core$IFn$_invoke$arity$3(map__21157__$1,new cljs.core.Keyword(null,"arrow-length","arrow-length",934916707),(11));
+var position_offset__$1 = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__21157__$1,new cljs.core.Keyword(null,"position-offset","position-offset",1257061411));
+var margin_left = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__21157__$1,new cljs.core.Keyword(null,"margin-left","margin-left",2015598377));
+var arrow_width = cljs.core.get.cljs$core$IFn$_invoke$arity$3(map__21157__$1,new cljs.core.Keyword(null,"arrow-width","arrow-width",1926673833),(22));
+var margin_top = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__21157__$1,new cljs.core.Keyword(null,"margin-top","margin-top",392161226));
+var width = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__21157__$1,new cljs.core.Keyword(null,"width","width",-384071477));
+var title__$1 = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__21157__$1,new cljs.core.Keyword(null,"title","title",636505583));
+var arrow_gap = cljs.core.get.cljs$core$IFn$_invoke$arity$3(map__21157__$1,new cljs.core.Keyword(null,"arrow-gap","arrow-gap",1490206257),(-1));
+var padding = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__21157__$1,new cljs.core.Keyword(null,"padding","padding",1660304693));
+var position__$1 = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__21157__$1,new cljs.core.Keyword(null,"position","position",-2011731912));
 if((((!(goog.DEBUG)))?true:re_com.validate.validate_args.cljs$core$IFn$_invoke$arity$variadic(re_com.validate.extract_arg_data(re_com.popover.popover_border_args_desc),args__$1,cljs.core.prim_seq.cljs$core$IFn$_invoke$arity$2(["popover-border"], 0)))){
 } else {
 throw (new Error("Assert failed: (validate-args-macro popover-border-args-desc args \"popover-border\")"));
 }
 
-var vec__21162 = calc_metrics(cljs.core.deref(position__$1));
-var orientation = cljs.core.nth.cljs$core$IFn$_invoke$arity$3(vec__21162,(0),null);
-var grey_arrow_QMARK_ = cljs.core.nth.cljs$core$IFn$_invoke$arity$3(vec__21162,(1),null);
-return new cljs.core.PersistentVector(null, 5, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null,"div.popover.fade.in","div.popover.fade.in",-106226512),new cljs.core.PersistentArrayMap(null, 2, [new cljs.core.Keyword(null,"id","id",-1388402092),pop_id,new cljs.core.Keyword(null,"style","style",-496642736),cljs.core.merge.cljs$core$IFn$_invoke$arity$variadic(cljs.core.prim_seq.cljs$core$IFn$_invoke$arity$2([(cljs.core.truth_(cljs.core.deref(rendered_once))?(cljs.core.truth_(pop_id)?re_com.popover.calc_popover_pos(orientation,cljs.core.deref(p_width),cljs.core.deref(p_height),cljs.core.deref(pop_offset),arrow_length,arrow_gap):null):new cljs.core.PersistentArrayMap(null, 2, [new cljs.core.Keyword(null,"top","top",-1856271961),"-10000px",new cljs.core.Keyword(null,"left","left",-399115937),"-10000px"], null)),(cljs.core.truth_(width)?new cljs.core.PersistentArrayMap(null, 1, [new cljs.core.Keyword(null,"width","width",-384071477),width], null):null),(cljs.core.truth_(height)?new cljs.core.PersistentArrayMap(null, 1, [new cljs.core.Keyword(null,"height","height",1025178622),height], null):null),(cljs.core.truth_(popover_color)?new cljs.core.PersistentArrayMap(null, 1, [new cljs.core.Keyword(null,"background-color","background-color",570434026),popover_color], null):null),(cljs.core.truth_(popover_border_color)?new cljs.core.PersistentArrayMap(null, 1, [new cljs.core.Keyword(null,"border-color","border-color",-2059162761),popover_border_color], null):null),(cljs.core.truth_(tooltip_style_QMARK_)?new cljs.core.PersistentArrayMap(null, 3, [new cljs.core.Keyword(null,"border-radius","border-radius",419594011),"4px",new cljs.core.Keyword(null,"box-shadow","box-shadow",1600206755),"none",new cljs.core.Keyword(null,"border","border",1444987323),"none"], null):null),(function (){var G__21165 = orientation;
-var G__21165__$1 = (((G__21165 instanceof cljs.core.Keyword))?G__21165.fqn:null);
-switch (G__21165__$1) {
+var vec__21159 = calc_metrics(cljs.core.deref(position__$1));
+var orientation = cljs.core.nth.cljs$core$IFn$_invoke$arity$3(vec__21159,(0),null);
+var grey_arrow_QMARK_ = cljs.core.nth.cljs$core$IFn$_invoke$arity$3(vec__21159,(1),null);
+return new cljs.core.PersistentVector(null, 5, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null,"div.popover.fade.in","div.popover.fade.in",-106226512),new cljs.core.PersistentArrayMap(null, 2, [new cljs.core.Keyword(null,"id","id",-1388402092),pop_id,new cljs.core.Keyword(null,"style","style",-496642736),cljs.core.merge.cljs$core$IFn$_invoke$arity$variadic(cljs.core.prim_seq.cljs$core$IFn$_invoke$arity$2([(cljs.core.truth_(cljs.core.deref(rendered_once))?(cljs.core.truth_(pop_id)?re_com.popover.calc_popover_pos(orientation,cljs.core.deref(p_width),cljs.core.deref(p_height),cljs.core.deref(pop_offset),arrow_length,arrow_gap):null):new cljs.core.PersistentArrayMap(null, 2, [new cljs.core.Keyword(null,"top","top",-1856271961),"-10000px",new cljs.core.Keyword(null,"left","left",-399115937),"-10000px"], null)),(cljs.core.truth_(width)?new cljs.core.PersistentArrayMap(null, 1, [new cljs.core.Keyword(null,"width","width",-384071477),width], null):null),(cljs.core.truth_(height)?new cljs.core.PersistentArrayMap(null, 1, [new cljs.core.Keyword(null,"height","height",1025178622),height], null):null),(cljs.core.truth_(popover_color)?new cljs.core.PersistentArrayMap(null, 1, [new cljs.core.Keyword(null,"background-color","background-color",570434026),popover_color], null):null),(cljs.core.truth_(popover_border_color)?new cljs.core.PersistentArrayMap(null, 1, [new cljs.core.Keyword(null,"border-color","border-color",-2059162761),popover_border_color], null):null),(cljs.core.truth_(tooltip_style_QMARK_)?new cljs.core.PersistentArrayMap(null, 3, [new cljs.core.Keyword(null,"border-radius","border-radius",419594011),"4px",new cljs.core.Keyword(null,"box-shadow","box-shadow",1600206755),"none",new cljs.core.Keyword(null,"border","border",1444987323),"none"], null):null),(function (){var G__21162 = orientation;
+var G__21162__$1 = (((G__21162 instanceof cljs.core.Keyword))?G__21162.fqn:null);
+switch (G__21162__$1) {
 case "left":
 return new cljs.core.PersistentArrayMap(null, 1, [new cljs.core.Keyword(null,"margin-left","margin-left",2015598377),"-2000px"], null);
 
@@ -558,23 +558,23 @@ return new cljs.core.PersistentArrayMap(null, 1, [new cljs.core.Keyword(null,"ma
 
 break;
 default:
-throw (new Error(["No matching clause: ",cljs.core.str.cljs$core$IFn$_invoke$arity$1(G__21165__$1)].join('')));
+throw (new Error(["No matching clause: ",cljs.core.str.cljs$core$IFn$_invoke$arity$1(G__21162__$1)].join('')));
 
 }
 })(),(cljs.core.truth_(margin_left)?new cljs.core.PersistentArrayMap(null, 1, [new cljs.core.Keyword(null,"margin-left","margin-left",2015598377),margin_left], null):null),(cljs.core.truth_(margin_top)?new cljs.core.PersistentArrayMap(null, 1, [new cljs.core.Keyword(null,"margin-top","margin-top",392161226),margin_top], null):null),new cljs.core.PersistentArrayMap(null, 4, [new cljs.core.Keyword(null,"display","display",242065432),"block",new cljs.core.Keyword(null,"opacity","opacity",397153780),(cljs.core.truth_(cljs.core.deref(ready_to_show_QMARK_))?"1":"0"),new cljs.core.Keyword(null,"max-width","max-width",-1939924051),"none",new cljs.core.Keyword(null,"padding","padding",1660304693),"0px"], null)], 0))], null),new cljs.core.PersistentVector(null, 9, 5, cljs.core.PersistentVector.EMPTY_NODE, [re_com.popover.popover_arrow,orientation,cljs.core.deref(pop_offset),arrow_length,arrow_width,grey_arrow_QMARK_,tooltip_style_QMARK_,popover_color,popover_border_color], null),(cljs.core.truth_(title__$1)?title__$1:null),cljs.core.into.cljs$core$IFn$_invoke$arity$2(new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null,"div.popover-content","div.popover-content",1045719989),new cljs.core.PersistentArrayMap(null, 1, [new cljs.core.Keyword(null,"style","style",-496642736),new cljs.core.PersistentArrayMap(null, 1, [new cljs.core.Keyword(null,"padding","padding",1660304693),padding], null)], null)], null),children)], null);
 };
 var G__21222 = function (var_args){
-var p__21157 = null;
+var p__21156 = null;
 if (arguments.length > 0) {
-var G__21234__i = 0, G__21234__a = new Array(arguments.length -  0);
-while (G__21234__i < G__21234__a.length) {G__21234__a[G__21234__i] = arguments[G__21234__i + 0]; ++G__21234__i;}
-  p__21157 = new cljs.core.IndexedSeq(G__21234__a,0,null);
+var G__21240__i = 0, G__21240__a = new Array(arguments.length -  0);
+while (G__21240__i < G__21240__a.length) {G__21240__a[G__21240__i] = arguments[G__21240__i + 0]; ++G__21240__i;}
+  p__21156 = new cljs.core.IndexedSeq(G__21240__a,0,null);
 } 
-return G__21222__delegate.call(this,p__21157);};
+return G__21222__delegate.call(this,p__21156);};
 G__21222.cljs$lang$maxFixedArity = 0;
-G__21222.cljs$lang$applyTo = (function (arglist__21235){
-var p__21157 = cljs.core.seq(arglist__21235);
-return G__21222__delegate(p__21157);
+G__21222.cljs$lang$applyTo = (function (arglist__21241){
+var p__21156 = cljs.core.seq(arglist__21241);
+return G__21222__delegate(p__21156);
 });
 G__21222.cljs$core$IFn$_invoke$arity$variadic = G__21222__delegate;
 return G__21222;
@@ -780,12 +780,12 @@ cljs.core.reset_BANG_(internal_position,cljs.core.deref(external_position));
 } else {
 }
 
-var vec__21177 = re_com.popover.split_keyword(cljs.core.deref(internal_position),"-");
-var orientation = cljs.core.nth.cljs$core$IFn$_invoke$arity$3(vec__21177,(0),null);
-var _arrow_pos = cljs.core.nth.cljs$core$IFn$_invoke$arity$3(vec__21177,(1),null);
-var place_anchor_before_QMARK_ = (function (){var G__21180 = orientation;
-var G__21180__$1 = (((G__21180 instanceof cljs.core.Keyword))?G__21180.fqn:null);
-switch (G__21180__$1) {
+var vec__21176 = re_com.popover.split_keyword(cljs.core.deref(internal_position),"-");
+var orientation = cljs.core.nth.cljs$core$IFn$_invoke$arity$3(vec__21176,(0),null);
+var _arrow_pos = cljs.core.nth.cljs$core$IFn$_invoke$arity$3(vec__21176,(1),null);
+var place_anchor_before_QMARK_ = (function (){var G__21179 = orientation;
+var G__21179__$1 = (((G__21179 instanceof cljs.core.Keyword))?G__21179.fqn:null);
+switch (G__21179__$1) {
 case "left":
 case "above":
 return false;
@@ -796,9 +796,9 @@ return true;
 
 }
 })();
-var flex_flow = (function (){var G__21181 = orientation;
-var G__21181__$1 = (((G__21181 instanceof cljs.core.Keyword))?G__21181.fqn:null);
-switch (G__21181__$1) {
+var flex_flow = (function (){var G__21180 = orientation;
+var G__21180__$1 = (((G__21180 instanceof cljs.core.Keyword))?G__21180.fqn:null);
+switch (G__21180__$1) {
 case "left":
 case "right":
 return "row";
@@ -862,31 +862,31 @@ var argseq__5733__auto__ = ((((0) < args__5732__auto__.length))?(new cljs.core.I
 return re_com.popover.popover_tooltip.cljs$core$IFn$_invoke$arity$variadic(argseq__5733__auto__);
 });
 
-(re_com.popover.popover_tooltip.cljs$core$IFn$_invoke$arity$variadic = (function (p__21185){
-var map__21186 = p__21185;
-var map__21186__$1 = cljs.core.__destructure_map(map__21186);
-var args = map__21186__$1;
-var anchor = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__21186__$1,new cljs.core.Keyword(null,"anchor","anchor",1549638489));
-var on_cancel = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__21186__$1,new cljs.core.Keyword(null,"on-cancel","on-cancel",-2071892932));
-var attr = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__21186__$1,new cljs.core.Keyword(null,"attr","attr",-604132353));
-var no_clip_QMARK_ = cljs.core.get.cljs$core$IFn$_invoke$arity$3(map__21186__$1,new cljs.core.Keyword(null,"no-clip?","no-clip?",-188884951),true);
-var close_button_QMARK_ = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__21186__$1,new cljs.core.Keyword(null,"close-button?","close-button?",-1030817687));
-var width = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__21186__$1,new cljs.core.Keyword(null,"width","width",-384071477));
-var showing_QMARK_ = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__21186__$1,new cljs.core.Keyword(null,"showing?","showing?",2094921488));
-var style = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__21186__$1,new cljs.core.Keyword(null,"style","style",-496642736));
-var status = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__21186__$1,new cljs.core.Keyword(null,"status","status",-1997798413));
-var label = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__21186__$1,new cljs.core.Keyword(null,"label","label",1718410804));
-var class$ = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__21186__$1,new cljs.core.Keyword(null,"class","class",-2030961996));
-var position = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__21186__$1,new cljs.core.Keyword(null,"position","position",-2011731912));
+(re_com.popover.popover_tooltip.cljs$core$IFn$_invoke$arity$variadic = (function (p__21183){
+var map__21184 = p__21183;
+var map__21184__$1 = cljs.core.__destructure_map(map__21184);
+var args = map__21184__$1;
+var anchor = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__21184__$1,new cljs.core.Keyword(null,"anchor","anchor",1549638489));
+var on_cancel = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__21184__$1,new cljs.core.Keyword(null,"on-cancel","on-cancel",-2071892932));
+var attr = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__21184__$1,new cljs.core.Keyword(null,"attr","attr",-604132353));
+var no_clip_QMARK_ = cljs.core.get.cljs$core$IFn$_invoke$arity$3(map__21184__$1,new cljs.core.Keyword(null,"no-clip?","no-clip?",-188884951),true);
+var close_button_QMARK_ = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__21184__$1,new cljs.core.Keyword(null,"close-button?","close-button?",-1030817687));
+var width = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__21184__$1,new cljs.core.Keyword(null,"width","width",-384071477));
+var showing_QMARK_ = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__21184__$1,new cljs.core.Keyword(null,"showing?","showing?",2094921488));
+var style = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__21184__$1,new cljs.core.Keyword(null,"style","style",-496642736));
+var status = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__21184__$1,new cljs.core.Keyword(null,"status","status",-1997798413));
+var label = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__21184__$1,new cljs.core.Keyword(null,"label","label",1718410804));
+var class$ = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__21184__$1,new cljs.core.Keyword(null,"class","class",-2030961996));
+var position = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__21184__$1,new cljs.core.Keyword(null,"position","position",-2011731912));
 if((((!(goog.DEBUG)))?true:re_com.validate.validate_args.cljs$core$IFn$_invoke$arity$variadic(re_com.validate.extract_arg_data(re_com.popover.popover_tooltip_args_desc),args,cljs.core.prim_seq.cljs$core$IFn$_invoke$arity$2(["popover-tooltip"], 0)))){
 } else {
 throw (new Error("Assert failed: (validate-args-macro popover-tooltip-args-desc args \"popover-tooltip\")"));
 }
 
 var label__$1 = re_com.util.deref_or_value(label);
-var popover_color = (function (){var G__21187 = status;
-var G__21187__$1 = (((G__21187 instanceof cljs.core.Keyword))?G__21187.fqn:null);
-switch (G__21187__$1) {
+var popover_color = (function (){var G__21185 = status;
+var G__21185__$1 = (((G__21185 instanceof cljs.core.Keyword))?G__21185.fqn:null);
+switch (G__21185__$1) {
 case "warning":
 return "#f57c00";
 
