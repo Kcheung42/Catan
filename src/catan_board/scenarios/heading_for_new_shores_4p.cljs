@@ -2,7 +2,7 @@
 
 (def config
   {:id :heading-for-new-shores-4-players,
- :name "Heading For New Shores (4 Players)",
+ :name "Heading For New Shores (4-Player)",
  :player-count 4,
  :grid-pattern "5-6-7-8-7-6-5",
  :hex-types
