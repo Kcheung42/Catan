@@ -189,12 +189,12 @@
         editor-assigned-type (when editor-mode? (get-hex-type (:hex-types draft) coord))
 
         ;; Get fill - use pattern if available, otherwise solid color
-        fill (cond
-               (and is-fog?
-                    (not is-revealed?)) "#949494" ; Light gray for unrevealed fog
-               editor-mode?             (resources/get-editor-hex-type-color editor-assigned-type)
-               display-resource         (str "url(#" (name display-resource) "-pattern)")
-               :else                    (resources/get-resource-color display-resource))
+        fill                 (cond
+                               (and is-fog?
+                                    (not is-revealed?)) "#949494" ; Light gray for unrevealed fog
+                               editor-mode?             (resources/get-editor-hex-type-color editor-assigned-type)
+                               display-resource         (str "url(#" (name display-resource) "-pattern)")
+                               :else                    (resources/get-resource-color display-resource))
 
         ;; Check if this token is selected
         is-selected? (= coord selected-token-coord)

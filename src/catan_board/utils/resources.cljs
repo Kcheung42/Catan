@@ -19,9 +19,9 @@
 
 (def editor-hex-type-colors
   "Color mapping for each resource type (optimized for projector display)"
-  {:terrain   "#000000"
-   :water  "#4A90E2"
-   :village  "#e8c547"})
+  {:terrain "#000000"
+   :water   "#4A90E2"
+   :village "#8B6914"})
 
 ;; -- Resource Distribution ---------------------------------------------------
 
