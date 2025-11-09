@@ -49,18 +49,18 @@
   "Converts pixel coordinates [x y] back to axial coordinates [q r].
    Returns rounded axial coordinates."
   [[x y] hex-size]
-  (let [q (/ (* (/ 2 3) x) hex-size)
-        r (/ (- y (* (/ sqrt3 3) x)) (* sqrt3 hex-size))
+  (let [q                 (/ (* (/ 2 3) x) hex-size)
+        r                 (/ (- y (* (/ sqrt3 3) x)) (* sqrt3 hex-size))
         ;; Convert to cube coordinates for proper rounding
-        s (- (- q) r)
+        s                 (- (- q) r)
         ;; Round to nearest integer coordinates
-        rq (Math/round q)
-        rr (Math/round r)
-        rs (Math/round s)
+        rq                (Math/round q)
+        rr                (Math/round r)
+        rs                (Math/round s)
         ;; Fix rounding errors
-        q-diff (Math/abs (- rq q))
-        r-diff (Math/abs (- rr r))
-        s-diff (Math/abs (- rs s))
+        q-diff            (Math/abs (- rq q))
+        r-diff            (Math/abs (- rr r))
+        s-diff            (Math/abs (- rs s))
         [final-q final-r] (cond
                             (and (> q-diff r-diff) (> q-diff s-diff))
                             [(- (- rr) rs) rr]
@@ -102,9 +102,9 @@
   "Generates the standard Catan board layout with 19 hexes in a 3-4-5-4-3 pattern.
    Returns a vector of axial coordinates."
   []
-  (let [coords (for [q (range -2 3)
-                     r (range -2 3)
-                     :let [s (- (- q) r)]
+  (let [coords (for [q     (range -2 3)
+                     r     (range -2 3)
+                     :let  [s (- (- q) r)]
                      :when (and (>= s -2) (<= s 2))]
                  [q r])]
     (vec coords)))
@@ -120,30 +120,33 @@
    Example: '5-6-7-8-7-6-5' generates the Fog Islands 44-hex grid.
             '3-4-5-4-3' generates the standard Catan 19-hex grid."
   [pattern]
-  (let [col-sizes (mapv js/parseInt (clojure.string/split pattern #"-"))
-        num-cols (count col-sizes)
-        max-size (apply max col-sizes)
-        max-radius (quot max-size 2)
+  (let [col-sizes        (->> (clojure.string/split pattern "-")
+                              (map js/parseInt)
+                              (remove nil?)
+                              (into []))
+        num-cols         (count col-sizes)
+        max-size         (apply max col-sizes)
+        max-radius       (quot max-size 2)
         middle-col-index (quot num-cols 2)
         middle-col-value (get col-sizes middle-col-index)
-        coords (for [[col-index col-size] (map-indexed vector col-sizes)
-                     :let [q (- col-index middle-col-index)
-                           ;; Use cube coordinates: q + r + s = 0, so r = -q - s
-                           ;; For left side (q < 0): keep top edge at r=3, extend down as needed
-                           ;; For right side (q >= 0): keep bottom edge at r=-4, extend up as needed
-                           ;; This creates the characteristic hexagon shape
-                           s-min (if (< q 0)
-                                   (+ 1 (- max-radius) max-size (- col-size))
-                                   (- 1 max-radius))
-                           s-max (if (< q 0)
-                                  max-radius
-                                  (+ max-radius (- max-size) col-size))]
-                     s (range (if (odd? middle-col-value)
-                                (dec s-min)
-                                s-min)
-                              (inc s-max))
-                     :let [r (- (- q) s)]]
-                 [q r])]
+        coords           (for [[col-index col-size] (map-indexed vector col-sizes)
+                               :let                 [q (- col-index middle-col-index)
+                                                     ;; Use cube coordinates: q + r + s = 0, so r = -q - s
+                                                     ;; For left side (q < 0): keep top edge at r=3, extend down as needed
+                                                     ;; For right side (q >= 0): keep bottom edge at r=-4, extend up as needed
+                                                     ;; This creates the characteristic hexagon shape
+                                                     s-min (if (< q 0)
+                                                             (+ 1 (- max-radius) max-size (- col-size))
+                                                             (- 1 max-radius))
+                                                     s-max (if (< q 0)
+                                                             max-radius
+                                                             (+ max-radius (- max-size) col-size))]
+                               s                    (range (if (odd? middle-col-value)
+                                                             (dec s-min)
+                                                             s-min)
+                                                           (inc s-max))
+                               :let                 [r (- (- q) s)]]
+                           [q r])]
     (vec coords)))
 
 ;; -- SVG Rendering Helpers ---------------------------------------------------
@@ -156,8 +159,8 @@
   (let [[cx cy] (axial-to-pixel [q r] hex-size)]
     (for [i (range 6)]
       (let [angle (* (/ Math/PI 3) i)  ; 60 degrees per vertex
-            x (+ cx (* hex-size (Math/cos angle)))
-            y (+ cy (* hex-size (Math/sin angle)))]
+            x     (+ cx (* hex-size (Math/cos angle)))
+            y     (+ cy (* hex-size (Math/sin angle)))]
         [x y]))))
 
 (defn vertices-to-svg-points
