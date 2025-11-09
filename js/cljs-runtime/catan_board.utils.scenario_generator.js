@@ -4,10 +4,10 @@ goog.provide('catan_board.utils.scenario_generator');
  * Example: {:wood 3 :brick 2} -> [:wood :wood :wood :brick :brick]
  */
 catan_board.utils.scenario_generator.shuffle_resources = (function catan_board$utils$scenario_generator$shuffle_resources(resource_distribution){
-var resource_deck = cljs.core.mapcat.cljs$core$IFn$_invoke$arity$variadic((function (p__37378){
-var vec__37379 = p__37378;
-var resource = cljs.core.nth.cljs$core$IFn$_invoke$arity$3(vec__37379,(0),null);
-var count = cljs.core.nth.cljs$core$IFn$_invoke$arity$3(vec__37379,(1),null);
+var resource_deck = cljs.core.mapcat.cljs$core$IFn$_invoke$arity$variadic((function (p__21471){
+var vec__21472 = p__21471;
+var resource = cljs.core.nth.cljs$core$IFn$_invoke$arity$3(vec__21472,(0),null);
+var count = cljs.core.nth.cljs$core$IFn$_invoke$arity$3(vec__21472,(1),null);
 return cljs.core.repeat.cljs$core$IFn$_invoke$arity$2(count,resource);
 }),cljs.core.prim_seq.cljs$core$IFn$_invoke$arity$2([resource_distribution], 0));
 return cljs.core.shuffle(cljs.core.vec(resource_deck));
@@ -20,10 +20,10 @@ return cljs.core.shuffle(cljs.core.vec(resource_deck));
  */
 catan_board.utils.scenario_generator.shuffle_numbers = (function catan_board$utils$scenario_generator$shuffle_numbers(number_tokens){
 if(cljs.core.map_QMARK_(number_tokens)){
-return cljs.core.shuffle(cljs.core.vec(cljs.core.mapcat.cljs$core$IFn$_invoke$arity$variadic((function (p__37382){
-var vec__37383 = p__37382;
-var token = cljs.core.nth.cljs$core$IFn$_invoke$arity$3(vec__37383,(0),null);
-var freq = cljs.core.nth.cljs$core$IFn$_invoke$arity$3(vec__37383,(1),null);
+return cljs.core.shuffle(cljs.core.vec(cljs.core.mapcat.cljs$core$IFn$_invoke$arity$variadic((function (p__21477){
+var vec__21478 = p__21477;
+var token = cljs.core.nth.cljs$core$IFn$_invoke$arity$3(vec__21478,(0),null);
+var freq = cljs.core.nth.cljs$core$IFn$_invoke$arity$3(vec__21478,(1),null);
 return cljs.core.repeat.cljs$core$IFn$_invoke$arity$2(freq,token);
 }),cljs.core.prim_seq.cljs$core$IFn$_invoke$arity$2([number_tokens], 0))));
 } else {
@@ -33,10 +33,10 @@ return cljs.core.shuffle(cljs.core.vec(number_tokens));
 /**
  * Determines hex type (water/fog/terrain) based on coordinate and config.
  */
-catan_board.utils.scenario_generator.classify_hex_by_type = (function catan_board$utils$scenario_generator$classify_hex_by_type(coord,p__37386){
-var map__37387 = p__37386;
-var map__37387__$1 = cljs.core.__destructure_map(map__37387);
-var hex_types = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__37387__$1,new cljs.core.Keyword(null,"hex-types","hex-types",-1144901913));
+catan_board.utils.scenario_generator.classify_hex_by_type = (function catan_board$utils$scenario_generator$classify_hex_by_type(coord,p__21483){
+var map__21484 = p__21483;
+var map__21484__$1 = cljs.core.__destructure_map(map__21484);
+var hex_types = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__21484__$1,new cljs.core.Keyword(null,"hex-types","hex-types",-1144901913));
 if(cljs.core.contains_QMARK_(new cljs.core.Keyword(null,"water","water",-824098213).cljs$core$IFn$_invoke$arity$1(hex_types),coord)){
 return new cljs.core.Keyword(null,"water","water",-824098213);
 } else {
@@ -66,15 +66,15 @@ if(((cljs.core._EQ_.cljs$core$IFn$_invoke$arity$2(new cljs.core.Keyword(null,"de
 return hex;
 } else {
 if(cljs.core._EQ_.cljs$core$IFn$_invoke$arity$2(new cljs.core.Keyword(null,"village","village",-950412200),new cljs.core.Keyword(null,"resource","resource",251898836).cljs$core$IFn$_invoke$arity$1(hex))){
-var vec__37388 = cljs.core.deref(number_atom);
-var seq__37389 = cljs.core.seq(vec__37388);
-var first__37390 = cljs.core.first(seq__37389);
-var seq__37389__$1 = cljs.core.next(seq__37389);
-var num1 = first__37390;
-var first__37390__$1 = cljs.core.first(seq__37389__$1);
-var seq__37389__$2 = cljs.core.next(seq__37389__$1);
-var num2 = first__37390__$1;
-var remain = seq__37389__$2;
+var vec__21488 = cljs.core.deref(number_atom);
+var seq__21489 = cljs.core.seq(vec__21488);
+var first__21490 = cljs.core.first(seq__21489);
+var seq__21489__$1 = cljs.core.next(seq__21489);
+var num1 = first__21490;
+var first__21490__$1 = cljs.core.first(seq__21489__$1);
+var seq__21489__$2 = cljs.core.next(seq__21489__$1);
+var num2 = first__21490__$1;
+var remain = seq__21489__$2;
 cljs.core.reset_BANG_(number_atom,remain);
 
 return cljs.core.assoc.cljs$core$IFn$_invoke$arity$3(cljs.core.dissoc.cljs$core$IFn$_invoke$arity$2(hex,new cljs.core.Keyword(null,"number","number",1570378438)),new cljs.core.Keyword(null,"numbers","numbers",1036309864),new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [num1,num2], null));
@@ -106,16 +106,16 @@ return cljs.core.assoc.cljs$core$IFn$_invoke$arity$3(hex,new cljs.core.Keyword(n
  *   5. Water and fog hexes get their type as resource
  *   6. Return complete board structure
  */
-catan_board.utils.scenario_generator.generate_scenario_board = (function catan_board$utils$scenario_generator$generate_scenario_board(p__37396,random_harbor_mode_QMARK_){
-var map__37397 = p__37396;
-var map__37397__$1 = cljs.core.__destructure_map(map__37397);
-var scenario_config = map__37397__$1;
-var grid_pattern = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__37397__$1,new cljs.core.Keyword(null,"grid-pattern","grid-pattern",-1763214640));
-var face_up_distribution = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__37397__$1,new cljs.core.Keyword(null,"face-up-distribution","face-up-distribution",1522439387));
-var harbors = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__37397__$1,new cljs.core.Keyword(null,"harbors","harbors",1522363032));
+catan_board.utils.scenario_generator.generate_scenario_board = (function catan_board$utils$scenario_generator$generate_scenario_board(p__21500,random_harbor_mode_QMARK_){
+var map__21501 = p__21500;
+var map__21501__$1 = cljs.core.__destructure_map(map__21501);
+var scenario_config = map__21501__$1;
+var grid_pattern = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__21501__$1,new cljs.core.Keyword(null,"grid-pattern","grid-pattern",-1763214640));
+var face_up_distribution = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__21501__$1,new cljs.core.Keyword(null,"face-up-distribution","face-up-distribution",1522439387));
+var harbors = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__21501__$1,new cljs.core.Keyword(null,"harbors","harbors",1522363032));
 var all_coords = catan_board.utils.hex.generate_grid_from_pattern(grid_pattern);
-var classified_coords = cljs.core.group_by((function (p1__37391_SHARP_){
-return catan_board.utils.scenario_generator.classify_hex_by_type(p1__37391_SHARP_,scenario_config);
+var classified_coords = cljs.core.group_by((function (p1__21495_SHARP_){
+return catan_board.utils.scenario_generator.classify_hex_by_type(p1__21495_SHARP_,scenario_config);
 }),all_coords);
 var water_coords = cljs.core.get.cljs$core$IFn$_invoke$arity$3(classified_coords,new cljs.core.Keyword(null,"water","water",-824098213),cljs.core.PersistentVector.EMPTY);
 var fog_coords = cljs.core.get.cljs$core$IFn$_invoke$arity$3(classified_coords,new cljs.core.Keyword(null,"fog","fog",1515389980),cljs.core.PersistentVector.EMPTY);
@@ -123,19 +123,19 @@ var village_coords = cljs.core.get.cljs$core$IFn$_invoke$arity$3(classified_coor
 var terrain_coords = cljs.core.get.cljs$core$IFn$_invoke$arity$3(classified_coords,new cljs.core.Keyword(null,"terrain","terrain",704966005),all_coords);
 var resource_deck = catan_board.utils.scenario_generator.shuffle_resources(new cljs.core.Keyword(null,"resources","resources",1632806811).cljs$core$IFn$_invoke$arity$1(face_up_distribution));
 var number_deck = catan_board.utils.scenario_generator.shuffle_numbers(new cljs.core.Keyword(null,"number-tokens","number-tokens",-158048886).cljs$core$IFn$_invoke$arity$1(face_up_distribution));
-var water_hexes = cljs.core.mapv.cljs$core$IFn$_invoke$arity$2((function (p1__37392_SHARP_){
-return catan_board.utils.scenario_generator.assign_resource_to_hex(p1__37392_SHARP_,new cljs.core.Keyword(null,"water","water",-824098213));
+var water_hexes = cljs.core.mapv.cljs$core$IFn$_invoke$arity$2((function (p1__21496_SHARP_){
+return catan_board.utils.scenario_generator.assign_resource_to_hex(p1__21496_SHARP_,new cljs.core.Keyword(null,"water","water",-824098213));
 }),water_coords);
-var fog_hexes = cljs.core.mapv.cljs$core$IFn$_invoke$arity$2((function (p1__37393_SHARP_){
-return catan_board.utils.scenario_generator.assign_resource_to_hex(p1__37393_SHARP_,new cljs.core.Keyword(null,"fog","fog",1515389980));
+var fog_hexes = cljs.core.mapv.cljs$core$IFn$_invoke$arity$2((function (p1__21497_SHARP_){
+return catan_board.utils.scenario_generator.assign_resource_to_hex(p1__21497_SHARP_,new cljs.core.Keyword(null,"fog","fog",1515389980));
 }),fog_coords);
-var village_hexes = cljs.core.mapv.cljs$core$IFn$_invoke$arity$2((function (p1__37394_SHARP_){
-return catan_board.utils.scenario_generator.assign_resource_to_hex(p1__37394_SHARP_,new cljs.core.Keyword(null,"village","village",-950412200));
+var village_hexes = cljs.core.mapv.cljs$core$IFn$_invoke$arity$2((function (p1__21498_SHARP_){
+return catan_board.utils.scenario_generator.assign_resource_to_hex(p1__21498_SHARP_,new cljs.core.Keyword(null,"village","village",-950412200));
 }),village_coords);
 var terrain_hexes_with_resources = cljs.core.mapv.cljs$core$IFn$_invoke$arity$3(catan_board.utils.scenario_generator.assign_resource_to_hex,terrain_coords,resource_deck);
 var number_atom = cljs.core.atom.cljs$core$IFn$_invoke$arity$1(number_deck);
-var terrain_hexes_with_numbers = cljs.core.mapv.cljs$core$IFn$_invoke$arity$2((function (p1__37395_SHARP_){
-return catan_board.utils.scenario_generator.assign_number_to_hex(p1__37395_SHARP_,number_atom);
+var terrain_hexes_with_numbers = cljs.core.mapv.cljs$core$IFn$_invoke$arity$2((function (p1__21499_SHARP_){
+return catan_board.utils.scenario_generator.assign_number_to_hex(p1__21499_SHARP_,number_atom);
 }),cljs.core.concat.cljs$core$IFn$_invoke$arity$2(terrain_hexes_with_resources,village_hexes));
 var all_hexes = cljs.core.vec(cljs.core.concat.cljs$core$IFn$_invoke$arity$variadic(water_hexes,fog_hexes,cljs.core.prim_seq.cljs$core$IFn$_invoke$arity$2([terrain_hexes_with_numbers], 0)));
 var harbor_deck = (cljs.core.truth_(random_harbor_mode_QMARK_)?cljs.core.mapv.cljs$core$IFn$_invoke$arity$3((function (harbor,new_type){
@@ -143,10 +143,10 @@ return cljs.core.assoc.cljs$core$IFn$_invoke$arity$3(harbor,new cljs.core.Keywor
 }),harbors,cljs.core.shuffle(cljs.core.map.cljs$core$IFn$_invoke$arity$2(new cljs.core.Keyword(null,"type","type",1174270348),harbors))):harbors);
 return new cljs.core.PersistentArrayMap(null, 3, [new cljs.core.Keyword(null,"hexes","hexes",-1419989846),all_hexes,new cljs.core.Keyword(null,"harbors","harbors",1522363032),harbor_deck,new cljs.core.Keyword(null,"metadata","metadata",1799301597),new cljs.core.PersistentArrayMap(null, 4, [new cljs.core.Keyword(null,"generated-at","generated-at",-567727583),(new Date()).toLocaleString(),new cljs.core.Keyword(null,"board-id","board-id",-1767919501),cljs.core.str.cljs$core$IFn$_invoke$arity$1(cljs.core.random_uuid()),new cljs.core.Keyword(null,"scenario-id","scenario-id",199208014),new cljs.core.Keyword(null,"id","id",-1388402092).cljs$core$IFn$_invoke$arity$1(scenario_config),new cljs.core.Keyword(null,"hex-counts","hex-counts",1162697905),new cljs.core.PersistentArrayMap(null, 3, [new cljs.core.Keyword(null,"water","water",-824098213),cljs.core.count(water_hexes),new cljs.core.Keyword(null,"fog","fog",1515389980),cljs.core.count(fog_hexes),new cljs.core.Keyword(null,"terrain","terrain",704966005),cljs.core.count(terrain_hexes_with_numbers)], null)], null)], null);
 });
-catan_board.utils.scenario_generator.initialize_fog_number_deck = (function catan_board$utils$scenario_generator$initialize_fog_number_deck(p__37398){
-var map__37399 = p__37398;
-var map__37399__$1 = cljs.core.__destructure_map(map__37399);
-var fog_distribution = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__37399__$1,new cljs.core.Keyword(null,"fog-distribution","fog-distribution",792585602));
+catan_board.utils.scenario_generator.initialize_fog_number_deck = (function catan_board$utils$scenario_generator$initialize_fog_number_deck(p__21506){
+var map__21507 = p__21506;
+var map__21507__$1 = cljs.core.__destructure_map(map__21507);
+var fog_distribution = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__21507__$1,new cljs.core.Keyword(null,"fog-distribution","fog-distribution",792585602));
 var number_tokens = new cljs.core.Keyword(null,"number-tokens","number-tokens",-158048886).cljs$core$IFn$_invoke$arity$1(fog_distribution);
 return catan_board.utils.scenario_generator.shuffle_numbers(number_tokens);
 });
@@ -155,15 +155,15 @@ return catan_board.utils.scenario_generator.shuffle_numbers(number_tokens);
  * 
  * Returns a shuffled sequence of terrain keywords based on fog distribution.
  */
-catan_board.utils.scenario_generator.initialize_fog_terrain_deck = (function catan_board$utils$scenario_generator$initialize_fog_terrain_deck(p__37400){
-var map__37401 = p__37400;
-var map__37401__$1 = cljs.core.__destructure_map(map__37401);
-var fog_distribution = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__37401__$1,new cljs.core.Keyword(null,"fog-distribution","fog-distribution",792585602));
+catan_board.utils.scenario_generator.initialize_fog_terrain_deck = (function catan_board$utils$scenario_generator$initialize_fog_terrain_deck(p__21511){
+var map__21512 = p__21511;
+var map__21512__$1 = cljs.core.__destructure_map(map__21512);
+var fog_distribution = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__21512__$1,new cljs.core.Keyword(null,"fog-distribution","fog-distribution",792585602));
 if(cljs.core.truth_(fog_distribution)){
-return cljs.core.shuffle(cljs.core.mapcat.cljs$core$IFn$_invoke$arity$variadic((function (p__37402){
-var vec__37403 = p__37402;
-var resource = cljs.core.nth.cljs$core$IFn$_invoke$arity$3(vec__37403,(0),null);
-var count = cljs.core.nth.cljs$core$IFn$_invoke$arity$3(vec__37403,(1),null);
+return cljs.core.shuffle(cljs.core.mapcat.cljs$core$IFn$_invoke$arity$variadic((function (p__21513){
+var vec__21517 = p__21513;
+var resource = cljs.core.nth.cljs$core$IFn$_invoke$arity$3(vec__21517,(0),null);
+var count = cljs.core.nth.cljs$core$IFn$_invoke$arity$3(vec__21517,(1),null);
 return cljs.core.repeat.cljs$core$IFn$_invoke$arity$2(count,resource);
 }),cljs.core.prim_seq.cljs$core$IFn$_invoke$arity$2([new cljs.core.Keyword(null,"resources","resources",1632806811).cljs$core$IFn$_invoke$arity$1(fog_distribution)], 0)));
 } else {
@@ -180,10 +180,10 @@ return null;
  * 
  * All fog hexes start unrevealed with no terrain or number assigned.
  */
-catan_board.utils.scenario_generator.initialize_fog_state = (function catan_board$utils$scenario_generator$initialize_fog_state(p__37406){
-var map__37407 = p__37406;
-var map__37407__$1 = cljs.core.__destructure_map(map__37407);
-var hex_types = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__37407__$1,new cljs.core.Keyword(null,"hex-types","hex-types",-1144901913));
+catan_board.utils.scenario_generator.initialize_fog_state = (function catan_board$utils$scenario_generator$initialize_fog_state(p__21520){
+var map__21521 = p__21520;
+var map__21521__$1 = cljs.core.__destructure_map(map__21521);
+var hex_types = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__21521__$1,new cljs.core.Keyword(null,"hex-types","hex-types",-1144901913));
 var fog_coords = new cljs.core.Keyword(null,"fog","fog",1515389980).cljs$core$IFn$_invoke$arity$2(hex_types,cljs.core.PersistentHashSet.EMPTY);
 return cljs.core.into.cljs$core$IFn$_invoke$arity$2(cljs.core.PersistentArrayMap.EMPTY,cljs.core.map.cljs$core$IFn$_invoke$arity$2((function (coord){
 return new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [coord,new cljs.core.PersistentArrayMap(null, 3, [new cljs.core.Keyword(null,"revealed?","revealed?",726959164),false,new cljs.core.Keyword(null,"terrain","terrain",704966005),null,new cljs.core.Keyword(null,"number","number",1570378438),null], null)], null);

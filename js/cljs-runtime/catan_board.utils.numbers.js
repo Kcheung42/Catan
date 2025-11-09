@@ -11,27 +11,27 @@ catan_board.utils.numbers.number_probabilities = cljs.core.PersistentHashMap.fro
  * Creates a shuffled deck of numbers based on standard distribution
  */
 catan_board.utils.numbers.create_number_deck = (function catan_board$utils$numbers$create_number_deck(){
-var deck = cljs.core.flatten((function (){var iter__5480__auto__ = (function catan_board$utils$numbers$create_number_deck_$_iter__26212(s__26213){
+var deck = cljs.core.flatten((function (){var iter__5480__auto__ = (function catan_board$utils$numbers$create_number_deck_$_iter__21373(s__21374){
 return (new cljs.core.LazySeq(null,(function (){
-var s__26213__$1 = s__26213;
+var s__21374__$1 = s__21374;
 while(true){
-var temp__5804__auto__ = cljs.core.seq(s__26213__$1);
+var temp__5804__auto__ = cljs.core.seq(s__21374__$1);
 if(temp__5804__auto__){
-var s__26213__$2 = temp__5804__auto__;
-if(cljs.core.chunked_seq_QMARK_(s__26213__$2)){
-var c__5478__auto__ = cljs.core.chunk_first(s__26213__$2);
+var s__21374__$2 = temp__5804__auto__;
+if(cljs.core.chunked_seq_QMARK_(s__21374__$2)){
+var c__5478__auto__ = cljs.core.chunk_first(s__21374__$2);
 var size__5479__auto__ = cljs.core.count(c__5478__auto__);
-var b__26215 = cljs.core.chunk_buffer(size__5479__auto__);
-if((function (){var i__26214 = (0);
+var b__21376 = cljs.core.chunk_buffer(size__5479__auto__);
+if((function (){var i__21375 = (0);
 while(true){
-if((i__26214 < size__5479__auto__)){
-var vec__26221 = cljs.core._nth(c__5478__auto__,i__26214);
-var number = cljs.core.nth.cljs$core$IFn$_invoke$arity$3(vec__26221,(0),null);
-var count = cljs.core.nth.cljs$core$IFn$_invoke$arity$3(vec__26221,(1),null);
-cljs.core.chunk_append(b__26215,cljs.core.repeat.cljs$core$IFn$_invoke$arity$2(count,number));
+if((i__21375 < size__5479__auto__)){
+var vec__21384 = cljs.core._nth(c__5478__auto__,i__21375);
+var number = cljs.core.nth.cljs$core$IFn$_invoke$arity$3(vec__21384,(0),null);
+var count = cljs.core.nth.cljs$core$IFn$_invoke$arity$3(vec__21384,(1),null);
+cljs.core.chunk_append(b__21376,cljs.core.repeat.cljs$core$IFn$_invoke$arity$2(count,number));
 
-var G__26248 = (i__26214 + (1));
-i__26214 = G__26248;
+var G__21408 = (i__21375 + (1));
+i__21375 = G__21408;
 continue;
 } else {
 return true;
@@ -39,15 +39,15 @@ return true;
 break;
 }
 })()){
-return cljs.core.chunk_cons(cljs.core.chunk(b__26215),catan_board$utils$numbers$create_number_deck_$_iter__26212(cljs.core.chunk_rest(s__26213__$2)));
+return cljs.core.chunk_cons(cljs.core.chunk(b__21376),catan_board$utils$numbers$create_number_deck_$_iter__21373(cljs.core.chunk_rest(s__21374__$2)));
 } else {
-return cljs.core.chunk_cons(cljs.core.chunk(b__26215),null);
+return cljs.core.chunk_cons(cljs.core.chunk(b__21376),null);
 }
 } else {
-var vec__26231 = cljs.core.first(s__26213__$2);
-var number = cljs.core.nth.cljs$core$IFn$_invoke$arity$3(vec__26231,(0),null);
-var count = cljs.core.nth.cljs$core$IFn$_invoke$arity$3(vec__26231,(1),null);
-return cljs.core.cons(cljs.core.repeat.cljs$core$IFn$_invoke$arity$2(count,number),catan_board$utils$numbers$create_number_deck_$_iter__26212(cljs.core.rest(s__26213__$2)));
+var vec__21395 = cljs.core.first(s__21374__$2);
+var number = cljs.core.nth.cljs$core$IFn$_invoke$arity$3(vec__21395,(0),null);
+var count = cljs.core.nth.cljs$core$IFn$_invoke$arity$3(vec__21395,(1),null);
+return cljs.core.cons(cljs.core.repeat.cljs$core$IFn$_invoke$arity$2(count,number),catan_board$utils$numbers$create_number_deck_$_iter__21373(cljs.core.rest(s__21374__$2)));
 }
 } else {
 return null;

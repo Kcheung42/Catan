@@ -17,14 +17,14 @@ catan_board.events.scale_config = new cljs.core.PersistentArrayMap(null, 4, [new
  */
 catan_board.events.reg_toggle_event = (function catan_board$events$reg_toggle_event(var_args){
 var args__5732__auto__ = [];
-var len__5726__auto___31743 = arguments.length;
-var i__5727__auto___31744 = (0);
+var len__5726__auto___21695 = arguments.length;
+var i__5727__auto___21696 = (0);
 while(true){
-if((i__5727__auto___31744 < len__5726__auto___31743)){
-args__5732__auto__.push((arguments[i__5727__auto___31744]));
+if((i__5727__auto___21696 < len__5726__auto___21695)){
+args__5732__auto__.push((arguments[i__5727__auto___21696]));
 
-var G__31745 = (i__5727__auto___31744 + (1));
-i__5727__auto___31744 = G__31745;
+var G__21697 = (i__5727__auto___21696 + (1));
+i__5727__auto___21696 = G__21697;
 continue;
 } else {
 }
@@ -35,15 +35,15 @@ var argseq__5733__auto__ = ((((2) < args__5732__auto__.length))?(new cljs.core.I
 return catan_board.events.reg_toggle_event.cljs$core$IFn$_invoke$arity$variadic((arguments[(0)]),(arguments[(1)]),argseq__5733__auto__);
 });
 
-(catan_board.events.reg_toggle_event.cljs$core$IFn$_invoke$arity$variadic = (function (event_id,path,p__31609){
-var map__31610 = p__31609;
-var map__31610__$1 = cljs.core.__destructure_map(map__31610);
-var persist_QMARK_ = cljs.core.get.cljs$core$IFn$_invoke$arity$3(map__31610__$1,new cljs.core.Keyword(null,"persist?","persist?",-1772568760),false);
-return re_frame.core.reg_event_db.cljs$core$IFn$_invoke$arity$3(event_id,(function (){var G__31612 = cljs.core.PersistentVector.EMPTY;
+(catan_board.events.reg_toggle_event.cljs$core$IFn$_invoke$arity$variadic = (function (event_id,path,p__21599){
+var map__21600 = p__21599;
+var map__21600__$1 = cljs.core.__destructure_map(map__21600);
+var persist_QMARK_ = cljs.core.get.cljs$core$IFn$_invoke$arity$3(map__21600__$1,new cljs.core.Keyword(null,"persist?","persist?",-1772568760),false);
+return re_frame.core.reg_event_db.cljs$core$IFn$_invoke$arity$3(event_id,(function (){var G__21601 = cljs.core.PersistentVector.EMPTY;
 if(cljs.core.truth_(persist_QMARK_)){
-return cljs.core.conj.cljs$core$IFn$_invoke$arity$2(G__31612,catan_board.events.persist_db);
+return cljs.core.conj.cljs$core$IFn$_invoke$arity$2(G__21601,catan_board.events.persist_db);
 } else {
-return G__31612;
+return G__21601;
 }
 })(),(function (db,_){
 return cljs.core.update_in.cljs$core$IFn$_invoke$arity$3(db,path,cljs.core.not);
@@ -53,13 +53,13 @@ return cljs.core.update_in.cljs$core$IFn$_invoke$arity$3(db,path,cljs.core.not);
 (catan_board.events.reg_toggle_event.cljs$lang$maxFixedArity = (2));
 
 /** @this {Function} */
-(catan_board.events.reg_toggle_event.cljs$lang$applyTo = (function (seq31598){
-var G__31599 = cljs.core.first(seq31598);
-var seq31598__$1 = cljs.core.next(seq31598);
-var G__31600 = cljs.core.first(seq31598__$1);
-var seq31598__$2 = cljs.core.next(seq31598__$1);
+(catan_board.events.reg_toggle_event.cljs$lang$applyTo = (function (seq21592){
+var G__21593 = cljs.core.first(seq21592);
+var seq21592__$1 = cljs.core.next(seq21592);
+var G__21594 = cljs.core.first(seq21592__$1);
+var seq21592__$2 = cljs.core.next(seq21592__$1);
 var self__5711__auto__ = this;
-return self__5711__auto__.cljs$core$IFn$_invoke$arity$variadic(G__31599,G__31600,seq31598__$2);
+return self__5711__auto__.cljs$core$IFn$_invoke$arity$variadic(G__21593,G__21594,seq21592__$2);
 }));
 
 /**
@@ -80,14 +80,14 @@ return new cljs.core.PersistentArrayMap(null, 2, [new cljs.core.Keyword(null,"to
  */
 catan_board.events.generate_board_with_fog = (function catan_board$events$generate_board_with_fog(var_args){
 var args__5732__auto__ = [];
-var len__5726__auto___31746 = arguments.length;
-var i__5727__auto___31747 = (0);
+var len__5726__auto___21699 = arguments.length;
+var i__5727__auto___21700 = (0);
 while(true){
-if((i__5727__auto___31747 < len__5726__auto___31746)){
-args__5732__auto__.push((arguments[i__5727__auto___31747]));
+if((i__5727__auto___21700 < len__5726__auto___21699)){
+args__5732__auto__.push((arguments[i__5727__auto___21700]));
 
-var G__31748 = (i__5727__auto___31747 + (1));
-i__5727__auto___31747 = G__31748;
+var G__21701 = (i__5727__auto___21700 + (1));
+i__5727__auto___21700 = G__21701;
 continue;
 } else {
 }
@@ -98,43 +98,43 @@ var argseq__5733__auto__ = ((((2) < args__5732__auto__.length))?(new cljs.core.I
 return catan_board.events.generate_board_with_fog.cljs$core$IFn$_invoke$arity$variadic((arguments[(0)]),(arguments[(1)]),argseq__5733__auto__);
 });
 
-(catan_board.events.generate_board_with_fog.cljs$core$IFn$_invoke$arity$variadic = (function (db,scenario_config,p__31642){
-var map__31643 = p__31642;
-var map__31643__$1 = cljs.core.__destructure_map(map__31643);
-var scenario_id = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__31643__$1,new cljs.core.Keyword(null,"scenario-id","scenario-id",199208014));
-var map__31644 = catan_board.events.get_generation_modes(db);
-var map__31644__$1 = cljs.core.__destructure_map(map__31644);
-var tournament_mode_QMARK_ = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__31644__$1,new cljs.core.Keyword(null,"tournament-mode?","tournament-mode?",1595196011));
-var random_harbor_mode_QMARK_ = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__31644__$1,new cljs.core.Keyword(null,"random-harbor-mode?","random-harbor-mode?",1753781411));
+(catan_board.events.generate_board_with_fog.cljs$core$IFn$_invoke$arity$variadic = (function (db,scenario_config,p__21611){
+var map__21612 = p__21611;
+var map__21612__$1 = cljs.core.__destructure_map(map__21612);
+var scenario_id = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__21612__$1,new cljs.core.Keyword(null,"scenario-id","scenario-id",199208014));
+var map__21613 = catan_board.events.get_generation_modes(db);
+var map__21613__$1 = cljs.core.__destructure_map(map__21613);
+var tournament_mode_QMARK_ = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__21613__$1,new cljs.core.Keyword(null,"tournament-mode?","tournament-mode?",1595196011));
+var random_harbor_mode_QMARK_ = cljs.core.get.cljs$core$IFn$_invoke$arity$2(map__21613__$1,new cljs.core.Keyword(null,"random-harbor-mode?","random-harbor-mode?",1753781411));
 var new_board = catan_board.utils.board_generator.generate_board(scenario_config,tournament_mode_QMARK_,random_harbor_mode_QMARK_);
 var fog_state_hexes = catan_board.utils.scenario_generator.initialize_fog_state(scenario_config);
 var fog_number_deck = catan_board.utils.scenario_generator.initialize_fog_number_deck(scenario_config);
 var fog_terrain_deck = catan_board.utils.scenario_generator.initialize_fog_terrain_deck(scenario_config);
-var G__31649 = db;
-var G__31649__$1 = (cljs.core.truth_(scenario_id)?cljs.core.assoc.cljs$core$IFn$_invoke$arity$3(G__31649,new cljs.core.Keyword(null,"scenario","scenario",-316635333),scenario_id):G__31649);
-var G__31649__$2 = cljs.core.assoc.cljs$core$IFn$_invoke$arity$3(G__31649__$1,new cljs.core.Keyword(null,"board","board",-1907017633),new_board)
+var G__21614 = db;
+var G__21614__$1 = (cljs.core.truth_(scenario_id)?cljs.core.assoc.cljs$core$IFn$_invoke$arity$3(G__21614,new cljs.core.Keyword(null,"scenario","scenario",-316635333),scenario_id):G__21614);
+var G__21614__$2 = cljs.core.assoc.cljs$core$IFn$_invoke$arity$3(G__21614__$1,new cljs.core.Keyword(null,"board","board",-1907017633),new_board)
 ;
-var G__31649__$3 = cljs.core.assoc_in(G__31649__$2,new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null,"ui","ui",-469653645),new cljs.core.Keyword(null,"selected-token-coord","selected-token-coord",1371480460)], null),null)
+var G__21614__$3 = cljs.core.assoc_in(G__21614__$2,new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null,"ui","ui",-469653645),new cljs.core.Keyword(null,"selected-token-coord","selected-token-coord",1371480460)], null),null)
 ;
-var G__31649__$4 = ((cljs.core.seq(fog_state_hexes))?cljs.core.assoc_in(G__31649__$3,new cljs.core.PersistentVector(null, 3, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null,"board","board",-1907017633),new cljs.core.Keyword(null,"fog-state","fog-state",-562317010),new cljs.core.Keyword(null,"hexes","hexes",-1419989846)], null),fog_state_hexes):G__31649__$3);
-var G__31649__$5 = ((cljs.core.seq(fog_number_deck))?cljs.core.assoc_in(G__31649__$4,new cljs.core.PersistentVector(null, 3, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null,"board","board",-1907017633),new cljs.core.Keyword(null,"fog-state","fog-state",-562317010),new cljs.core.Keyword(null,"number-deck","number-deck",1297732826)], null),fog_number_deck):G__31649__$4);
+var G__21614__$4 = ((cljs.core.seq(fog_state_hexes))?cljs.core.assoc_in(G__21614__$3,new cljs.core.PersistentVector(null, 3, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null,"board","board",-1907017633),new cljs.core.Keyword(null,"fog-state","fog-state",-562317010),new cljs.core.Keyword(null,"hexes","hexes",-1419989846)], null),fog_state_hexes):G__21614__$3);
+var G__21614__$5 = ((cljs.core.seq(fog_number_deck))?cljs.core.assoc_in(G__21614__$4,new cljs.core.PersistentVector(null, 3, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null,"board","board",-1907017633),new cljs.core.Keyword(null,"fog-state","fog-state",-562317010),new cljs.core.Keyword(null,"number-deck","number-deck",1297732826)], null),fog_number_deck):G__21614__$4);
 if(cljs.core.seq(fog_terrain_deck)){
-return cljs.core.assoc_in(G__31649__$5,new cljs.core.PersistentVector(null, 3, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null,"board","board",-1907017633),new cljs.core.Keyword(null,"fog-state","fog-state",-562317010),new cljs.core.Keyword(null,"terrain-deck","terrain-deck",834871773)], null),fog_terrain_deck);
+return cljs.core.assoc_in(G__21614__$5,new cljs.core.PersistentVector(null, 3, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null,"board","board",-1907017633),new cljs.core.Keyword(null,"fog-state","fog-state",-562317010),new cljs.core.Keyword(null,"terrain-deck","terrain-deck",834871773)], null),fog_terrain_deck);
 } else {
-return G__31649__$5;
+return G__21614__$5;
 }
 }));
 
 (catan_board.events.generate_board_with_fog.cljs$lang$maxFixedArity = (2));
 
 /** @this {Function} */
-(catan_board.events.generate_board_with_fog.cljs$lang$applyTo = (function (seq31627){
-var G__31628 = cljs.core.first(seq31627);
-var seq31627__$1 = cljs.core.next(seq31627);
-var G__31629 = cljs.core.first(seq31627__$1);
-var seq31627__$2 = cljs.core.next(seq31627__$1);
+(catan_board.events.generate_board_with_fog.cljs$lang$applyTo = (function (seq21604){
+var G__21605 = cljs.core.first(seq21604);
+var seq21604__$1 = cljs.core.next(seq21604);
+var G__21606 = cljs.core.first(seq21604__$1);
+var seq21604__$2 = cljs.core.next(seq21604__$1);
 var self__5711__auto__ = this;
-return self__5711__auto__.cljs$core$IFn$_invoke$arity$variadic(G__31628,G__31629,seq31627__$2);
+return self__5711__auto__.cljs$core$IFn$_invoke$arity$variadic(G__21605,G__21606,seq21604__$2);
 }));
 
 /**
@@ -172,22 +172,22 @@ return catan_board.events.generate_board_with_fog(db,scenario_config);
 return cljs.core.assoc_in(db,new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null,"ui","ui",-469653645),new cljs.core.Keyword(null,"selected-token-coord","selected-token-coord",1371480460)], null),null);
 }
 }));
-re_frame.core.reg_event_db.cljs$core$IFn$_invoke$arity$2(new cljs.core.Keyword(null,"generate-board-success","generate-board-success",-1001336690),(function (db,p__31666){
-var vec__31667 = p__31666;
-var _ = cljs.core.nth.cljs$core$IFn$_invoke$arity$3(vec__31667,(0),null);
-var board_data = cljs.core.nth.cljs$core$IFn$_invoke$arity$3(vec__31667,(1),null);
+re_frame.core.reg_event_db.cljs$core$IFn$_invoke$arity$2(new cljs.core.Keyword(null,"generate-board-success","generate-board-success",-1001336690),(function (db,p__21620){
+var vec__21621 = p__21620;
+var _ = cljs.core.nth.cljs$core$IFn$_invoke$arity$3(vec__21621,(0),null);
+var board_data = cljs.core.nth.cljs$core$IFn$_invoke$arity$3(vec__21621,(1),null);
 return cljs.core.assoc_in(cljs.core.assoc.cljs$core$IFn$_invoke$arity$3(db,new cljs.core.Keyword(null,"board","board",-1907017633),board_data),new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null,"ui","ui",-469653645),new cljs.core.Keyword(null,"loading","loading",-737050189)], null),false);
 }));
-re_frame.core.reg_event_db.cljs$core$IFn$_invoke$arity$2(new cljs.core.Keyword(null,"generate-board-failure","generate-board-failure",-944342640),(function (db,p__31671){
-var vec__31673 = p__31671;
-var _ = cljs.core.nth.cljs$core$IFn$_invoke$arity$3(vec__31673,(0),null);
-var error = cljs.core.nth.cljs$core$IFn$_invoke$arity$3(vec__31673,(1),null);
+re_frame.core.reg_event_db.cljs$core$IFn$_invoke$arity$2(new cljs.core.Keyword(null,"generate-board-failure","generate-board-failure",-944342640),(function (db,p__21624){
+var vec__21625 = p__21624;
+var _ = cljs.core.nth.cljs$core$IFn$_invoke$arity$3(vec__21625,(0),null);
+var error = cljs.core.nth.cljs$core$IFn$_invoke$arity$3(vec__21625,(1),null);
 return cljs.core.assoc_in(cljs.core.assoc_in(db,new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null,"ui","ui",-469653645),new cljs.core.Keyword(null,"loading","loading",-737050189)], null),false),new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null,"ui","ui",-469653645),new cljs.core.Keyword(null,"error","error",-978969032)], null),error);
 }));
-re_frame.core.reg_event_db.cljs$core$IFn$_invoke$arity$3(new cljs.core.Keyword(null,"set-scenario","set-scenario",-2002175398),new cljs.core.PersistentVector(null, 1, 5, cljs.core.PersistentVector.EMPTY_NODE, [catan_board.events.persist_db], null),(function (db,p__31676){
-var vec__31677 = p__31676;
-var _ = cljs.core.nth.cljs$core$IFn$_invoke$arity$3(vec__31677,(0),null);
-var scenario_id = cljs.core.nth.cljs$core$IFn$_invoke$arity$3(vec__31677,(1),null);
+re_frame.core.reg_event_db.cljs$core$IFn$_invoke$arity$3(new cljs.core.Keyword(null,"set-scenario","set-scenario",-2002175398),new cljs.core.PersistentVector(null, 1, 5, cljs.core.PersistentVector.EMPTY_NODE, [catan_board.events.persist_db], null),(function (db,p__21628){
+var vec__21629 = p__21628;
+var _ = cljs.core.nth.cljs$core$IFn$_invoke$arity$3(vec__21629,(0),null);
+var scenario_id = cljs.core.nth.cljs$core$IFn$_invoke$arity$3(vec__21629,(1),null);
 var scenario_config = catan_board.scenarios.registry.get_scenario(scenario_id);
 if(cljs.core.truth_(scenario_config)){
 return catan_board.events.generate_board_with_fog.cljs$core$IFn$_invoke$arity$variadic(db,scenario_config,cljs.core.prim_seq.cljs$core$IFn$_invoke$arity$2([new cljs.core.Keyword(null,"scenario-id","scenario-id",199208014),scenario_id], 0));
@@ -195,10 +195,10 @@ return catan_board.events.generate_board_with_fog.cljs$core$IFn$_invoke$arity$va
 return db;
 }
 }));
-re_frame.core.reg_event_db.cljs$core$IFn$_invoke$arity$3(new cljs.core.Keyword(null,"reveal-fog-tile","reveal-fog-tile",-984124702),new cljs.core.PersistentVector(null, 1, 5, cljs.core.PersistentVector.EMPTY_NODE, [catan_board.events.persist_db], null),(function (db,p__31680){
-var vec__31681 = p__31680;
-var _ = cljs.core.nth.cljs$core$IFn$_invoke$arity$3(vec__31681,(0),null);
-var coord = cljs.core.nth.cljs$core$IFn$_invoke$arity$3(vec__31681,(1),null);
+re_frame.core.reg_event_db.cljs$core$IFn$_invoke$arity$3(new cljs.core.Keyword(null,"reveal-fog-tile","reveal-fog-tile",-984124702),new cljs.core.PersistentVector(null, 1, 5, cljs.core.PersistentVector.EMPTY_NODE, [catan_board.events.persist_db], null),(function (db,p__21632){
+var vec__21633 = p__21632;
+var _ = cljs.core.nth.cljs$core$IFn$_invoke$arity$3(vec__21633,(0),null);
+var coord = cljs.core.nth.cljs$core$IFn$_invoke$arity$3(vec__21633,(1),null);
 var fog_state = cljs.core.get_in.cljs$core$IFn$_invoke$arity$2(db,new cljs.core.PersistentVector(null, 3, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null,"board","board",-1907017633),new cljs.core.Keyword(null,"fog-state","fog-state",-562317010),new cljs.core.Keyword(null,"hexes","hexes",-1419989846)], null));
 var fog_entry = cljs.core.get.cljs$core$IFn$_invoke$arity$2(fog_state,coord);
 var current_scenario = new cljs.core.Keyword(null,"scenario","scenario",-316635333).cljs$core$IFn$_invoke$arity$1(db);
@@ -220,19 +220,19 @@ var terrain = cljs.core.first(terrain_deck);
 var is_water_QMARK_ = cljs.core._EQ_.cljs$core$IFn$_invoke$arity$2(new cljs.core.Keyword(null,"water","water",-824098213),terrain);
 var number_deck = cljs.core.get_in.cljs$core$IFn$_invoke$arity$2(db,new cljs.core.PersistentVector(null, 3, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null,"board","board",-1907017633),new cljs.core.Keyword(null,"fog-state","fog-state",-562317010),new cljs.core.Keyword(null,"number-deck","number-deck",1297732826)], null));
 var number = ((is_water_QMARK_)?null:cljs.core.first(number_deck));
-var G__31687 = db;
-var G__31687__$1 = cljs.core.assoc_in(G__31687,new cljs.core.PersistentVector(null, 5, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null,"board","board",-1907017633),new cljs.core.Keyword(null,"fog-state","fog-state",-562317010),new cljs.core.Keyword(null,"hexes","hexes",-1419989846),coord,new cljs.core.Keyword(null,"revealed?","revealed?",726959164)], null),true)
+var G__21640 = db;
+var G__21640__$1 = cljs.core.assoc_in(G__21640,new cljs.core.PersistentVector(null, 5, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null,"board","board",-1907017633),new cljs.core.Keyword(null,"fog-state","fog-state",-562317010),new cljs.core.Keyword(null,"hexes","hexes",-1419989846),coord,new cljs.core.Keyword(null,"revealed?","revealed?",726959164)], null),true)
 ;
-var G__31687__$2 = cljs.core.assoc_in(G__31687__$1,new cljs.core.PersistentVector(null, 5, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null,"board","board",-1907017633),new cljs.core.Keyword(null,"fog-state","fog-state",-562317010),new cljs.core.Keyword(null,"hexes","hexes",-1419989846),coord,new cljs.core.Keyword(null,"terrain","terrain",704966005)], null),terrain)
+var G__21640__$2 = cljs.core.assoc_in(G__21640__$1,new cljs.core.PersistentVector(null, 5, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null,"board","board",-1907017633),new cljs.core.Keyword(null,"fog-state","fog-state",-562317010),new cljs.core.Keyword(null,"hexes","hexes",-1419989846),coord,new cljs.core.Keyword(null,"terrain","terrain",704966005)], null),terrain)
 ;
-var G__31687__$3 = cljs.core.assoc_in(G__31687__$2,new cljs.core.PersistentVector(null, 5, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null,"board","board",-1907017633),new cljs.core.Keyword(null,"fog-state","fog-state",-562317010),new cljs.core.Keyword(null,"hexes","hexes",-1419989846),coord,new cljs.core.Keyword(null,"number","number",1570378438)], null),number)
+var G__21640__$3 = cljs.core.assoc_in(G__21640__$2,new cljs.core.PersistentVector(null, 5, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null,"board","board",-1907017633),new cljs.core.Keyword(null,"fog-state","fog-state",-562317010),new cljs.core.Keyword(null,"hexes","hexes",-1419989846),coord,new cljs.core.Keyword(null,"number","number",1570378438)], null),number)
 ;
-var G__31687__$4 = cljs.core.assoc_in(G__31687__$3,new cljs.core.PersistentVector(null, 3, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null,"board","board",-1907017633),new cljs.core.Keyword(null,"fog-state","fog-state",-562317010),new cljs.core.Keyword(null,"terrain-deck","terrain-deck",834871773)], null),cljs.core.rest(terrain_deck))
+var G__21640__$4 = cljs.core.assoc_in(G__21640__$3,new cljs.core.PersistentVector(null, 3, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null,"board","board",-1907017633),new cljs.core.Keyword(null,"fog-state","fog-state",-562317010),new cljs.core.Keyword(null,"terrain-deck","terrain-deck",834871773)], null),cljs.core.rest(terrain_deck))
 ;
 if((!(is_water_QMARK_))){
-return cljs.core.assoc_in(G__31687__$4,new cljs.core.PersistentVector(null, 3, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null,"board","board",-1907017633),new cljs.core.Keyword(null,"fog-state","fog-state",-562317010),new cljs.core.Keyword(null,"number-deck","number-deck",1297732826)], null),cljs.core.rest(number_deck));
+return cljs.core.assoc_in(G__21640__$4,new cljs.core.PersistentVector(null, 3, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null,"board","board",-1907017633),new cljs.core.Keyword(null,"fog-state","fog-state",-562317010),new cljs.core.Keyword(null,"number-deck","number-deck",1297732826)], null),cljs.core.rest(number_deck));
 } else {
-return G__31687__$4;
+return G__21640__$4;
 }
 } else {
 return db;
@@ -246,10 +246,10 @@ var shuffled_number_deck = cljs.core.shuffle(number_deck);
 return cljs.core.assoc_in(cljs.core.assoc_in(db,new cljs.core.PersistentVector(null, 3, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null,"board","board",-1907017633),new cljs.core.Keyword(null,"fog-state","fog-state",-562317010),new cljs.core.Keyword(null,"terrain-deck","terrain-deck",834871773)], null),shuffled_terrain_deck),new cljs.core.PersistentVector(null, 3, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null,"board","board",-1907017633),new cljs.core.Keyword(null,"fog-state","fog-state",-562317010),new cljs.core.Keyword(null,"number-deck","number-deck",1297732826)], null),shuffled_number_deck);
 }));
 catan_board.events.reg_toggle_event(new cljs.core.Keyword(null,"toggle-info-panel","toggle-info-panel",-267315576),new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null,"ui","ui",-469653645),new cljs.core.Keyword(null,"show-info-panel","show-info-panel",-1339130975)], null));
-re_frame.core.reg_event_db.cljs$core$IFn$_invoke$arity$3(new cljs.core.Keyword(null,"set-board-scale","set-board-scale",259109878),new cljs.core.PersistentVector(null, 1, 5, cljs.core.PersistentVector.EMPTY_NODE, [catan_board.events.persist_db], null),(function (db,p__31692){
-var vec__31693 = p__31692;
-var _ = cljs.core.nth.cljs$core$IFn$_invoke$arity$3(vec__31693,(0),null);
-var scale = cljs.core.nth.cljs$core$IFn$_invoke$arity$3(vec__31693,(1),null);
+re_frame.core.reg_event_db.cljs$core$IFn$_invoke$arity$3(new cljs.core.Keyword(null,"set-board-scale","set-board-scale",259109878),new cljs.core.PersistentVector(null, 1, 5, cljs.core.PersistentVector.EMPTY_NODE, [catan_board.events.persist_db], null),(function (db,p__21644){
+var vec__21645 = p__21644;
+var _ = cljs.core.nth.cljs$core$IFn$_invoke$arity$3(vec__21645,(0),null);
+var scale = cljs.core.nth.cljs$core$IFn$_invoke$arity$3(vec__21645,(1),null);
 var clamped_scale = (function (){var x__5090__auto__ = (function (){var x__5087__auto__ = scale;
 var y__5088__auto__ = new cljs.core.Keyword(null,"min","min",444991522).cljs$core$IFn$_invoke$arity$1(catan_board.events.scale_config);
 return ((x__5087__auto__ > y__5088__auto__) ? x__5087__auto__ : y__5088__auto__);
@@ -273,24 +273,24 @@ catan_board.events.reg_toggle_event.cljs$core$IFn$_invoke$arity$variadic(new clj
 re_frame.core.reg_event_db.cljs$core$IFn$_invoke$arity$2(new cljs.core.Keyword(null,"toggle-swap-number-mode","toggle-swap-number-mode",1724988811),(function (db,_){
 return cljs.core.assoc_in(cljs.core.update_in.cljs$core$IFn$_invoke$arity$3(db,new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null,"ui","ui",-469653645),new cljs.core.Keyword(null,"swap-number-mode","swap-number-mode",-377880290)], null),cljs.core.not),new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null,"ui","ui",-469653645),new cljs.core.Keyword(null,"selected-token-coord","selected-token-coord",1371480460)], null),null);
 }));
-re_frame.core.reg_event_db.cljs$core$IFn$_invoke$arity$3(new cljs.core.Keyword(null,"select-token","select-token",436885760),new cljs.core.PersistentVector(null, 1, 5, cljs.core.PersistentVector.EMPTY_NODE, [catan_board.events.persist_db], null),(function (db,p__31716){
-var vec__31717 = p__31716;
-var _ = cljs.core.nth.cljs$core$IFn$_invoke$arity$3(vec__31717,(0),null);
-var coord = cljs.core.nth.cljs$core$IFn$_invoke$arity$3(vec__31717,(1),null);
+re_frame.core.reg_event_db.cljs$core$IFn$_invoke$arity$3(new cljs.core.Keyword(null,"select-token","select-token",436885760),new cljs.core.PersistentVector(null, 1, 5, cljs.core.PersistentVector.EMPTY_NODE, [catan_board.events.persist_db], null),(function (db,p__21668){
+var vec__21669 = p__21668;
+var _ = cljs.core.nth.cljs$core$IFn$_invoke$arity$3(vec__21669,(0),null);
+var coord = cljs.core.nth.cljs$core$IFn$_invoke$arity$3(vec__21669,(1),null);
 var current_selection = cljs.core.get_in.cljs$core$IFn$_invoke$arity$2(db,new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null,"ui","ui",-469653645),new cljs.core.Keyword(null,"selected-token-coord","selected-token-coord",1371480460)], null));
 if(cljs.core.truth_(current_selection)){
 var hexes = cljs.core.get_in.cljs$core$IFn$_invoke$arity$2(db,new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null,"board","board",-1907017633),new cljs.core.Keyword(null,"hexes","hexes",-1419989846)], null));
 var fog_state_hexes = cljs.core.get_in.cljs$core$IFn$_invoke$arity$2(db,new cljs.core.PersistentVector(null, 3, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null,"board","board",-1907017633),new cljs.core.Keyword(null,"fog-state","fog-state",-562317010),new cljs.core.Keyword(null,"hexes","hexes",-1419989846)], null));
-var hex1_idx = cljs.core.first(cljs.core.keep_indexed.cljs$core$IFn$_invoke$arity$2((function (p1__31713_SHARP_,p2__31712_SHARP_){
-if(cljs.core._EQ_.cljs$core$IFn$_invoke$arity$2(new cljs.core.Keyword(null,"coord","coord",-1453656639).cljs$core$IFn$_invoke$arity$1(p2__31712_SHARP_),current_selection)){
-return p1__31713_SHARP_;
+var hex1_idx = cljs.core.first(cljs.core.keep_indexed.cljs$core$IFn$_invoke$arity$2((function (p1__21665_SHARP_,p2__21664_SHARP_){
+if(cljs.core._EQ_.cljs$core$IFn$_invoke$arity$2(new cljs.core.Keyword(null,"coord","coord",-1453656639).cljs$core$IFn$_invoke$arity$1(p2__21664_SHARP_),current_selection)){
+return p1__21665_SHARP_;
 } else {
 return null;
 }
 }),hexes));
-var hex2_idx = cljs.core.first(cljs.core.keep_indexed.cljs$core$IFn$_invoke$arity$2((function (p1__31715_SHARP_,p2__31714_SHARP_){
-if(cljs.core._EQ_.cljs$core$IFn$_invoke$arity$2(new cljs.core.Keyword(null,"coord","coord",-1453656639).cljs$core$IFn$_invoke$arity$1(p2__31714_SHARP_),coord)){
-return p1__31715_SHARP_;
+var hex2_idx = cljs.core.first(cljs.core.keep_indexed.cljs$core$IFn$_invoke$arity$2((function (p1__21667_SHARP_,p2__21666_SHARP_){
+if(cljs.core._EQ_.cljs$core$IFn$_invoke$arity$2(new cljs.core.Keyword(null,"coord","coord",-1453656639).cljs$core$IFn$_invoke$arity$1(p2__21666_SHARP_),coord)){
+return p1__21667_SHARP_;
 } else {
 return null;
 }
@@ -322,14 +322,14 @@ return and__5000__auto__;
 })();
 var num1 = (cljs.core.truth_(is_fog1_revealed_QMARK_)?new cljs.core.Keyword(null,"number","number",1570378438).cljs$core$IFn$_invoke$arity$1(fog1_info):new cljs.core.Keyword(null,"number","number",1570378438).cljs$core$IFn$_invoke$arity$1(hex1));
 var num2 = (cljs.core.truth_(is_fog2_revealed_QMARK_)?new cljs.core.Keyword(null,"number","number",1570378438).cljs$core$IFn$_invoke$arity$1(fog2_info):new cljs.core.Keyword(null,"number","number",1570378438).cljs$core$IFn$_invoke$arity$1(hex2));
-var G__31729 = db;
-var G__31729__$1 = cljs.core.assoc_in(G__31729,new cljs.core.PersistentVector(null, 4, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null,"board","board",-1907017633),new cljs.core.Keyword(null,"hexes","hexes",-1419989846),hex1_idx,new cljs.core.Keyword(null,"number","number",1570378438)], null),num2)
+var G__21681 = db;
+var G__21681__$1 = cljs.core.assoc_in(G__21681,new cljs.core.PersistentVector(null, 4, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null,"board","board",-1907017633),new cljs.core.Keyword(null,"hexes","hexes",-1419989846),hex1_idx,new cljs.core.Keyword(null,"number","number",1570378438)], null),num2)
 ;
-var G__31729__$2 = cljs.core.assoc_in(G__31729__$1,new cljs.core.PersistentVector(null, 4, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null,"board","board",-1907017633),new cljs.core.Keyword(null,"hexes","hexes",-1419989846),hex2_idx,new cljs.core.Keyword(null,"number","number",1570378438)], null),num1)
+var G__21681__$2 = cljs.core.assoc_in(G__21681__$1,new cljs.core.PersistentVector(null, 4, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null,"board","board",-1907017633),new cljs.core.Keyword(null,"hexes","hexes",-1419989846),hex2_idx,new cljs.core.Keyword(null,"number","number",1570378438)], null),num1)
 ;
-var G__31729__$3 = (cljs.core.truth_(is_fog1_revealed_QMARK_)?cljs.core.assoc_in(G__31729__$2,new cljs.core.PersistentVector(null, 5, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null,"board","board",-1907017633),new cljs.core.Keyword(null,"fog-state","fog-state",-562317010),new cljs.core.Keyword(null,"hexes","hexes",-1419989846),new cljs.core.Keyword(null,"coord","coord",-1453656639).cljs$core$IFn$_invoke$arity$1(hex1),new cljs.core.Keyword(null,"number","number",1570378438)], null),num2):G__31729__$2);
-var G__31729__$4 = (cljs.core.truth_(is_fog2_revealed_QMARK_)?cljs.core.assoc_in(G__31729__$3,new cljs.core.PersistentVector(null, 5, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null,"board","board",-1907017633),new cljs.core.Keyword(null,"fog-state","fog-state",-562317010),new cljs.core.Keyword(null,"hexes","hexes",-1419989846),new cljs.core.Keyword(null,"coord","coord",-1453656639).cljs$core$IFn$_invoke$arity$1(hex2),new cljs.core.Keyword(null,"number","number",1570378438)], null),num1):G__31729__$3);
-return cljs.core.assoc_in(G__31729__$4,new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null,"ui","ui",-469653645),new cljs.core.Keyword(null,"selected-token-coord","selected-token-coord",1371480460)], null),null);
+var G__21681__$3 = (cljs.core.truth_(is_fog1_revealed_QMARK_)?cljs.core.assoc_in(G__21681__$2,new cljs.core.PersistentVector(null, 5, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null,"board","board",-1907017633),new cljs.core.Keyword(null,"fog-state","fog-state",-562317010),new cljs.core.Keyword(null,"hexes","hexes",-1419989846),new cljs.core.Keyword(null,"coord","coord",-1453656639).cljs$core$IFn$_invoke$arity$1(hex1),new cljs.core.Keyword(null,"number","number",1570378438)], null),num2):G__21681__$2);
+var G__21681__$4 = (cljs.core.truth_(is_fog2_revealed_QMARK_)?cljs.core.assoc_in(G__21681__$3,new cljs.core.PersistentVector(null, 5, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null,"board","board",-1907017633),new cljs.core.Keyword(null,"fog-state","fog-state",-562317010),new cljs.core.Keyword(null,"hexes","hexes",-1419989846),new cljs.core.Keyword(null,"coord","coord",-1453656639).cljs$core$IFn$_invoke$arity$1(hex2),new cljs.core.Keyword(null,"number","number",1570378438)], null),num1):G__21681__$3);
+return cljs.core.assoc_in(G__21681__$4,new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null,"ui","ui",-469653645),new cljs.core.Keyword(null,"selected-token-coord","selected-token-coord",1371480460)], null),null);
 
 } else {
 return cljs.core.assoc_in(db,new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null,"ui","ui",-469653645),new cljs.core.Keyword(null,"selected-token-coord","selected-token-coord",1371480460)], null),null);
