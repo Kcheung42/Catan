@@ -2,8 +2,6 @@
 
 A projector-optimized web application that replaces the physical Catan board game board. Display the board via projector and play with physical pieces on top.
 
-Visit https://kcheung42.github.io/Catan/ for Demo
-
 ## Features
 
 - Random board generation following official Catan rules

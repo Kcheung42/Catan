@@ -7,7 +7,7 @@
 (def config
   "Complete configuration for the Fog Islands 4-Player scenario"
   {:id           :fog-islands-4p
-   :name         "Fog Islands (4-player)"
+   :name         "Seafarers: Fog Islands (4-player)"
    :player-count 3
    :grid-pattern "5-6-7-8-7-6-5"
 
