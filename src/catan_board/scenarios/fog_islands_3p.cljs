@@ -52,12 +52,12 @@
    ;; Resource and number distribution for face-up terrain hexes
    :face-up-distribution
    {:resources     {:water  0
-                    :desert 1
-                    :wheat  3
+                    :desert 0
+                    :wheat  2
                     :brick  2
                     :ore    2
-                    :sheep  3
-                    :wood   3}
+                    :sheep  4
+                    :wood   4}
     ;; Number tokens for non-desert hexes (14 terrain, 1 desert, so 13 tokens)
     :number-tokens {2  0
                     3  1
@@ -67,7 +67,7 @@
                     8  2
                     9  2
                     10 1
-                    11 1
+                    11 2
                     12 1}
     :assignment    :random}
 
