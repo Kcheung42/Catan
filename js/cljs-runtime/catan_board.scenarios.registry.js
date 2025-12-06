@@ -30,12 +30,12 @@ return cljs.core.get.cljs$core$IFn$_invoke$arity$2(catan_board.middleware.local_
  *    {:id :fog-islands-3p :name 'Fog Islands (3-player)' :player-count 3}]
  */
 catan_board.scenarios.registry.list_scenarios = (function catan_board$scenarios$registry$list_scenarios(){
-return cljs.core.sort_by.cljs$core$IFn$_invoke$arity$2(cljs.core.juxt.cljs$core$IFn$_invoke$arity$2(new cljs.core.Keyword(null,"name","name",1843675177),(function (p1__36614_SHARP_){
-return cljs.core.not(new cljs.core.Keyword(null,"custom-scenario?","custom-scenario?",-1855989644).cljs$core$IFn$_invoke$arity$1(p1__36614_SHARP_));
-})),cljs.core.mapv.cljs$core$IFn$_invoke$arity$2((function (p__36615){
-var vec__36616 = p__36615;
-var id = cljs.core.nth.cljs$core$IFn$_invoke$arity$3(vec__36616,(0),null);
-var config = cljs.core.nth.cljs$core$IFn$_invoke$arity$3(vec__36616,(1),null);
+return cljs.core.sort_by.cljs$core$IFn$_invoke$arity$2(cljs.core.juxt.cljs$core$IFn$_invoke$arity$2(new cljs.core.Keyword(null,"name","name",1843675177),(function (p1__12783_SHARP_){
+return cljs.core.not(new cljs.core.Keyword(null,"custom-scenario?","custom-scenario?",-1855989644).cljs$core$IFn$_invoke$arity$1(p1__12783_SHARP_));
+})),cljs.core.mapv.cljs$core$IFn$_invoke$arity$2((function (p__12785){
+var vec__12786 = p__12785;
+var id = cljs.core.nth.cljs$core$IFn$_invoke$arity$3(vec__12786,(0),null);
+var config = cljs.core.nth.cljs$core$IFn$_invoke$arity$3(vec__12786,(1),null);
 return new cljs.core.PersistentArrayMap(null, 4, [new cljs.core.Keyword(null,"id","id",-1388402092),id,new cljs.core.Keyword(null,"name","name",1843675177),new cljs.core.Keyword(null,"name","name",1843675177).cljs$core$IFn$_invoke$arity$1(config),new cljs.core.Keyword(null,"player-count","player-count",-1323180409),new cljs.core.Keyword(null,"player-count","player-count",-1323180409).cljs$core$IFn$_invoke$arity$1(config),new cljs.core.Keyword(null,"custom-scenario?","custom-scenario?",-1855989644),new cljs.core.Keyword(null,"custom-scenario?","custom-scenario?",-1855989644).cljs$core$IFn$_invoke$arity$1(config)], null);
 }),cljs.core.concat.cljs$core$IFn$_invoke$arity$2(catan_board.scenarios.registry.scenarios,catan_board.middleware.local_storage.load_from_local_storage.cljs$core$IFn$_invoke$arity$1(new cljs.core.Keyword(null,"custom-scenarios","custom-scenarios",1285667133)))));
 });
