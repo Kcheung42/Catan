@@ -489,11 +489,11 @@
 
         ;; Resource icon for specific harbors
         resource-icon (case type
-                        :wood    "🪵"
+                        :wood    "🌲"
                         :brick   "🧱"
                         :wheat   "🌾"
                         :sheep   "🐑"
-                        :ore     "🪨"
+                        :ore     "🗻"
                         :generic "?"
                         "?")
 
